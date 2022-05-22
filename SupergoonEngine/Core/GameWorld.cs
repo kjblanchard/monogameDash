@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SupergoonDashCrossPlatform.Sound;
@@ -7,62 +8,67 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 public class GameWorld : Game
 {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private SoundSystem _soundSystem;
+    private GraphicsDeviceManager _graphics;
+    private SpriteBatch _spriteBatch;
+    private SoundSystem _soundSystem;
 
-        public GameWorld()
-        {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-            AttachAllGameComponents();
-        }
 
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-            base.Initialize();
-            _soundSystem.PlayBgm();
-        }
+    public GameWorld()
+    {
+        _graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
+        IsMouseVisible = true;
+        AttachAllGameComponents();
+    }
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
-        }
+    protected override void Initialize()
+    {
+        // TODO: Add your initialization logic here
+        base.Initialize();
+        _soundSystem.PlayBgm();
+    }
 
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+    protected override void LoadContent()
+    {
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: Add your update logic here
-            base.Update(gameTime);
-        }
+        // TODO: use this.Content to load your game content here
+    }
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+    protected override void Update(GameTime gameTime)
+    {
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+            Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Exit();
 
-            // TODO: Add your drawing code here
+        // TODO: Add your update logic here
+        base.Update(gameTime);
+    }
 
-            base.Draw(gameTime);
-        }
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        private void AttachAllGameComponents()
-        {
-            _soundSystem = new SoundSystem(this);
-            
-            Components.Add(_soundSystem);
-            
-        }
+        _spriteBatch.Begin();
+
+
+        _spriteBatch.End();
+
+        base.Draw(gameTime);
+    }
+
+
+    private void AttachAllGameComponents()
+    {
+        _soundSystem = new SoundSystem(this);
+
+        Components.Add(_soundSystem);
+    }
+
     #region Configuration
 
     #endregion
 
-    
 
     #region Methods
 

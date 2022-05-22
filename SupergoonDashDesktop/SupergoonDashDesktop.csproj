@@ -62,5 +62,25 @@
       <Content Include="Content\Sounds\Desktop\Master.strings.bank">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Content\Tiled\decorations.tsx" />
+      <Content Include="Content\Tiled\decorations.tsx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Content\Tiled\Decorations (32x32).png" />
+      <Content Include="Content\Tiled\Decorations (32x32).png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Content\Tiled\level1.tmx" />
+      <Content Include="Content\Tiled\level1.tmx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Content\Tiled\terrain.tsx" />
+      <Content Include="Content\Tiled\terrain.tsx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Content\Tiled\Terrain (32x32).png" />
+      <Content Include="Content\Tiled\Terrain (32x32).png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>
