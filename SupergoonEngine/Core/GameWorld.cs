@@ -3,15 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SupergoonDashCrossPlatform.Sound;
 
-namespace SupergoonDashCrossPlatform
+namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
+
+public class GameWorld : Game
 {
-    public class Game1 : Game
-    {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SoundSystem _soundSystem;
 
-        public Game1()
+        public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -58,5 +58,13 @@ namespace SupergoonDashCrossPlatform
             Components.Add(_soundSystem);
             
         }
-    }
+    #region Configuration
+
+    #endregion
+
+    
+
+    #region Methods
+
+    #endregion
 }

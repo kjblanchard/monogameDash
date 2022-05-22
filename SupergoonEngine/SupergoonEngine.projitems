@@ -9,6 +9,7 @@
     <Import_RootNamespace>SupergoonEngine</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\GameWorld.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_dsp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_studio.cs" />
