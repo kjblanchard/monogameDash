@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
@@ -14,7 +13,6 @@ public class TiledTmxContent
 
     public TiledMap TileMap;
     public TiledTileset[] Tilesets;
-    public Point[] TilesetSize;
     public Texture2D[] TilesetTextures;
 
     public TiledTmxContent(TiledMap map, TiledTileset[] tilesets, Texture2D[] textures)
@@ -22,17 +20,6 @@ public class TiledTmxContent
         TileMap = map;
         Tilesets = tilesets;
         TilesetTextures = textures;
-
-        var points = new Point[tilesets.Length];
-
-        for (int i = 0; i < tilesets.Length; i++)
-        {
-            var x = tilesets[i].Columns;
-            var y = tilesets[i].TileCount / tilesets[i].Columns;
-            points[i] = new Point(x, y);
-        }
-
-        TilesetSize = points;
     }
 
     public void DrawTilemap(SpriteBatch spriteBatch)
@@ -73,7 +60,8 @@ public class TiledTmxContent
                 var tileFrame = gid - TileMap.Tilesets[drawTilesetNum].firstgid;
 
                 var currentTile = TileMap.GetTiledTile(TileMap.Tilesets[drawTilesetNum], Tilesets[drawTilesetNum], gid);
-                int column = tileFrame % TilesetSize[drawTilesetNum].X;
+                
+                int column = tileFrame % Tilesets[drawTilesetNum].Columns;
                 int row = (int)Math.Floor((double)tileFrame / (double)Tilesets[drawTilesetNum].Columns);
                 float x = (j % TileMap.Width) * TileMap.TileWidth;
                 float y = (float)Math.Floor(j / (double)TileMap.Width) * TileMap.TileHeight;
@@ -85,6 +73,7 @@ public class TiledTmxContent
                 spriteBatch.Draw(TilesetTextures[drawTilesetNum],
                     new Rectangle((int)x, (int)y, Tilesets[drawTilesetNum].TileWidth,
                         Tilesets[drawTilesetNum].TileHeight), tilesetRec, Color.White);
+                spriteBatch.Begin(sort);
             }
         }
     }
