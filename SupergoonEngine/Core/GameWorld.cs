@@ -9,8 +9,8 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 public class GameWorld : Game
 {
     private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    private SoundSystem _soundSystem;
+    protected SpriteBatch _spriteBatch;
+    protected SoundSystem _soundSystem;
 
 
     public GameWorld()
@@ -47,7 +47,7 @@ public class GameWorld : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
 

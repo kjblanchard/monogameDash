@@ -11,8 +11,5 @@
         </PackageReference>
         <PackageReference Include="TiledCS" Version="3.1.0" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Source" />
-    </ItemGroup>
     <Import Project="..\SupergoonEngine\SupergoonEngine.projitems" Label="Shared" />
 </Project>
