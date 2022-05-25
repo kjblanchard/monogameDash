@@ -73,7 +73,6 @@ public class TiledTmxContent
                 spriteBatch.Draw(TilesetTextures[drawTilesetNum],
                     new Rectangle((int)x, (int)y, Tilesets[drawTilesetNum].TileWidth,
                         Tilesets[drawTilesetNum].TileHeight), tilesetRec, Color.White);
-                spriteBatch.Begin(sort);
             }
         }
     }
