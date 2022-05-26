@@ -28,8 +28,8 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
         throw new NotImplementedException();
     }
 
-    public bool Enabled { get; }
-    public int UpdateOrder { get; }
+    public bool Enabled { get; set; }
+    public int UpdateOrder { get; set; }
     public event EventHandler<EventArgs> EnabledChanged;
     public event EventHandler<EventArgs> UpdateOrderChanged;
     public virtual void Draw(SpriteBatch spriteBatch)

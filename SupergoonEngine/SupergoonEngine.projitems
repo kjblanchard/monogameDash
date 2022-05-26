@@ -17,8 +17,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Level.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\LevelGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateMachine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameObjects\Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDraw.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IInitialize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ILoadContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ITags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUpdate.cs" />

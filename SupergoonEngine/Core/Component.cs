@@ -6,8 +6,7 @@ using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-
-public class Component : ITags, IInitialize, IUpdate, IDraw
+public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent
 {
     public GameObject Parent;
     public Vector2 offset;
@@ -15,8 +14,6 @@ public class Component : ITags, IInitialize, IUpdate, IDraw
     public Component(GameObject parent)
     {
         Parent = parent;
-
-
     }
 
     public void AddTag(int tag)
@@ -40,13 +37,14 @@ public class Component : ITags, IInitialize, IUpdate, IDraw
     }
 
     public List<int> Tags { get; set; }
+
     public virtual void Update(GameTime gameTime)
     {
         throw new NotImplementedException();
     }
 
-    public bool Enabled { get; }
-    public int UpdateOrder { get; }
+    public bool Enabled { get; set; }
+    public int UpdateOrder { get; set; }
     public event EventHandler<EventArgs> EnabledChanged;
     public event EventHandler<EventArgs> UpdateOrderChanged;
 
@@ -60,7 +58,13 @@ public class Component : ITags, IInitialize, IUpdate, IDraw
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;
     public bool IsInitialized { get; set; }
+
     public virtual void Initialize()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void LoadContent()
     {
         throw new NotImplementedException();
     }

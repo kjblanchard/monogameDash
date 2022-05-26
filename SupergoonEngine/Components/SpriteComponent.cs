@@ -18,6 +18,11 @@ public class SpriteComponent : Component
         _textureSourceLocation = sourceRect.Location;
         _textureSourceSize = sourceRect.Size;
         _texture = texture;
+
+        //Add the sprite tag to the update order, and to the list of tags.
+        var tag = EngineTags.ComponentTags.Sprite;
+        UpdateOrder = tag;
+        AddTag(tag);
     }
 
     public override void Update(GameTime gameTime)
@@ -34,6 +39,4 @@ public class SpriteComponent : Component
             new Rectangle(_textureSourceLocation, _textureSourceSize),
             Color.White);
     }
-
-
 }

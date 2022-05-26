@@ -7,8 +7,8 @@ public interface IUpdate
 {
     public void Update(GameTime gameTime);
 
-    public bool Enabled { get; }
-    public int UpdateOrder { get; }
+    public bool Enabled { get; set; }
+    public int UpdateOrder { get; set; }
     public event EventHandler<EventArgs> EnabledChanged;
     public event EventHandler<EventArgs> UpdateOrderChanged;
 }
