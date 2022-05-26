@@ -10,7 +10,8 @@ public class GameWorld : Game
 {
     private GraphicsDeviceManager _graphics;
     protected SpriteBatch _spriteBatch;
-    protected SoundSystem _soundSystem;
+    protected SoundGameComponent soundGameComponent;
+    protected LevelGameComponent _levelGameComponent;
 
 
     public GameWorld()
@@ -25,7 +26,7 @@ public class GameWorld : Game
     {
         // TODO: Add your initialization logic here
         base.Initialize();
-        _soundSystem.PlayBgm();
+        soundGameComponent.PlayBgm();
     }
 
     protected override void LoadContent()
@@ -37,6 +38,7 @@ public class GameWorld : Game
 
     protected override void Update(GameTime gameTime)
     {
+        //Handle input
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
@@ -60,9 +62,11 @@ public class GameWorld : Game
 
     private void AttachAllGameComponents()
     {
-        _soundSystem = new SoundSystem(this);
+        soundGameComponent = new SoundGameComponent(this);
+        _levelGameComponent = new LevelGameComponent(this);
 
-        Components.Add(_soundSystem);
+        Components.Add(soundGameComponent);
+        Components.Add(_levelGameComponent);
     }
 
     #region Configuration

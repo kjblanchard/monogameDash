@@ -4,13 +4,13 @@ using Microsoft.Xna.Framework;
 
 namespace SupergoonDashCrossPlatform.Sound;
 
-public class SoundSystem : GameComponent
+public class SoundGameComponent : GameComponent
 {
     #region Configuration
 
     private FMOD.Studio.System _fmodStudioSystem;
 
-    public SoundSystem(Game game) : base(game)
+    public SoundGameComponent(Game game) : base(game)
     {
     }
 

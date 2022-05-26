@@ -14,13 +14,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\EngineTags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GameObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GameWorld.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Level.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\LevelGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDraw.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IInitialize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ITags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUpdate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_dsp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_studio.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Sound\SoundSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sound\SoundGameComponent.cs" />
   </ItemGroup>
 </Project>

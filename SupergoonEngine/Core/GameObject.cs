@@ -35,6 +35,16 @@ public class GameObject : ITags, IUpdateable, IDrawable
         throw new NotImplementedException();
     }
 
+    bool ITags.RemoveTag(int tag)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool HasTag(int tag)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual void RemoveTag(int tag)
     {
         throw new NotImplementedException();

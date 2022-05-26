@@ -24,6 +24,16 @@ public class Component : ITags, IInitialize, IUpdate, IDraw
         Tags.Add(tag);
     }
 
+    bool ITags.RemoveTag(int tag)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool HasTag(int tag)
+    {
+        throw new NotImplementedException();
+    }
+
     public void RemoveTag(int tag)
     {
         Tags.Remove(tag);
