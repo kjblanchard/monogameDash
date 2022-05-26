@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using TiledCS;
 
-namespace SupergoonDashCrossPlatform.Tiled;
+namespace SupergoonEngine.Tiled;
 
-public class TiledComponent : GameComponent
+public class TiledGameComponent : GameComponent
 {
     public TiledTmxContent LoadedTmxContent;
     #region Configuration
@@ -21,7 +17,7 @@ public class TiledComponent : GameComponent
 
     #endregion
 
-    public TiledComponent(Game game) : base(game)
+    public TiledGameComponent(Game game) : base(game)
     {
         //Load the full tmx file for the level.
         var map = new TiledMap(game.Content.RootDirectory + "\\tiled\\level1.tmx");

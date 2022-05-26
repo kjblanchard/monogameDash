@@ -9,7 +9,6 @@
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="TiledCS" Version="3.1.0" />
     </ItemGroup>
     <Import Project="..\SupergoonEngine\SupergoonEngine.projitems" Label="Shared" />
 </Project>

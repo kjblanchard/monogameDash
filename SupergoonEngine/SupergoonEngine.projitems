@@ -28,5 +28,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_dsp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_studio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\SoundGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\TiledMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\TiledModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\TiledTileset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledTmxContent.cs" />
   </ItemGroup>
 </Project>

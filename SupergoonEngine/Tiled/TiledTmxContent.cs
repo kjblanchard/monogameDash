@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
 
-namespace SupergoonDashCrossPlatform.Tiled;
+namespace SupergoonEngine.Tiled;
 
 public class TiledTmxContent
 {
