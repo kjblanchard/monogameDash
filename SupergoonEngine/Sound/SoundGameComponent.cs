@@ -12,18 +12,13 @@ public class SoundGameComponent : GameComponent
 
     public SoundGameComponent(Game game) : base(game)
     {
+        InitializeFmodStudio();
     }
 
     #endregion
 
 
     #region Methods
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        InitializeFmodStudio();
-    }
 
     /// <summary>
     /// Creates the fmod studio system, and initializes the system

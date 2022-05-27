@@ -36,11 +36,10 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
         Tags.Remove(tag);
     }
 
-    public List<int> Tags { get; set; }
+    public List<int> Tags { get; set; } = new();
 
     public virtual void Update(GameTime gameTime)
     {
-        throw new NotImplementedException();
     }
 
     public bool Enabled { get; set; }
@@ -50,7 +49,6 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        throw new NotImplementedException();
     }
 
     public int DrawOrder { get; }

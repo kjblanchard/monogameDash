@@ -17,6 +17,8 @@ public class SpriteComponent : Component
     {
         _textureSourceLocation = sourceRect.Location;
         _textureSourceSize = sourceRect.Size;
+        //TODO Do this some other way.
+        _drawDestinationSize = sourceRect.Size;
         _texture = texture;
 
         //Add the sprite tag to the update order, and to the list of tags.

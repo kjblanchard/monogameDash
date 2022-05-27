@@ -8,14 +8,6 @@ namespace SupergoonEngine.Tiled;
 public class TiledGameComponent : GameComponent
 {
     public TiledTmxContent LoadedTmxContent;
-    #region Configuration
-
-    #endregion
-
-
-    #region Methods
-
-    #endregion
 
     public TiledGameComponent(Game game) : base(game)
     {
