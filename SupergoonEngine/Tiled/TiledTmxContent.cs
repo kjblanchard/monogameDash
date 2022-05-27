@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.GameObjects;
@@ -28,10 +29,14 @@ public class TiledTmxContent
 
     public void CreateTileGameObjectsFromContent()
     {
+        var groups = TileMap.Groups;
+        var bgGroup = groups.FirstOrDefault(group => group.name == "bg");
         //For each layer in the tilemap
-        for (int i = 0; i < TileMap.Layers.Length; i++)
+        // for (int i = 0; i < TileMap.Layers.Length; i++)
+        for (int i = 0; i < bgGroup.layers.Length; i++)
         {
-            var layer = TileMap.Layers[i];
+            // var layer = TileMap.Layers[i];
+            var layer = bgGroup.layers[i];
             //Draw the tile at the correct location
             for (int j = 0; j < layer.data.Length; j++)
             {
