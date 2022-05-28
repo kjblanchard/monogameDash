@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
+using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.GameObjects;
 using TiledCS;
 
@@ -22,6 +22,8 @@ public class TiledTmxContent
 
     public List<Tile> BackgroundTiles = new();
 
+    public List<GameObject> Actors = new();
+
     public TiledTmxContent(TiledMap map, TiledTileset[] tilesets, Texture2D[] textures)
     {
         TileMap = map;
@@ -34,7 +36,6 @@ public class TiledTmxContent
         var groups = TileMap.Groups;
         var bgGroup = groups.FirstOrDefault(group => group.name == "bg");
         //For each layer in the tilemap
-        // for (int i = 0; i < TileMap.Layers.Length; i++)
         for (int i = 0; i < bgGroup.layers.Length; i++)
         {
             // var layer = TileMap.Layers[i];
@@ -90,19 +91,23 @@ public class TiledTmxContent
                     TilesetTextures[drawTilesetNum]
                 );
 
-                // BackgroundTiles.Add(new Tile(
-                //     new Vector2(x, y),
-                //     tilesetRec,
-                //     TilesetTextures[drawTilesetNum]
-                // ));
                 BackgroundTiles.Add(tile);
-                if (gid >= 279)
-                {
-                    Debug.WriteLine("Its a big boi");
-                    var boxCollider = new BoxColliderComponent(tile, new Point(32, 32));
-                    tile.AddComponent(boxCollider);
-                }
             }
+        }
+
+        //Create all of the actors (non tilemaps)
+        var actorLayer = TileMap.Layers.FirstOrDefault(layer => layer.name.StartsWith("actor"));
+        var actors = actorLayer.objects;
+        for (int i = 0; i < actors.Length; i++)
+        {
+            var potentialActor = actors[i];
+            var go = new GameObject(new Vector2(potentialActor.x, potentialActor.y));
+            var box = new BoxColliderComponent(go, new Point(32, 32));
+            box.Debug = true;
+            go.AddComponent(box);
+            var rb = new RigidbodyComponent(go, box);
+            go.AddComponent(rb);
+            Actors.Add(go);
         }
     }
 
@@ -110,6 +115,7 @@ public class TiledTmxContent
 
     {
         BackgroundTiles.ForEach(tile => { tile.Draw(spriteBatch); });
+        Actors.ForEach(actor => actor.Draw(spriteBatch));
     }
 
 

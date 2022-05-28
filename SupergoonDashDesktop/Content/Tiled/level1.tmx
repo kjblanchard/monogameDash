@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="49" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="49" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="4">
  <tileset firstgid="1" source="terrain.tsx"/>
  <tileset firstgid="248" source="decorations.tsx"/>
  <group id="4" name="bg">
@@ -52,4 +52,9 @@
 </data>
   </layer>
  </group>
+ <objectgroup id="7" name="actors">
+  <object id="3" x="41" y="232">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

@@ -22,7 +22,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
         _components.OrderBy(comp => comp.UpdateOrder);
     }
 
-    protected static GameWorld _gameWorld;
+    public static GameWorld _gameWorld;
     public Vector2 _location;
     protected List<Component> _components = new();
 

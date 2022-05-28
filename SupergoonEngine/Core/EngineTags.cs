@@ -13,7 +13,8 @@ public struct EngineTags
     public struct ComponentTags
     {
         public const int Default = 0;
-        public const int Sprite = 1;
+        public const int RigidBody = 1;
+        public const int Sprite = 2;
         public const int Debug = 99;
     }
 }

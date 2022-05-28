@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SupergoonDashCrossPlatform.Sound;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Physics;
 using SupergoonEngine.Tiled;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -15,6 +16,7 @@ public class GameWorld : Game
     protected LevelGameComponent _levelGameComponent;
     protected TiledGameComponent _tiledGameComponent;
     protected GraphicsGameComponent _graphicsGameComponent;
+    public PhysicsGameComponent PhysicsGameComponent;
 
     public static bool moveUp;
     public static bool moveDown;
@@ -63,6 +65,7 @@ public class GameWorld : Game
             moveLeft = true;
 
         _tiledGameComponent.LoadedTmxContent.BackgroundTiles.ForEach(tile => tile.Update(gameTime));
+        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Update(gameTime));
         
         Camera.Camera.Update();
         base.Update(gameTime);
@@ -88,11 +91,15 @@ public class GameWorld : Game
         _levelGameComponent = new LevelGameComponent(this);
         _tiledGameComponent = new TiledGameComponent(this);
         _graphicsGameComponent = new GraphicsGameComponent(this, _graphics, GraphicsDevice);
+        PhysicsGameComponent = new PhysicsGameComponent(this);
         
         Components.Add(_tiledGameComponent);
         Components.Add(_soundGameComponent);
         Components.Add(_levelGameComponent);
         Components.Add(_graphicsGameComponent);
+        Components.Add(PhysicsGameComponent);
+
+        GameObject._gameWorld = this;
     }
 
     #region Configuration
