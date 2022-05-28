@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -48,4 +49,14 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
     public event EventHandler<EventArgs> VisibleChanged;
     public bool IsInitialized { get; set; }
     public virtual void Initialize() => _components.ForEach(comp => comp.Initialize());
+    
+    //TODO get a texture differently, probably don't do it like this.
+    public void DrawDebug(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int borderSize = 2)
+    {
+        var t = GraphicsGameComponent._debugTexture;
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height), Color.Black); // Left
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize), Color.Black); // Right
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width , borderSize), Color.Black); // Top
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), Color.Black); // Bottom
+    }
 }

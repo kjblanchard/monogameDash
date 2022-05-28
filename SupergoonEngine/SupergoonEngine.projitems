@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\BoxColliderComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\SpriteComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EngineTags.cs" />
@@ -26,6 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ITags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics\Collision.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics\Gravity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics\PhysicsGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_dsp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod_studio.cs" />
@@ -38,5 +42,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\TiledModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledCS\TiledTileset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tiled\TiledTmxContent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Physics\Shapes" />
   </ItemGroup>
 </Project>

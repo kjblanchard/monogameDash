@@ -8,10 +8,11 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent
 {
-    public GameObject Parent;
-    public Vector2 offset;
+    protected readonly GameObject Parent;
+    protected Vector2 offset;
+    public bool Debug = false;
 
-    public Component(GameObject parent)
+    public Component(GameObject parent, Vector2 offset = new())
     {
         Parent = parent;
     }
