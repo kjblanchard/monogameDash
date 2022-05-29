@@ -39,6 +39,7 @@ public class SpriteComponent : Component
         spriteBatch.Draw(_texture,
             new Rectangle(_drawDestinationLocation, _drawDestinationSize),
             new Rectangle(_textureSourceLocation, _textureSourceSize),
-            Color.White);
+            Color.White,
+           0.0f,new Vector2(),SpriteEffects.None,DrawOrder);
     }
 }

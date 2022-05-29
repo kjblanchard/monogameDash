@@ -52,7 +52,7 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
     {
     }
 
-    public int DrawOrder { get; }
+    public float DrawOrder { get; set; }
     public bool Visible { get; }
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;

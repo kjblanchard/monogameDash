@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Level.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\LevelGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateMachine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameObjects\SolidTile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDraw.cs" />
@@ -29,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ITags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUpdate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Physics\Collision.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics\Directions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Physics\Gravity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Physics\PhysicsGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sound\fmod.cs" />

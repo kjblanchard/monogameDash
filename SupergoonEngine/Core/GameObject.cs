@@ -16,6 +16,14 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
         return (T)matchedComponent;
     }
 
+    public void AddComponent(params Component[] components)
+    {
+        foreach (var component in components)
+        {
+            _components.Add(component);
+        }
+        _components.OrderBy(comp => comp.UpdateOrder);
+    }
     public void AddComponent(Component component)
     {
         _components.Add(component);
@@ -43,7 +51,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
     public event EventHandler<EventArgs> EnabledChanged;
     public event EventHandler<EventArgs> UpdateOrderChanged;
     public virtual void Draw(SpriteBatch spriteBatch) => _components.ForEach(component => component.Draw(spriteBatch));
-    public int DrawOrder { get; }
+    public float DrawOrder { get; set; }
     public bool Visible { get; }
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;
@@ -53,10 +61,16 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
     //TODO get a texture differently, probably don't do it like this.
     public void DrawDebug(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int borderSize = 2)
     {
+        var color = Color.Red;
+        // var debugLayer = EngineTags.ComponentTags.Debug;
+        var debugLayer = 1.0f;
         var t = GraphicsGameComponent._debugTexture;
-        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height), Color.Black); // Left
-        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize), Color.Black); // Right
-        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width , borderSize), Color.Black); // Top
-        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), Color.Black); // Bottom
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
+        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
+        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize), color); // Right
+        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width , borderSize), color); // Top
+        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), color); // Bottom
     }
 }

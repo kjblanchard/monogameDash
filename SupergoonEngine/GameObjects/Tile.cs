@@ -13,10 +13,11 @@ public class Tile : GameObject
 
     private SpriteComponent _spriteComponent;
 
-    public Tile(Vector2 location, Rectangle sourceTextureRect, Texture2D texture)
+    public Tile(Vector2 location, Rectangle sourceTextureRect, Texture2D texture, float drawOrder)
     {
         _spriteComponent = new SpriteComponent(sourceTextureRect, texture, this);
         _location = location;
+        _spriteComponent.DrawOrder = drawOrder;
         AddComponent(_spriteComponent);
     }
 

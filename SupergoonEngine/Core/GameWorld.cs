@@ -65,6 +65,7 @@ public class GameWorld : Game
             moveLeft = true;
 
         _tiledGameComponent.LoadedTmxContent.BackgroundTiles.ForEach(tile => tile.Update(gameTime));
+        _tiledGameComponent.LoadedTmxContent.SolidTiles.ForEach(tile => tile.Update(gameTime));
         _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Update(gameTime));
         
         Camera.Camera.Update();
@@ -74,11 +75,13 @@ public class GameWorld : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null,
+        _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null,
             _graphicsGameComponent.SpriteScale * Camera.Camera.GetCameraTransformMatrix());
 
         // _spriteBatch.Begin();
-        _tiledGameComponent.LoadedTmxContent.DrawTilemap(_spriteBatch);
+        _tiledGameComponent.LoadedTmxContent.BackgroundTiles.ForEach(tile => tile.Draw(_spriteBatch));
+        _tiledGameComponent.LoadedTmxContent.SolidTiles.ForEach(tile => tile.Draw(_spriteBatch));
+        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Draw(_spriteBatch));
         _spriteBatch.End();
         
         base.Draw(gameTime);

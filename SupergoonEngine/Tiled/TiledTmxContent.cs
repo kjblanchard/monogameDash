@@ -21,6 +21,7 @@ public class TiledTmxContent
     public Texture2D[] TilesetTextures;
 
     public List<Tile> BackgroundTiles = new();
+    public List<SolidTile> SolidTiles = new();
 
     public List<GameObject> Actors = new();
 
@@ -36,6 +37,7 @@ public class TiledTmxContent
         var groups = TileMap.Groups;
         var bgGroup = groups.FirstOrDefault(group => group.name == "bg");
         //For each layer in the tilemap
+        var drawLayers = new List<float>();
         for (int i = 0; i < bgGroup.layers.Length; i++)
         {
             // var layer = TileMap.Layers[i];
@@ -85,13 +87,31 @@ public class TiledTmxContent
                     Tilesets[drawTilesetNum].TileHeight * row, Tilesets[drawTilesetNum].TileWidth,
                     Tilesets[drawTilesetNum].TileHeight);
 
-                var tile = new Tile(
-                    new Vector2(x, y),
-                    tilesetRec,
-                    TilesetTextures[drawTilesetNum]
-                );
+                //Create correct tile type
 
-                BackgroundTiles.Add(tile);
+                var drawOrderMultiplier = 0.001f;
+                var drawOrder = (i + 1) * drawOrderMultiplier;
+                if (layer.name.ToLower().StartsWith("solid"))
+                {
+                    var solidTile = new SolidTile(
+                        new Vector2(x, y),
+                        tilesetRec,
+                        TilesetTextures[drawTilesetNum],drawOrder
+                        );
+                    // drawLayers.Add(solidTile.DrawOrder);
+                    SolidTiles.Add(solidTile);
+                }
+                else
+                {
+                    var tile = new Tile(
+                        new Vector2(x, y),
+                        tilesetRec,
+                        TilesetTextures[drawTilesetNum],drawOrder
+                    );
+                    // tile.DrawOrder = (i + 1) * drawOrderMultiplier;
+                    drawLayers.Add(tile.DrawOrder);
+                    BackgroundTiles.Add(tile);
+                }
             }
         }
 
@@ -106,18 +126,15 @@ public class TiledTmxContent
             box.Debug = true;
             go.AddComponent(box);
             var rb = new RigidbodyComponent(go, box);
+            var drawOrderMultiplier = 0.001f;
+            go.DrawOrder = (actorLayer.id + 1) * drawOrderMultiplier;
             go.AddComponent(rb);
             Actors.Add(go);
         }
+
+        drawLayers.Sort();
+        Console.WriteLine('h');
     }
-
-    public void DrawTilemap(SpriteBatch spriteBatch)
-
-    {
-        BackgroundTiles.ForEach(tile => { tile.Draw(spriteBatch); });
-        Actors.ForEach(actor => actor.Draw(spriteBatch));
-    }
-
 
     #region Methods
 

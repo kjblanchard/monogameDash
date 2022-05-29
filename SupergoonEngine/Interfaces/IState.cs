@@ -37,7 +37,7 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
         throw new NotImplementedException();
     }
 
-    public int DrawOrder { get; }
+    public float DrawOrder { get; set; }
     public bool Visible { get; }
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;

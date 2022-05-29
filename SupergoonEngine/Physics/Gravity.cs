@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
+using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Physics;
 

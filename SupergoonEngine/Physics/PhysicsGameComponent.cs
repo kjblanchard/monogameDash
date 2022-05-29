@@ -10,4 +10,6 @@ public class PhysicsGameComponent : GameComponent
     }
 
     public Gravity Gravity = new ();
+    
+    
 }

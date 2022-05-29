@@ -1,14 +1,24 @@
-﻿namespace SupergoonDashCrossPlatform.SupergoonEngine.Physics;
+﻿using SupergoonDashCrossPlatform.SupergoonEngine.Components;
+using SupergoonEngine.Tiled;
+
+namespace SupergoonDashCrossPlatform.SupergoonEngine.Physics;
 
 public class Collision
 {
-    #region Configuration
+    private static TiledGameComponent _tiledGameComponent;
+    public Collision(TiledGameComponent tiledGameComponent)
+    {
+        _tiledGameComponent = tiledGameComponent;
 
-    #endregion
+    }
+    public static bool CheckIfCollisionForAllSolidTiles(BoxColliderComponent movingObject)
+    {
+       // _tiledGameComponent.LoadedTmxContent 
+       return true;
 
-    
-
-    #region Methods
-
-    #endregion
+    }
+    public static bool CheckIfCollision(BoxColliderComponent a, BoxColliderComponent b)
+    {
+        return false;
+    }
 }
