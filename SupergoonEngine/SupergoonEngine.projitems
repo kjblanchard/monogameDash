@@ -18,7 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\GameObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GameWorld.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Level.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\LevelGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\LevelStateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\SolidTile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\Tile.cs" />

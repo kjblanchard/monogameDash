@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,39 +12,43 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
 
     #endregion
 
-    
 
     #region Methods
 
     #endregion
 
     public bool IsInitialized { get; set; }
+
     public virtual void Initialize()
     {
-        throw new NotImplementedException();
     }
 
     public virtual void Update(GameTime gameTime)
     {
-        throw new NotImplementedException();
     }
 
     public bool Enabled { get; set; }
     public int UpdateOrder { get; set; }
     public event EventHandler<EventArgs> EnabledChanged;
     public event EventHandler<EventArgs> UpdateOrderChanged;
+
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        throw new NotImplementedException();
     }
 
     public float DrawOrder { get; set; }
     public bool Visible { get; }
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;
+
+    public void AddTag(params int[] tag)
+    {
+        Tags.AddRange(tag);
+    }
+
     public virtual void AddTag(int tag)
     {
-        throw new NotImplementedException();
+        Tags.Add(tag);
     }
 
     bool ITags.RemoveTag(int tag)
@@ -51,15 +56,20 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
         throw new NotImplementedException();
     }
 
-    public bool HasTag(int tag)
-    {
-        throw new NotImplementedException();
-    }
+    public bool HasTag(int tag) => Tags.Contains(tag);
 
     public virtual void RemoveTag(int tag)
     {
         throw new NotImplementedException();
     }
 
-    public List<int> Tags { get; set; }
+    public List<int> Tags { get; set; } = new();
+
+    public virtual void StartState()
+    {
+    }
+
+    public virtual void EndState()
+    {
+    }
 }

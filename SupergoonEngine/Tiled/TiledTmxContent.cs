@@ -136,6 +136,22 @@ public class TiledTmxContent
         Console.WriteLine('h');
     }
 
+    public void Update(GameTime gameTime)
+    {
+        BackgroundTiles.ForEach(tile => tile.Update(gameTime));
+        SolidTiles.ForEach(tile => tile.Update(gameTime));
+        
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        BackgroundTiles.ForEach(tile => tile.Draw(spriteBatch));
+        SolidTiles.ForEach(tile => tile.Draw(spriteBatch));
+        
+    }
+    
+    
+
     #region Methods
 
     #endregion

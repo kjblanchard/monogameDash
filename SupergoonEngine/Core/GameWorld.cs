@@ -13,7 +13,6 @@ public class GameWorld : Game
     private GraphicsDeviceManager _graphics;
     protected SpriteBatch _spriteBatch;
     protected SoundGameComponent _soundGameComponent;
-    protected LevelGameComponent _levelGameComponent;
     protected TiledGameComponent _tiledGameComponent;
     protected GraphicsGameComponent _graphicsGameComponent;
     public PhysicsGameComponent PhysicsGameComponent;
@@ -22,6 +21,9 @@ public class GameWorld : Game
     public static bool moveDown;
     public static bool moveRight;
     public static bool moveLeft;
+    
+    public LevelStateMachine LevelStateMachine => _levelStateMachine;
+    protected LevelStateMachine _levelStateMachine;
 
 
     public GameWorld()
@@ -39,7 +41,8 @@ public class GameWorld : Game
        Camera.Camera.InitializeCamera(GraphicsDevice, _graphicsGameComponent); 
        _graphicsGameComponent.Initialize();
         _soundGameComponent.PlayBgm();
-        _tiledGameComponent.LoadedTmxContent.CreateTileGameObjectsFromContent();
+        // _tiledGameComponent.LoadedTmxContent.CreateTileGameObjectsFromContent();
+        _levelStateMachine = new LevelStateMachine(_tiledGameComponent);
     }
 
     protected override void LoadContent()
@@ -64,11 +67,9 @@ public class GameWorld : Game
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
             moveLeft = true;
 
-        _tiledGameComponent.LoadedTmxContent.BackgroundTiles.ForEach(tile => tile.Update(gameTime));
-        _tiledGameComponent.LoadedTmxContent.SolidTiles.ForEach(tile => tile.Update(gameTime));
-        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Update(gameTime));
+        _levelStateMachine.Update(gameTime);
         
-        Camera.Camera.Update();
+       Camera.Camera.Update();
         base.Update(gameTime);
     }
 
@@ -78,10 +79,7 @@ public class GameWorld : Game
         _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null,
             _graphicsGameComponent.SpriteScale * Camera.Camera.GetCameraTransformMatrix());
 
-        // _spriteBatch.Begin();
-        _tiledGameComponent.LoadedTmxContent.BackgroundTiles.ForEach(tile => tile.Draw(_spriteBatch));
-        _tiledGameComponent.LoadedTmxContent.SolidTiles.ForEach(tile => tile.Draw(_spriteBatch));
-        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Draw(_spriteBatch));
+        _levelStateMachine.Draw(_spriteBatch);
         _spriteBatch.End();
         
         base.Draw(gameTime);
@@ -91,26 +89,36 @@ public class GameWorld : Game
     private void AttachAllGameComponents()
     {
         _soundGameComponent = new SoundGameComponent(this);
-        _levelGameComponent = new LevelGameComponent(this);
         _tiledGameComponent = new TiledGameComponent(this);
         _graphicsGameComponent = new GraphicsGameComponent(this, _graphics, GraphicsDevice);
         PhysicsGameComponent = new PhysicsGameComponent(this);
         
         Components.Add(_tiledGameComponent);
         Components.Add(_soundGameComponent);
-        Components.Add(_levelGameComponent);
         Components.Add(_graphicsGameComponent);
         Components.Add(PhysicsGameComponent);
 
         GameObject._gameWorld = this;
     }
 
-    #region Configuration
+    protected virtual void AddLevels(params Level[] levels)
+    {
+        foreach (var level in levels)
+        {
+            _levelStateMachine.AddLevel(level);
+        }
+        _levelStateMachine.Initialize();
+    }
 
-    #endregion
+    protected void InitializeLevels()
+    {
+        _levelStateMachine.InitializeStates();
+    }
 
+    protected void ChangeLevel(int levelTag)
+    {
+        _levelStateMachine.ChangeState(levelTag);
+    }
+    
 
-    #region Methods
-
-    #endregion
 }

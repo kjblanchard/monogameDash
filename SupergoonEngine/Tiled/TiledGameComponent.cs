@@ -11,21 +11,18 @@ public class TiledGameComponent : GameComponent
 
     public TiledGameComponent(Game game) : base(game)
     {
-        //Load the full tmx file for the level.
-        var map = new TiledMap(game.Content.RootDirectory + "\\tiled\\level1.tmx");
-        
-        LoadedTmxContent = LoadTilesets(map, game);
     }
 
-    private TiledTmxContent LoadTilesets(TiledMap mapToLoadFor, Game game)
+    public TiledTmxContent LoadTilesets(string mapToLoadFor)
     {
-        var content = game.Content;
-        var tilesetLength = mapToLoadFor.Tilesets.Length;
+        var map = new TiledMap($"{Game.Content.RootDirectory}\\tiled\\{mapToLoadFor}.tmx");
+        var content = Game.Content;
+        var tilesetLength = map.Tilesets.Length;
         var tilesets = new TiledTileset[tilesetLength];
         var textures = new Texture2D[tilesetLength];
-        for (int i = 0; i < mapToLoadFor.Tilesets.Length; i++)
+        for (int i = 0; i < map.Tilesets.Length; i++)
         {
-            var tilesetName = mapToLoadFor.Tilesets[i].source;
+            var tilesetName = map.Tilesets[i].source;
             var tilesetFullPath = $"Content\\Tiled\\{tilesetName}";
             var loadedTileset = new TiledTileset(tilesetFullPath);
             var tilesetImageName = loadedTileset.Image.source.Split('.').First();
@@ -36,7 +33,8 @@ public class TiledGameComponent : GameComponent
             tilesets[i] = loadedTileset;
             textures[i] = tilesetImage;
         }
-
-        return new TiledTmxContent(mapToLoadFor, tilesets, textures);
+        LoadedTmxContent = new TiledTmxContent(map, tilesets, textures);
+        LoadedTmxContent.CreateTileGameObjectsFromContent();
+        return LoadedTmxContent;
     }
 }

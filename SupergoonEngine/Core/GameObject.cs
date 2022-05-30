@@ -40,6 +40,11 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
     }
 
     public static void SetGameWorld(GameWorld gameWorld) => _gameWorld = gameWorld;
+    public void AddTag(params int[] tag)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual void AddTag(int tag) => Tags.Add(tag);
     bool ITags.RemoveTag(int tag) => Tags.Remove(tag);
     public bool HasTag(int tag) => Tags.Contains(tag);

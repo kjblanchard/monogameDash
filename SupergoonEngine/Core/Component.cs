@@ -17,6 +17,11 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
         Parent = parent;
     }
 
+    public void AddTag(params int[] tag)
+    {
+        throw new NotImplementedException();
+    }
+
     public void AddTag(int tag)
     {
         Tags.Add(tag);
