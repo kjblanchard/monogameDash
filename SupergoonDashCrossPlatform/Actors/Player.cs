@@ -30,7 +30,7 @@ public class Player : Actor
     {
         var player = new Player("idle", loc, new Vector2(), new Point(32, 32));
         player._boxColliderComponent.Debug = true;
-        player._rigidbodyComponent.GravityEnabled = false;
+        // player._rigidbodyComponent.GravityEnabled = false;
         player._spriteComponent.DrawOrder = 0.7f;
         return player;
         

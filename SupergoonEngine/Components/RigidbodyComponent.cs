@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Physics;
@@ -12,7 +10,10 @@ public class RigidbodyComponent : Component
     public bool GravityEnabled;
     private static Gravity _gravity;
     private BoxColliderComponent _collider;
+    //How fast it is actually moving now.
     public Vector2 _velocity;
+    //How much it is going to start moving (force)
+    public Vector2 _acceleration;
 
     public event BottomCollisionEventArgs BottomCollisionJustStartedEvent;
     public event BottomCollisionEventArgs BottomCollisionEvent;
@@ -91,6 +92,27 @@ public class RigidbodyComponent : Component
         {
             while (yStep >= 1)
             {
+                var tempLocation = Parent._location + offset;
+                tempLocation.Y += 1;
+                bool collision = false;
+                var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
+                tilesToCheck.ForEach(solidTile =>
+                {
+                    if(collision)
+                        return;
+                    var tileCollider =
+                        solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                    var sourceRect = new Rectangle(tempLocation.ToPoint(), _collider._size);
+                    if (sourceRect.Intersects(tileCollider.Bounds))
+                    {
+                        yStep = 0;
+                        collision = true;
+                    }
+
+
+                });
+                if(collision)
+                    return;
                 yStep--;
                 Parent._location.Y++;
             }

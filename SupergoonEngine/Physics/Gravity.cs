@@ -2,16 +2,23 @@
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
+using SupergoonEngine.Tiled;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Physics;
 
 public class Gravity
 {
+    public TiledGameComponent _tiledGameComponent;
     public bool GravityEnabled = true;
     private float gravity = 200;
     private float minYVelocity = 0.01f;
     private float maxYVelocity = 100;
 
+    public Gravity(TiledGameComponent tiledGameComponent)
+    {
+        _tiledGameComponent = tiledGameComponent;
+
+    }
 
     public void ApplyGravity(RigidbodyComponent rigidbodyComponent, GameTime gameTime)
     {

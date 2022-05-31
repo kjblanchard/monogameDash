@@ -15,6 +15,7 @@ public struct EngineTags
         public const int Default = 0;
         public const int RigidBody = 1;
         public const int Sprite = 2;
+        public const int BoxCollider = 3;
         public const int Debug = 99;
     }
 }

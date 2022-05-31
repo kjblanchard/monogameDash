@@ -91,7 +91,7 @@ public class GameWorld : Game
         _soundGameComponent = new SoundGameComponent(this);
         _tiledGameComponent = new TiledGameComponent(this);
         _graphicsGameComponent = new GraphicsGameComponent(this, _graphics, GraphicsDevice);
-        PhysicsGameComponent = new PhysicsGameComponent(this);
+        PhysicsGameComponent = new PhysicsGameComponent(this, _tiledGameComponent);
         
         Components.Add(_tiledGameComponent);
         Components.Add(_soundGameComponent);
