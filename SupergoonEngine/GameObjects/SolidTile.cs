@@ -18,6 +18,7 @@ public class SolidTile : GameObject
         _spriteComponent = new SpriteComponent(sourceTextureRect, texture, this);
         _spriteComponent.DrawOrder = drawOrder;
         _boxColliderComponent = new BoxColliderComponent(this, sourceTextureRect.Size);
+        _boxColliderComponent.Debug = true;
         AddComponent(_spriteComponent,_boxColliderComponent);
         
     }

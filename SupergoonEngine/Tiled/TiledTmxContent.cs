@@ -121,33 +121,39 @@ public class TiledTmxContent
         for (int i = 0; i < actors.Length; i++)
         {
             var potentialActor = actors[i];
-            var go = new GameObject(new Vector2(potentialActor.x, potentialActor.y));
-            var box = new BoxColliderComponent(go, new Point(32, 32));
-            box.Debug = true;
-            go.AddComponent(box);
-            var rb = new RigidbodyComponent(go, box);
-            var drawOrderMultiplier = 0.001f;
-            go.DrawOrder = (actorLayer.id + 1) * drawOrderMultiplier;
-            go.AddComponent(rb);
-            Actors.Add(go);
+            var actorName = potentialActor.name;
+            var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
+            if (newActorFunc == null) continue;
+            var actorLocation = new Vector2(potentialActor.x, potentialActor.y);
+            var actorTags = potentialActor.properties;
+            var newActor = newActorFunc.Invoke(actorLocation,actorTags);
+            Actors.Add(newActor);
+            // var go = new GameObject(new Vector2(potentialActor.x, potentialActor.y));
+            // var box = new BoxColliderComponent(go, new Point(32, 32));
+            // box.Debug = true;
+            // go.AddComponent(box);
+            // var rb = new RigidbodyComponent(go, box);
+            // var drawOrderMultiplier = 0.001f;
+            // go.DrawOrder = (actorLayer.id + 1) * drawOrderMultiplier;
+            // go.AddComponent(rb);
+            // Actors.Add(go);
         }
 
         drawLayers.Sort();
-        Console.WriteLine('h');
     }
 
     public void Update(GameTime gameTime)
     {
         BackgroundTiles.ForEach(tile => tile.Update(gameTime));
         SolidTiles.ForEach(tile => tile.Update(gameTime));
-        
+        Actors.ForEach(actor => actor.Update(gameTime));
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         BackgroundTiles.ForEach(tile => tile.Draw(spriteBatch));
         SolidTiles.ForEach(tile => tile.Draw(spriteBatch));
-        
+        Actors.ForEach(actor => actor.Draw(spriteBatch));
     }
     
     

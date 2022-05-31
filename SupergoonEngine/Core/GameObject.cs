@@ -8,7 +8,7 @@ using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-public class GameObject : ITags, IUpdate, IDraw, IInitialize
+public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadContent
 {
     public T GetComponent<T>(int tag) where T : Component
     {
@@ -67,15 +67,19 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize
     public void DrawDebug(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int borderSize = 2)
     {
         var color = Color.Red;
-        // var debugLayer = EngineTags.ComponentTags.Debug;
         var debugLayer = 1.0f;
         var t = GraphicsGameComponent._debugTexture;
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
-        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize), color); // Right
-        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width , borderSize), color); // Top
-        // spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), color); // Bottom
+    }
+
+    public void BeginRun()
+    {
+    }
+
+    public virtual void LoadContent()
+    {
     }
 }

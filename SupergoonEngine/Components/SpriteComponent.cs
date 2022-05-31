@@ -13,6 +13,12 @@ public class SpriteComponent : Component
     private Point _textureSourceLocation;
     private Point _textureSourceSize;
 
+
+    public SpriteComponent(GameObject parent) : base(parent)
+    {
+
+    }
+    
     public SpriteComponent(Rectangle sourceRect, Texture2D texture, GameObject parent) : base(parent)
     {
         _textureSourceLocation = sourceRect.Location;
@@ -26,6 +32,15 @@ public class SpriteComponent : Component
         UpdateOrder = tag;
         AddTag(tag);
     }
+
+    public void UpdateFromAnimationComponent(Texture2D texture,Point sourceLocation )
+    {
+        _texture = texture;
+        _textureSourceLocation = sourceLocation;
+        _textureSourceSize = new Point(32, 32);
+        _drawDestinationSize = new Point(32, 32);
+    }
+
 
     public override void Update(GameTime gameTime)
     {
