@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Animation;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
+using SupergoonDashCrossPlatform.SupergoonEngine.Input;
 using TiledCS;
 
 namespace SupergoonDashCrossPlatform.Actors;
@@ -41,9 +42,11 @@ public class Player : Actor
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        ticks++;
+        if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
+        {
+            Console.WriteLine("Pressed");
+        }
     }
-    public static int ticks;
 
     //Events
     public void OnJustHitGround()

@@ -26,7 +26,7 @@ public class InputGameComponent : GameComponent
             _previousKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
             _currentMouseState = Mouse.GetState();
-            _currentGamePadStates.CopyTo(_previousGamePadStates, 0);
+            // _currentGamePadStates.CopyTo(_previousGamePadStates, 0);
             // foreach (var _playerController in PlayerControllers)
             // {
             //     _playerController.Update(gameTime);

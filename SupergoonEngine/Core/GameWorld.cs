@@ -17,7 +17,7 @@ public class GameWorld : Game
     protected TiledGameComponent _tiledGameComponent;
     protected GraphicsGameComponent _graphicsGameComponent;
     public PhysicsGameComponent PhysicsGameComponent;
-    public InputGameComponent InputGameComponent;
+    public static InputGameComponent InputGameComponent;
 
     public static bool moveUp;
     public static bool moveDown;
