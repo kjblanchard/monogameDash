@@ -26,8 +26,10 @@ public class GraphicsGameComponent : GameComponent
     public override void Initialize()
     {
         base.Initialize();
-        _windowSize = new Point(1280,760);
-        _worldSize = new Point(640,380);
+        // _windowSize = new Point(1280,960);
+        _windowSize = new Point(1920,1080);
+        // _worldSize = new Point(640,380);
+        _worldSize = new Point(512,288);
         
     _debugTexture = new Texture2D(_graphicsDevice, 1, 1);
     _debugTexture.SetData(new[] { Color.White });

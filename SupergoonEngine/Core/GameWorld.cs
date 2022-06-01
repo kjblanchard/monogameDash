@@ -76,8 +76,8 @@ public class GameWorld : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null,
-            _graphicsGameComponent.SpriteScale * Camera.Camera.GetCameraTransformMatrix());
+        _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+            _graphicsGameComponent.SpriteScale * Camera.Camera.GetCameraTransformMatrix() );
 
         _levelStateMachine.Draw(_spriteBatch);
         _spriteBatch.End();

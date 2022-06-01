@@ -89,6 +89,9 @@ public static  class Camera
     /// <returns></returns>
     public static Matrix GetCameraTransformMatrix()
     {
+        // var matrix = Matrix.CreateScale(
+            // (float) _graphicsDevice.Viewport.Width / _graphicsGameComponent.WorldSize.X,
+            // (float) _graphicsDevice.Viewport.Height / _graphicsGameComponent.WorldSize.Y, 1);
         Matrix.CreateTranslation(ref _location, out var matrix);
         return matrix;
     }
