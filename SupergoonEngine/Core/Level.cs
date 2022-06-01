@@ -24,9 +24,9 @@ public class Level : IState
     public override void Update(GameTime gameTime)
     {
         _tiledGameComponent.LoadedTmxContent.Update(gameTime);
-        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Update(gameTime));
     }
 
+    public static int ticks;
     public bool Enabled { get; }
     public int UpdateOrder { get; }
     public event EventHandler<EventArgs> EnabledChanged;
@@ -36,7 +36,6 @@ public class Level : IState
     
     {
         _tiledGameComponent.LoadedTmxContent.Draw(spriteBatch);
-        _tiledGameComponent.LoadedTmxContent.Actors.ForEach(actor => actor.Draw(spriteBatch));
     }
 
     public int DrawOrder { get; }

@@ -14,7 +14,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Aseprite/idle.aseprite
+#begin Aseprite/player.aseprite
 /importer:AsepriteDocumentImporter
 /processor:AsepriteDocumentProcessor
 /processorParam:SheetType=Packed
@@ -24,7 +24,7 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:Aseprite/idle.aseprite
+/build:Aseprite/player.aseprite
 
 #begin Tiled/Decorations (32x32).png
 /importer:TextureImporter

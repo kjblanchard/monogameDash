@@ -65,11 +65,9 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
 
     public virtual void Initialize()
     {
-        throw new NotImplementedException();
     }
 
     public virtual void LoadContent()
     {
-        throw new NotImplementedException();
     }
 }

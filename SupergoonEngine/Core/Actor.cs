@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.Documents;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
-using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 using TiledCS;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -24,13 +23,7 @@ public class Actor : GameObject
         _rigidbodyComponent = new RigidbodyComponent(this,_boxColliderComponent);
         _asepriteDocument = _gameWorld.Content.Load<AsepriteDocument>($"Aseprite/{asepriteDocString}");
         _animationComponent = new AnimationComponent(this, _spriteComponent, _asepriteDocument);
-        AddComponent(_boxColliderComponent,_rigidbodyComponent, _animationComponent);
-        
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
+        AddComponent(_boxColliderComponent,_rigidbodyComponent, _animationComponent, _spriteComponent);
         
     }
 

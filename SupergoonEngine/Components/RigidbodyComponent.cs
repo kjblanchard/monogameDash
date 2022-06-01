@@ -44,7 +44,10 @@ public class RigidbodyComponent : Component
 
     private void UpdateCollisionsThisFrame()
     {
-        _collisionsLastFrame = _collisionsThisFrame;
+        for (int i = 0; i < _collisionsThisFrame.Length; i++)
+        {
+            _collisionsLastFrame[i] = _collisionsThisFrame[i];
+        }
         for (int i = 0; i < _directionsToCheck; i++)
             _collisionsThisFrame[i] = false;
     }
@@ -59,7 +62,9 @@ public class RigidbodyComponent : Component
     
     private bool CheckIfCollisionJustStarted(int directionInt)
     {
-        return !_collisionsLastFrame[directionInt];
+        if (_collisionsLastFrame[directionInt])
+            return false;
+        return true;
     }
 
     private void ThrowDirectionCollisionEvent(Directions direction, bool collisionJustStarted)
@@ -71,10 +76,10 @@ public class RigidbodyComponent : Component
             case Directions.Right:
                 break;
             case Directions.Down when collisionJustStarted:
-                BottomCollisionJustStartedEvent.Invoke();
+                BottomCollisionJustStartedEvent?.Invoke();
                 break;
             case Directions.Down when !collisionJustStarted:
-                BottomCollisionEvent.Invoke();
+                BottomCollisionEvent?.Invoke();
                 break;
             case Directions.Left:
                 break;
@@ -107,6 +112,7 @@ public class RigidbodyComponent : Component
                     {
                         yStep = 0;
                         collision = true;
+                        CollisionEvent(Directions.Down);
                     }
 
 

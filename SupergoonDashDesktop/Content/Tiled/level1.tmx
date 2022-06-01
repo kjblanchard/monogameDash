@@ -44,7 +44,7 @@
   </layer>
  </group>
  <objectgroup id="7" name="actors">
-  <object id="3" name="player" x="69" y="162.333">
+  <object id="3" name="player" x="72" y="77.333">
    <properties>
     <property name="asepriteName" value="idle"/>
    </properties>
