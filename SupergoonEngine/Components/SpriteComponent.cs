@@ -45,7 +45,7 @@ public class SpriteComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        _drawDestinationLocation = Parent._location.ToPoint() + offset.ToPoint();
+        _drawDestinationLocation = Parent._location.ToPoint() + _offset.ToPoint();
     }
 
     public override void Draw(SpriteBatch spriteBatch)

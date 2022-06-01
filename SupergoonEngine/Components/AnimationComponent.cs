@@ -38,7 +38,7 @@ public class AnimationComponent : Component
             _secondsThisFrame -= _asepriteDocument.Frames[currentFrame].Duration;
             var newFrame = currentFrame + 1;
             if (newFrame >= endingFrame)
-                newFrame = 0;
+                newFrame = _asepriteDocument.Tags[_currentAnimationTag].From;
             currentFrame = newFrame;
             _texturePointToDisplay = new Point(_asepriteDocument.Frames[currentFrame].X,
                 _asepriteDocument.Frames[currentFrame].Y);

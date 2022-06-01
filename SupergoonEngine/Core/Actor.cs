@@ -20,7 +20,7 @@ public class Actor : GameObject
 
         _location = location;
         _spriteComponent = new SpriteComponent(this);
-        _boxColliderComponent = new BoxColliderComponent(this,boxSize);
+        _boxColliderComponent = new BoxColliderComponent(this,boxSize, boxColliderOffset);
         _rigidbodyComponent = new RigidbodyComponent(this,_boxColliderComponent);
         _asepriteDocument = _gameWorld.Content.Load<AsepriteDocument>($"Aseprite/{asepriteDocString}");
         _animationComponent = new AnimationComponent(this, _spriteComponent, _asepriteDocument);

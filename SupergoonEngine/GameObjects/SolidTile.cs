@@ -17,7 +17,8 @@ public class SolidTile : GameObject
         _location = location;
         _spriteComponent = new SpriteComponent(sourceTextureRect, texture, this);
         _spriteComponent.DrawOrder = drawOrder;
-        _boxColliderComponent = new BoxColliderComponent(this, sourceTextureRect.Size);
+        //Use half height for now. TODO this needs to be altered.
+        _boxColliderComponent = new BoxColliderComponent(this, new Point(32,16));
         AddComponent(_spriteComponent,_boxColliderComponent);
         
     }

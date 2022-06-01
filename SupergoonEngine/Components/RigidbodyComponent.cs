@@ -37,7 +37,6 @@ public class RigidbodyComponent : Component
     {
         base.Update(gameTime);
         UpdateCollisionsThisFrame();
-        if (GravityEnabled)
             _gravity.ApplyGravity(this, gameTime);
         ApplyVelocity(gameTime);
     }
@@ -93,12 +92,20 @@ public class RigidbodyComponent : Component
     private void ApplyVelocity(GameTime gameTime)
     {
         var yStep = _velocity.Y * gameTime.ElapsedGameTime.TotalSeconds;
+        var xStep = _velocity.X * gameTime.ElapsedGameTime.TotalSeconds;
+        ApplyYVelocity(gameTime, yStep);
+        ApplyXVelocity(gameTime, xStep);
+    }
+
+    private void ApplyYVelocity(GameTime gameTime, double yStep)
+    {
         if (yStep >= 1)
         {
             while (yStep >= 1)
             {
-                var tempLocation = Parent._location + offset;
-                tempLocation.Y += 1;
+                
+                //Temporarily add 1 to Y and check for collisions
+                Parent._location.Y++;
                 bool collision = false;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
@@ -107,20 +114,19 @@ public class RigidbodyComponent : Component
                         return;
                     var tileCollider =
                         solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
-                    var sourceRect = new Rectangle(tempLocation.ToPoint(), _collider._size);
+                    var sourceRect = _collider.Bounds;
                     if (sourceRect.Intersects(tileCollider.Bounds))
                     {
                         yStep = 0;
                         collision = true;
+                        Parent._location.Y--;
                         CollisionEvent(Directions.Down);
                     }
-
-
                 });
                 if(collision)
                     return;
                 yStep--;
-                Parent._location.Y++;
+                // Parent._location.Y++;
             }
         }
         else if (yStep <= -1)
@@ -128,5 +134,50 @@ public class RigidbodyComponent : Component
             yStep++;
             Parent._location.Y--;
         }
+    }
+
+    private void ApplyXVelocity(GameTime gametime, double xStep)
+    {
+        if (xStep >= 1)
+        {
+            while (xStep >= 1)
+            {
+                // var tempLocation = Parent._location + offset;
+                // tempLocation.X += 1;
+                // bool collision = false;
+                // var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
+                // tilesToCheck.ForEach(solidTile =>
+                // {
+                //     if(collision)
+                //         return;
+                //     var tileCollider =
+                //         solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                //     var sourceRect = new Rectangle(tempLocation.ToPoint(), _collider._size);
+                //     if (sourceRect.Intersects(tileCollider.Bounds))
+                //     {
+                //         xStep = 0;
+                //         collision = true;
+                //         CollisionEvent(Directions.Right);
+                //     }
+                //
+                //
+                // });
+                // if(collision)
+                //     return;
+                xStep--;
+                Parent._location.X++;
+            }
+        }
+        else if (xStep <= -1)
+        {
+            xStep++;
+            Parent._location.X--;
+        }
+        
+    }
+
+    public void AddForce(Vector2 force)
+    {
+        _velocity += force;
     }
 }

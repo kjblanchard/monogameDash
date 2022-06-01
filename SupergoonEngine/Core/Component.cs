@@ -9,12 +9,13 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent
 {
     protected readonly GameObject Parent;
-    protected Vector2 offset;
+    protected Vector2 _offset;
     public bool Debug = false;
 
     public Component(GameObject parent, Vector2 offset = new())
     {
         Parent = parent;
+        _offset = offset;
     }
 
     public void AddTag(params int[] tag)
