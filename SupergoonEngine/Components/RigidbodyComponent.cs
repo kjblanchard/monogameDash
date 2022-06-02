@@ -11,10 +11,10 @@ public class RigidbodyComponent : Component
     public bool GravityEnabled;
     private static Gravity _gravity;
     private BoxColliderComponent _collider;
-    
+
     //How fast it is actually moving now.
-    [ImGuiReadProperty("PlayerVelocity")]
-    public Vector2 _velocity;
+    [ImGuiReadProperty("PlayerVelocity")] public Vector2 _velocity;
+
     //How much it is going to start moving (force)
     public Vector2 _acceleration;
 
@@ -41,7 +41,7 @@ public class RigidbodyComponent : Component
     {
         base.Update(gameTime);
         UpdateCollisionsThisFrame();
-            _gravity.ApplyGravity(this, gameTime);
+        _gravity.ApplyGravity(this, gameTime);
         ApplyVelocity(gameTime);
     }
 
@@ -51,6 +51,7 @@ public class RigidbodyComponent : Component
         {
             _collisionsLastFrame[i] = _collisionsThisFrame[i];
         }
+
         for (int i = 0; i < _directionsToCheck; i++)
             _collisionsThisFrame[i] = false;
     }
@@ -62,7 +63,7 @@ public class RigidbodyComponent : Component
         var collisionJustStarted = CheckIfCollisionJustStarted(directionInt);
         ThrowDirectionCollisionEvent(direction, collisionJustStarted);
     }
-    
+
     private bool CheckIfCollisionJustStarted(int directionInt)
     {
         if (_collisionsLastFrame[directionInt])
@@ -92,7 +93,6 @@ public class RigidbodyComponent : Component
     }
 
 
-
     private void ApplyVelocity(GameTime gameTime)
     {
         var yStep = _velocity.Y * gameTime.ElapsedGameTime.TotalSeconds;
@@ -107,14 +107,13 @@ public class RigidbodyComponent : Component
         {
             while (yStep >= 1)
             {
-                
                 //Temporarily add 1 to Y and check for collisions
                 Parent._location.Y++;
                 bool collision = false;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
                 {
-                    if(collision)
+                    if (collision)
                         return;
                     var tileCollider =
                         solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
@@ -128,7 +127,7 @@ public class RigidbodyComponent : Component
                         CollisionEvent(Directions.Down);
                     }
                 });
-                if(collision)
+                if (collision)
                     return;
                 yStep--;
                 // Parent._location.Y++;
@@ -136,8 +135,11 @@ public class RigidbodyComponent : Component
         }
         else if (yStep <= -1)
         {
-            yStep++;
-            Parent._location.Y--;
+            while (yStep <= -1)
+            {
+                yStep++;
+                Parent._location.Y--;
+            }
         }
     }
 
@@ -175,10 +177,12 @@ public class RigidbodyComponent : Component
         }
         else if (xStep <= -1)
         {
-            xStep++;
-            Parent._location.X--;
+            while (xStep <= -1)
+            {
+                xStep++;
+                Parent._location.X--;
+            }
         }
-        
     }
 
     public void AddForce(Vector2 force)

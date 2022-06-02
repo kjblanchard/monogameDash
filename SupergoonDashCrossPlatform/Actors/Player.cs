@@ -67,10 +67,13 @@ public class Player : Actor
             _rigidbodyComponent.AddForce(movementForce);
         }
 
-        if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A) ||
-            _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.A))
+        if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
         {
             _rigidbodyComponent.AddForce(new Vector2(0, -100));
+        }
+        else if (_playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.A))
+        {
+            _rigidbodyComponent.AddForce(new Vector2(0, -20));
         }
     }
 

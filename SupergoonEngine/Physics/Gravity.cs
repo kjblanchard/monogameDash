@@ -10,12 +10,12 @@ public class Gravity
 {
     public TiledGameComponent _tiledGameComponent;
     public bool GravityEnabled = true;
-    private float gravity = 80;
-    private float friction = 40;
+    private float gravity = 1200;
+    private float friction = 250;
     private float minYVelocity = 0.1f;
-    private float maxYVelocity = 135;
+    private float maxYVelocity = 400;
     private float minXVelocity = 0.1f;
-    private float maxXVelocity = 135;
+    private float maxXVelocity = 200;
 
     public Gravity(TiledGameComponent tiledGameComponent)
     {
