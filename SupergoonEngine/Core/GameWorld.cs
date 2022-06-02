@@ -115,6 +115,7 @@ public class GameWorld : Game
 
         //Set the gameobject static somewhere TODO put this in a better place.
         GameObject._gameWorld = this;
+        Component.ImGuiGameComponent = _imGuiGameComponent;
     }
 
     protected void AddLevels(params Level[] levels)

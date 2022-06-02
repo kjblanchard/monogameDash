@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
@@ -8,8 +9,12 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent
 {
-    protected readonly GameObject Parent;
+    //TODO is this needed here?
+    public static ImGuiGameComponent ImGuiGameComponent;
+    
+    public readonly GameObject Parent;
     protected Vector2 _offset;
+    
     public bool Debug = false;
 
     public Component(GameObject parent, Vector2 offset = new())
@@ -66,6 +71,11 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
 
     public virtual void Initialize()
     {
+        //Handle checking for vec2 debugs.
+        if (Debug)
+        {
+           ImGuiGameComponent.CheckComponentForDebugAttributes(this); 
+        }
     }
 
     public virtual void LoadContent()

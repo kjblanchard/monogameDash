@@ -1,4 +1,5 @@
 ﻿using System;
+using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Physics;
@@ -10,7 +11,9 @@ public class RigidbodyComponent : Component
     public bool GravityEnabled;
     private static Gravity _gravity;
     private BoxColliderComponent _collider;
+    
     //How fast it is actually moving now.
+    [ImGuiReadProperty("PlayerVelocity")]
     public Vector2 _velocity;
     //How much it is going to start moving (force)
     public Vector2 _acceleration;
@@ -31,6 +34,7 @@ public class RigidbodyComponent : Component
         UpdateOrder = EngineTags.ComponentTags.RigidBody;
         _gravity ??= GameObject._gameWorld.PhysicsGameComponent.Gravity;
         _collider = collider;
+        Debug = true;
     }
 
     public override void Update(GameTime gameTime)

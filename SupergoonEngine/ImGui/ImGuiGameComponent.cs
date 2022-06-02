@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 using Num = System.Numerics;
 
@@ -14,8 +18,9 @@ public class ImGuiGameComponent : GameComponent, IDraw
     private IntPtr _imGuiTexture;
     private ImGuiRenderer _imGuiRenderer;
     private GraphicsDevice _graphicsDevice;
-    
-    
+    private List<Vector2ImguiDisplay> Vector2Watches = new();
+
+
     //ImGui Layout stuff from demo
     // Direct port of the example at https://github.com/ocornut/imgui/blob/master/examples/sdl_opengl2_example/main.cpp
     private float f = 0.0f;
@@ -95,28 +100,29 @@ public class ImGuiGameComponent : GameComponent, IDraw
         // Tip: if we don't call ImGui.Begin()/ImGui.End() the widgets appears in a window automatically called "Debug"
         {
             ImGui.Text("Hello, world!");
-            ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
-            ImGui.ColorEdit3("clear color", ref clear_color);
+            DrawAllWatchedVector2();
+            // ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
+            // ImGui.ColorEdit3("clear color", ref clear_color);
             if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
-            if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
+            // if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
             ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)",
                 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
 
-            ImGui.InputText("Text input", _textBuffer, 100);
-
-            ImGui.Text("Texture sample");
-            ImGui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One,
-                Num.Vector4.One); // Here, the previously loaded texture is used
+            // ImGui.InputText("Text input", _textBuffer, 100);
+            //
+            // ImGui.Text("Texture sample");
+            // ImGui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One,
+            //     Num.Vector4.One); // Here, the previously loaded texture is used
         }
 
         // 2. Show another simple window, this time using an explicit Begin/End pair
-        if (show_another_window)
-        {
-            ImGui.SetNextWindowSize(new Num.Vector2(200, 100), ImGuiCond.FirstUseEver);
-            ImGui.Begin("Another Window", ref show_another_window);
-            ImGui.Text("Hello");
-            ImGui.End();
-        }
+        // if (show_another_window)
+        // {
+        //     ImGui.SetNextWindowSize(new Num.Vector2(200, 100), ImGuiCond.FirstUseEver);
+        //     ImGui.Begin("Another Window", ref show_another_window);
+        //     ImGui.Text("Hello");
+        //     ImGui.End();
+        // }
 
         // 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
         if (show_test_window)
@@ -129,6 +135,56 @@ public class ImGuiGameComponent : GameComponent, IDraw
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(_imguiRenderTarget, Vector2.Zero, new Rectangle(0, 0, 1920, 1080), Color.White);
+    }
+
+    private void DrawAllWatchedVector2()
+    {
+        Vector2Watches.ForEach(attribute =>
+        {
+            ImGui.Text(attribute.Name);
+            ImGui.Text($"X: {attribute.GetValue.X} Y: {attribute.GetValue.Y}");
+            
+        });
+    }
+
+    public void CheckComponentForDebugAttributes(Component component)
+    {
+        var type = component.GetType();
+        var fields = type.GetFields();
+        
+        foreach (var field in fields)
+        {
+            var customAttributes = field.GetCustomAttributes();
+            foreach (var customAttribute in customAttributes)
+            {
+                if (customAttribute.GetType() == typeof(ImGuiReadPropertyAttribute))
+                {
+                    var fieldType = field.FieldType;
+                    if(fieldType == typeof(Vector2))
+                    {
+                        Console.WriteLine("SUPERHIT");
+                        var vector2Boi = new Vector2ImguiDisplay
+                            { FieldPtr = field, Name = $"{component.Parent}.{field.Name}", Owner = component };
+                        Vector2Watches.Add(vector2Boi);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void AddVector2(ImGuiReadPropertyAttribute attr)
+    {
+        
+    }
+
+    public class Vector2ImguiDisplay
+    {
+        public string Name;
+        public FieldInfo FieldPtr;
+        public Component Owner;
+        public Vector2 GetValue => (Vector2)FieldPtr.GetValue(Owner);
+
     }
 
     public float DrawOrder { get; set; }

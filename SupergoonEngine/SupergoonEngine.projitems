@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\DrawVertDeclarations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiReadAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputGameComponent.cs" />
