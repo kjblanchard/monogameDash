@@ -120,6 +120,7 @@ public class RigidbodyComponent : Component
                         yStep = 0;
                         collision = true;
                         Parent._location.Y--;
+                        _velocity.Y = 0;
                         CollisionEvent(Directions.Down);
                     }
                 });

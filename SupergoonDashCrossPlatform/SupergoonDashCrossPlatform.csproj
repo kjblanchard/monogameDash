@@ -4,8 +4,10 @@
         <Configurations>Debug;Release;Desktop</Configurations>
         <Platforms>AnyCPU</Platforms>
         <LangVersion>10</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="ImGui.NET" Version="1.87.3" />
         <PackageReference Include="MonoGame.Aseprite" Version="2.0.5" />
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">
             <PrivateAssets>All</PrivateAssets>

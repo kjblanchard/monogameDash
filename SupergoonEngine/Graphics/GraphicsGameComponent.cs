@@ -49,6 +49,7 @@ public class GraphicsGameComponent : GameComponent
         _graphics.PreferredBackBufferWidth = screenSize.X;
         _graphics.PreferredBackBufferHeight = screenSize.Y;
         _graphics.ApplyChanges();
+        _graphics.PreferMultiSampling = true;
         _graphicsDevice.Viewport = CalculateViewport(screenSize);
         _spriteScale = Matrix.CreateScale(
             (float)_graphicsDevice.Viewport.Width / _worldSize.X,

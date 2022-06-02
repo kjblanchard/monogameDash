@@ -29,6 +29,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\SolidTile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\DrawVertDeclarations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\PlayerController.cs" />
