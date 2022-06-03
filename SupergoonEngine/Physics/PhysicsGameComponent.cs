@@ -13,6 +13,8 @@ public class PhysicsGameComponent : GameComponent
         Gravity = new Gravity(_tiledGameComponent);
     }
 
-
-
+    public override void Initialize()
+    {
+        Gravity.Initialize();
+    }
 }

@@ -26,8 +26,10 @@ public class RigidbodyComponent : Component
     private static readonly int _directionsToCheck = Enum.GetNames(typeof(Directions)).Length;
     private bool[] _collisionsLastFrame = new bool[_directionsToCheck];
     private bool[] _collisionsThisFrame = new bool[_directionsToCheck];
+    [ImGuiWrite(typeof(float), true, "Jump height", Min = 0, Max = 500)]
+    private float _jumpHeight;
 
-    public RigidbodyComponent(GameObject parent, BoxColliderComponent collider, bool gravityEnabled = true) : base(
+    public RigidbodyComponent(GameObject parent, BoxColliderComponent collider, bool gravityEnabled = true, float jumpHeight = 100) : base(
         parent, new Vector2())
     {
         GravityEnabled = gravityEnabled;
@@ -35,6 +37,7 @@ public class RigidbodyComponent : Component
         _gravity ??= GameObject._gameWorld.PhysicsGameComponent.Gravity;
         _collider = collider;
         Debug = true;
+        _jumpHeight = jumpHeight;
     }
 
     public override void Update(GameTime gameTime)
@@ -185,8 +188,15 @@ public class RigidbodyComponent : Component
         }
     }
 
+    public void Jump()
+    {
+        _velocity.Y = -_jumpHeight;
+
+    }
+
     public void AddForce(Vector2 force)
     {
         _velocity += force;
     }
+
 }

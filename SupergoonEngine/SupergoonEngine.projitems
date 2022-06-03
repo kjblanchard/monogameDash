@@ -29,14 +29,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\SolidTile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameObjects\Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\Attributes\ImGuiReadAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui\Attributes\ImGuiWriteAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\DrawVertDeclarations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiGameComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiReadAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImGui\ImGuiRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\PlayerController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IBeginRun.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDebug.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDraw.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IInitialize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ILoadContent.cs" />

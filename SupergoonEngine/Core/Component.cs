@@ -75,6 +75,7 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
         if (Debug)
         {
            ImGuiGameComponent.CheckComponentForDebugAttributes(this); 
+           ImGuiGameComponent.CheckObjectForDebugAttributes(this);
         }
     }
 

@@ -1,3 +1,4 @@
+using System.ComponentModel.Design.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -7,6 +8,28 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Components;
 public class SpriteComponent : Component
 {
     public static GameWorld _gameWorld;
+
+    public bool Mirror
+    {
+        set
+        {
+            switch (value)
+            {
+                case true:
+                    DrawSpriteEffect = SpriteEffects.FlipHorizontally;
+                    break;
+                case false:
+                    DrawSpriteEffect = SpriteEffects.None;
+                    break;
+                
+            }
+        }
+    }
+    
+    
+
+    private SpriteEffects DrawSpriteEffect = SpriteEffects.None;
+
     private Texture2D _texture;
     private Point _drawDestinationLocation;
     private Point _drawDestinationSize;
@@ -55,6 +78,6 @@ public class SpriteComponent : Component
             new Rectangle(_drawDestinationLocation, _drawDestinationSize),
             new Rectangle(_textureSourceLocation, _textureSourceSize),
             Color.White,
-           0.0f,new Vector2(),SpriteEffects.None,DrawOrder);
+           0.0f,new Vector2(),DrawSpriteEffect,DrawOrder);
     }
 }

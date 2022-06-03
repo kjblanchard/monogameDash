@@ -1,24 +1,33 @@
 ﻿using System.Collections.Generic;
+using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
+using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 using SupergoonEngine.Tiled;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Physics;
 
-public class Gravity
+public class Gravity : IDebug, IInitialize
 {
     public TiledGameComponent _tiledGameComponent;
     public bool GravityEnabled = true;
-    private float gravity = 1200;
-    private float friction = 250;
+    [ImGuiWrite(typeof(float),true, "Gravity", Min = 0, Max = 2000)]
+    private float gravity = 550;
+    [ImGuiWrite(typeof(float),true, "Friction", Min = 0, Max = 1000)]
+    private float friction = 280;
+    [ImGuiWrite(typeof(float),true, "Min Y velocity", Min = 0, Max = 1)]
     private float minYVelocity = 0.1f;
+    [ImGuiWrite(typeof(float),true, "max Y velocity", Min = 0, Max = 1)]
     private float maxYVelocity = 400;
+    [ImGuiWrite(typeof(float),true, "Max x velocity", Min = 0, Max = 1)]
     private float minXVelocity = 0.1f;
+    [ImGuiWrite(typeof(float),true, "Max x velocity", Min = 0, Max = 1)]
     private float maxXVelocity = 200;
 
     public Gravity(TiledGameComponent tiledGameComponent)
     {
+        Debug = true;
         _tiledGameComponent = tiledGameComponent;
     }
 
@@ -80,5 +89,20 @@ public class Gravity
         }
 
         rigidbodyComponent._velocity.Y = (float)step;
+    }
+
+    public bool Debug { get; set; }
+    public void SendAttributesToDebugger(object parent)
+    {
+        if (Debug)
+        {
+            ImGuiGameComponent.Instance.CheckObjectForDebugAttributes(parent);
+        }
+    }
+
+    public bool IsInitialized { get; set; }
+    public void Initialize()
+    {
+        SendAttributesToDebugger(this);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
@@ -8,7 +9,7 @@ using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadContent
+public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadContent, IDebug
 {
     public T GetComponent<T>(int tag) where T : Component
     {
@@ -61,7 +62,11 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;
     public bool IsInitialized { get; set; }
-    public virtual void Initialize() => _components.ForEach(comp => comp.Initialize());
+    public virtual void Initialize()
+    {
+        _components.ForEach(comp => comp.Initialize());
+        SendAttributesToDebugger(this);
+    }
     
     //TODO get a texture differently, probably don't do it like this.
     public void DrawDebug(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int borderSize = 2)
@@ -81,5 +86,15 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
 
     public virtual void LoadContent()
     {
+    }
+
+    public bool Debug { get; set; }
+    public void SendAttributesToDebugger(object parent)
+    {
+        //Handle checking for vec2 debugs.
+        if (Debug)
+        {
+           ImGuiGameComponent.Instance.CheckObjectForDebugAttributes(this);
+        }
     }
 }

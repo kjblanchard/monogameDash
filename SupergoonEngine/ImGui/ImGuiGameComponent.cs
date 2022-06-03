@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FMOD;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -12,6 +14,8 @@ namespace ImGuiNET.SampleProgram.XNA;
 
 public class ImGuiGameComponent : GameComponent, IDraw
 {
+
+    public static ImGuiGameComponent Instance;
     //ImGUI
     private RenderTarget2D _imguiRenderTarget;
     private Texture2D _xnaTexture;
@@ -19,6 +23,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
     private ImGuiRenderer _imGuiRenderer;
     private GraphicsDevice _graphicsDevice;
     private List<Vector2ImguiDisplay> Vector2Watches = new();
+    private List<FloatImguiWriteDisplay> FloatWrites = new();
 
 
     //ImGui Layout stuff from demo
@@ -33,6 +38,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
     public ImGuiGameComponent(Game game, GraphicsDevice graphicsDevice) : base(game)
     {
         _graphicsDevice = graphicsDevice;
+        Instance = this;
     }
 
     public override void Initialize()
@@ -101,6 +107,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
         {
             ImGui.Text("Hello, world!");
             DrawAllWatchedVector2();
+            DrawAllWatchedFloats();
             // ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
             // ImGui.ColorEdit3("clear color", ref clear_color);
             if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
@@ -147,6 +154,42 @@ public class ImGuiGameComponent : GameComponent, IDraw
         });
     }
 
+    private void DrawAllWatchedFloats()
+    {
+        FloatWrites.ForEach(item =>
+        {
+            ImGui.Text(item.Name);
+            ImGui.Text(item.GetValue.ToString());
+
+            ImGui.SliderFloat($"{item.Name} : {item.GetValue.ToString()}",
+                 ref item.Value , item.Min,item.Max);
+            ImGui.SameLine();
+            if(ImGui.Button($"{item.Name} Update"))
+                item.Update();
+        });
+    }
+
+    public void CheckObjectForDebugAttributes(Object obj)
+    {
+        var objectType = obj.GetType();
+        //Get the properties and fieds with custom attributes.
+       var allFields =  objectType.GetRuntimeFields();
+       foreach (var fieldInfo in allFields)
+       {
+           var writeAttribute = fieldInfo.GetCustomAttribute<ImGuiWriteAttribute>();
+           if (writeAttribute != null)
+           {
+              HandleWriteAttributeDisplay(fieldInfo,obj,writeAttribute); 
+               
+           }
+
+       }
+        
+        
+
+
+    }
+
     public void CheckComponentForDebugAttributes(Component component)
     {
         var type = component.GetType();
@@ -176,6 +219,46 @@ public class ImGuiGameComponent : GameComponent, IDraw
     public void AddVector2(ImGuiReadPropertyAttribute attr)
     {
         
+    }
+
+    private void HandleWriteAttributeDisplay(FieldInfo Data, object Owner, ImGuiWriteAttribute attributeData)
+    {
+        if (attributeData.VariableType == typeof(float))
+        {
+            var floatImgui = new FloatImguiWriteDisplay(attributeData.DisplayName, Data, Owner, attributeData.Min,
+                attributeData.Max);
+            FloatWrites.Add(floatImgui);
+        }
+        
+    }
+    
+
+    public class FloatImguiWriteDisplay
+    {
+        public string Name;
+        public FieldInfo FieldPtr;
+        public object Owner;
+        public float Value;
+        public float Min;
+        public float Max;
+
+        public FloatImguiWriteDisplay(string name, FieldInfo fieldPtr, object owner, float min, float max )
+        {
+            Name = name;
+            FieldPtr = fieldPtr;
+            Owner = owner;
+            Min = min;
+            Max = max;
+            Value = GetValue;
+        }
+        public void Update()
+        {
+            SetValue(Value);
+        }
+        public float GetValue => (float)FieldPtr.GetValue(Owner);
+        public void SetValue(object value) => FieldPtr.SetValue(Owner,value);
+
+
     }
 
     public class Vector2ImguiDisplay
