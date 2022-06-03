@@ -21,6 +21,11 @@ public class Player : Actor
     [ImGuiWrite(typeof(float), true, "Jump Addition", Min = 0, Max = 100)]
     private float jumpAddition = 10;
 
+    [ImGuiWrite(typeof(float), true, "Jump Length", Min = 0, Max = 5)]
+    private float _jumpLengthMax = 0.245f;
+
+    private float _jumpLength;
+
     public Player(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(),
         Point boxSize = new Point()) : base(asepriteDocString, location, boxColliderOffset, boxSize)
     {
@@ -85,7 +90,11 @@ public class Player : Actor
         }
         else if (_playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.A))
         {
-            _rigidbodyComponent.AddForce(new Vector2(0, -jumpAddition));
+            if (_jumpLength <= _jumpLengthMax)
+            {
+                _rigidbodyComponent.AddForce(new Vector2(0, -jumpAddition));
+                _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
         }
     }
 
@@ -93,6 +102,13 @@ public class Player : Actor
     public void OnJustHitGround()
     {
         isFalling = false;
+    }
+
+    public override void Jump()
+    {
+        base.Jump();
+        _animationComponent.ChangeAnimation(JumpingAnimString);
+        _jumpLength = 0;
     }
 
     //Animations
@@ -106,6 +122,7 @@ public class Player : Actor
         var idleAnimation = new AnimationProperties(IdleAnimString);
         var fallingAnimation = new AnimationProperties(FallingAnimString, false);
         var runningAnimation = new AnimationProperties(RunningAnimString);
+        var jumpingAnimation = new AnimationProperties(JumpingAnimString, false);
         //Create and add the transitions
 
         //Idle
@@ -115,6 +132,11 @@ public class Player : Actor
             new AnimationTransition(RunningAnimString, RunningToIdle);
         idleAnimation.Transitions.Add(idleToFallingTransition);
         idleAnimation.Transitions.Add(idleToRunTransition);
+        
+        //Jumping
+        var jumpingToFallingTransition =
+            new AnimationTransition(FallingAnimString, () => _playerControllerComponent.PlayerController.IsButtonReleased(ControllerButtons.A) || _jumpLength >= _jumpLengthMax);
+        jumpingAnimation.Transitions.Add(jumpingToFallingTransition);
 
         //Falling
         var fallingToIdleTransition = new AnimationTransition(IdleAnimString, () => !isFalling);
@@ -129,7 +151,7 @@ public class Player : Actor
 
 
         //Add the animations to the animation component.
-        _animationComponent.AddAnimationTransition(idleAnimation, fallingAnimation, runningAnimation);
+        _animationComponent.AddAnimationTransition(idleAnimation, fallingAnimation, runningAnimation, jumpingAnimation);
     }
 
     public bool RunningToIdle()

@@ -28,6 +28,7 @@ public class RigidbodyComponent : Component
     private bool[] _collisionsThisFrame = new bool[_directionsToCheck];
     [ImGuiWrite(typeof(float), true, "Jump height", Min = 0, Max = 500)]
     private float _jumpHeight;
+    
 
     public RigidbodyComponent(GameObject parent, BoxColliderComponent collider, bool gravityEnabled = true, float jumpHeight = 100) : base(
         parent, new Vector2())

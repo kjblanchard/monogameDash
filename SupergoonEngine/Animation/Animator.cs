@@ -24,6 +24,13 @@ public class Animator : IUpdate
         Animations.AddRange(transition);
     }
 
+    public void ChangeAnimation(string animationTag)
+    {
+        CurrentAnimationTag = animationTag;
+        AnimationTransitionEvent.Invoke();
+        CurrentAnimation = Animations.FirstOrDefault(anim => anim.Name == animationTag);
+    }
+
     public void Update(GameTime gameTime)
     {
         var transitionMadeThisUpdate = false;

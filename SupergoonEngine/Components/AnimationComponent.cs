@@ -28,6 +28,11 @@ public class AnimationComponent : Component
         _animator.AnimationTransitionEvent += OnAnimationChange;
     }
 
+    public void ChangeAnimation(string animTag)
+    {
+        _animator.ChangeAnimation(animTag);
+    }
+
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
