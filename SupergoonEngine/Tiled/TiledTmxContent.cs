@@ -74,10 +74,6 @@ public class TiledTmxContent
 
                 //We need to subtract The amount of tiles prior to this.
                 var tileFrame = gid - TileMap.Tilesets[drawTilesetNum].firstgid;
-
-                var currentTile =
-                    TileMap.GetTiledTile(TileMap.Tilesets[drawTilesetNum], Tilesets[drawTilesetNum], gid);
-
                 int column = tileFrame % Tilesets[drawTilesetNum].Columns;
                 int row = (int)Math.Floor((double)tileFrame / (double)Tilesets[drawTilesetNum].Columns);
                 float x = (j % TileMap.Width) * TileMap.TileWidth;
@@ -93,10 +89,38 @@ public class TiledTmxContent
                 var drawOrder = (i + 1) * drawOrderMultiplier;
                 if (layer.name.ToLower().StartsWith("solid"))
                 {
+                    var tileDefinitions = Tilesets[drawTilesetNum].Tiles;
+                    TiledObject tileDefFound = null;
+                    foreach (var tileDefinition in tileDefinitions)
+                    {
+                        if (tileDefinition.id == tileFrame)
+                            tileDefFound = tileDefinition.objects[0];
+                    }
+
+                    var collisionAreaProperty = tileDefFound;
+                    var boxSize = new Point();
+                    var offset = new Vector2();
+                    
+                    //Check for a property for the tile, if there is one, use the bounding box created in tiled, if not, use the tilesize
+                    if (collisionAreaProperty != null)
+                    {
+                        boxSize = new Point((int)collisionAreaProperty.width, (int)collisionAreaProperty.height);
+                        offset.X = collisionAreaProperty.x;
+                        offset.Y = collisionAreaProperty.y;
+
+                    }
+                    else
+                    {
+                        boxSize.X = boxSize.Y = Tilesets[drawTilesetNum].TileHeight;
+                        
+                    }
+                        
+                    
                     var solidTile = new SolidTile(
                         new Vector2(x, y),
                         tilesetRec,
-                        TilesetTextures[drawTilesetNum],drawOrder
+                        TilesetTextures[drawTilesetNum],drawOrder,
+                        boxSize,offset
                         );
                     // drawLayers.Add(solidTile.DrawOrder);
                     SolidTiles.Add(solidTile);
