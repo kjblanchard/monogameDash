@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 
@@ -21,7 +22,12 @@ public class BoxColliderComponent : Component
     {
         base.Draw(spriteBatch);
         if (Debug)
+        {
             // Parent.DrawDebug(spriteBatch, new Rectangle(Parent._location.ToPoint(), _size));
-            Parent.DrawDebug(spriteBatch, Bounds, 1);
+            var cameraOffsetBounds = CameraGameComponent.MainCamera.CalculateCameraOffset(Bounds.Location.ToVector2());
+            var newRect = new Rectangle(cameraOffsetBounds.ToPoint(), Bounds.Size);
+            // Parent.DrawDebug(spriteBatch, Bounds, 1);
+            Parent.DrawDebug(spriteBatch, newRect, 1);
+        }
     }
 }

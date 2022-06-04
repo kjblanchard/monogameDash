@@ -4,6 +4,7 @@ using System.Linq;
 using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
@@ -74,7 +75,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
         var color = Color.Red;
         var debugLayer = 1.0f;
         var t = GraphicsGameComponent._debugTexture;
-        spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
+        spriteBatch.Draw(t, new Rectangle( rectangleToDraw.Left, rectangleToDraw.Top, borderSize, rectangleToDraw.Height),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Right, rectangleToDraw.Top, borderSize, rectangleToDraw.Height + borderSize),null, color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left
         spriteBatch.Draw(t, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom, rectangleToDraw.Width, borderSize), null,color,0f,new Vector2(),SpriteEffects.None,debugLayer); // Left

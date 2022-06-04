@@ -15,7 +15,7 @@ public class Gravity : IDebug, IInitialize
     [ImGuiWrite(typeof(float),true, "Gravity", Min = 0, Max = 2000)]
     private float gravity = 550;
     [ImGuiWrite(typeof(float),true, "Friction", Min = 0, Max = 1000)]
-    private float friction = 200;
+    private float friction = 150;
     [ImGuiWrite(typeof(float),true, "Min Y velocity", Min = 0, Max = 1)]
     private float minYVelocity = 0.1f;
     [ImGuiWrite(typeof(float),true, "max Y velocity", Min = 0, Max = 1)]

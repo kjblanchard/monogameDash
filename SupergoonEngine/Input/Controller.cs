@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Input;
@@ -64,7 +65,7 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Input;
         }
         public static Vector2 MouseScreenToWorldResolution()
         {
-            return Camera.Camera.ScreenToWorldResolution(_input.MousePosition());
+            return CameraGameComponent.MainCamera.ScreenToWorldResolution(_input.MousePosition());
         }
 
         public static RectangleF MouseBounds()
@@ -77,7 +78,7 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Input;
         public static Vector2 MouseScreenCameraPosition()
         {
 
-            return Camera.Camera.ScreenToWorldAndCamOffset(_input.MousePosition());
+            return CameraGameComponent.MainCamera.ScreenToWorldAndCamOffset(_input.MousePosition());
          }
 
         public static bool WasThereMouseMovement()

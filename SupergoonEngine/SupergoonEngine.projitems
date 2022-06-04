@@ -12,9 +12,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationTransition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animation\Animator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\CameraBoom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\CameraGameComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\AnimationComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\BoxColliderComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\CameraComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\PlayerControllerComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\RigidbodyComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\SpriteComponent.cs" />

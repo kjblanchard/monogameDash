@@ -2,6 +2,7 @@
 using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Animation;
+using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Input;
 using TiledCS;
@@ -26,6 +27,8 @@ public class Player : Actor
 
     private float _jumpLength;
 
+    private CameraComponent _cameraComponent;
+
     public Player(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(),
         Point boxSize = new Point()) : base(asepriteDocString, location, boxColliderOffset, boxSize)
     {
@@ -42,11 +45,14 @@ public class Player : Actor
 
     public override void Initialize()
     {
-        base.Initialize();
+        _cameraComponent = new CameraComponent(this);
+        // _cameraComponent.Initialize();
+        AddComponent(_cameraComponent);
         _rigidbodyComponent.GravityEnabled = true;
         _spriteComponent.DrawOrder = 0.7f;
         AddAnimationTransitions();
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
+        base.Initialize();
     }
 
     public override void Update(GameTime gameTime)

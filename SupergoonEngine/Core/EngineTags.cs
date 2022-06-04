@@ -17,6 +17,13 @@ public struct EngineTags
         public const int RigidBody = 2;
         public const int BoxCollider = 3;
         public const int Sprite = 5;
+        public const int Camera = 6;
         public const int Debug = 99;
+    }
+
+    public struct GameTags
+    {
+        public const int Default = 0;
+        public const int MainCamera = 1;
     }
 }

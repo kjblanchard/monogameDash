@@ -1,15 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SupergoonDashCrossPlatform.SupergoonEngine.Core;
-using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 
-namespace SupergoonDashCrossPlatform.SupergoonEngine.Camera;
+namespace SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 
-public static  class Camera
+public class Camera
 {
-    private static Vector3 _location;
-    private static GraphicsGameComponent _graphicsGameComponent;
-    private static GraphicsDevice _graphicsDevice;
+    public Vector3 Location = Vector3.Zero;
+    private static CameraGameComponent _cameraGameComponent;
 
 
     /// <summary>
@@ -17,45 +13,25 @@ public static  class Camera
     /// </summary>
     /// <param name="resolutionHelper">The resolution help that it works with</param>
     /// <param name="graphicsDevice">The graphics device that is used for calculations</param>
-    static Camera()
+    public Camera(CameraGameComponent cameraGameComponent)
     {
-        _location = Vector3.Zero;
+        _cameraGameComponent = cameraGameComponent;
     }
 
-    public static void InitializeCamera(GraphicsDevice graphicsDevice, GraphicsGameComponent graphicsGameComponent)
-    {
-        _graphicsDevice = graphicsDevice;
-        _graphicsGameComponent = graphicsGameComponent;
-    }
+    public Point GetWorldSize() => _cameraGameComponent.GetWorldSize();
 
-    //TODO this is here for testing moving camera, it can be removed later when testing is not needed
-    private static void MoveCamera()
-    {
-        var speed = 13;
-        if (GameWorld.moveLeft)
-            _location.X += speed;
-        if (GameWorld.moveRight)
-            _location.X -= speed;
-        if (GameWorld.moveUp)
-            _location.Y -= speed;
-        if (GameWorld.moveDown)
-            _location.Y += speed;
-    }
-
-    public static void Update()
-    {
-        MoveCamera();
-    }
+    public Point GetWindowSize() => _cameraGameComponent.GetWindowSize();
+    
 
     /// <summary>
     /// Returns the resolution world coordinates for the current screen position, probably used for UI
     /// </summary>
     /// <param name="screenPosition">The current position on the screen</param>
     /// <returns>The position in the world</returns>
-    public static Vector2 ScreenToWorldResolution(Vector2 screenPosition)
+    public Vector2 ScreenToWorldResolution(Vector2 screenPosition)
     {
-        var viewportTopLeft = new Vector2(_graphicsDevice.Viewport.X, _graphicsDevice.Viewport.Y);
-        var screenToWorldScale = _graphicsGameComponent.WorldSize.X / (float)_graphicsDevice.Viewport.Width;
+        var viewportTopLeft = _cameraGameComponent.GetTopLeftOfViewport();
+        var screenToWorldScale = _cameraGameComponent.GetScreenToWorldScale();
         return (screenPosition - viewportTopLeft) * screenToWorldScale;
     }
 
@@ -64,10 +40,10 @@ public static  class Camera
     /// </summary>
     /// <param name="currentLocation">The current location of the object in the game world</param>
     /// <returns>The current location of the object in the gameworld in regards to the camera</returns>
-    public static Vector2 CalculateCameraOffset(Vector2 currentLocation)
+    public Vector2 CalculateCameraOffset(Vector2 currentLocation)
     {
-        currentLocation.X -= _location.X;
-        currentLocation.Y -= _location.Y;
+        currentLocation.X -= Location.X;
+        currentLocation.Y -= Location.Y;
         return currentLocation;
     }
 
@@ -76,7 +52,7 @@ public static  class Camera
     /// </summary>
     /// <param name="currentScreenLocation">The current screen location</param>
     /// <returns></returns>
-    public static Vector2 ScreenToWorldAndCamOffset(Vector2 currentScreenLocation)
+    public Vector2 ScreenToWorldAndCamOffset(Vector2 currentScreenLocation)
     {
         var locAndCamOffset = CalculateCameraOffset(currentScreenLocation);
 
@@ -87,12 +63,14 @@ public static  class Camera
     /// Gets the transform matrix of the CameraTransform matrix
     /// </summary>
     /// <returns></returns>
-    public static Matrix GetCameraTransformMatrix()
+    public Matrix GetCameraTransformMatrix()
     {
         // var matrix = Matrix.CreateScale(
             // (float) _graphicsDevice.Viewport.Width / _graphicsGameComponent.WorldSize.X,
             // (float) _graphicsDevice.Viewport.Height / _graphicsGameComponent.WorldSize.Y, 1);
-        Matrix.CreateTranslation(ref _location, out var matrix);
+        Matrix.CreateTranslation(ref Location, out var matrix);
         return matrix;
     }
+
+    public int LevelWidth => _cameraGameComponent.GetCurrentLevelWidth();
 }

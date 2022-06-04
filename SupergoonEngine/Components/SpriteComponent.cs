@@ -1,6 +1,7 @@
 using System.ComponentModel.Design.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Components;
@@ -68,7 +69,9 @@ public class SpriteComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        _drawDestinationLocation = Parent._location.ToPoint() + _offset.ToPoint();
+        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent._location + _offset).ToPoint();
+        // _drawDestinationLocation = Parent._location.ToPoint() + _offset.ToPoint();
+        
     }
 
     public override void Draw(SpriteBatch spriteBatch)

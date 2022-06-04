@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SupergoonDashCrossPlatform.Sound;
+using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Input;
 using SupergoonDashCrossPlatform.SupergoonEngine.Physics;
@@ -20,15 +21,13 @@ public class GameWorld : Game
     protected SoundGameComponent _soundGameComponent;
     protected TiledGameComponent _tiledGameComponent;
     protected GraphicsGameComponent _graphicsGameComponent;
+    protected CameraGameComponent _cameraGameComponent;
     public PhysicsGameComponent PhysicsGameComponent;
     public static InputGameComponent InputGameComponent;
     public ImGuiGameComponent _imGuiGameComponent;
+    
 
 
-    public static bool moveUp;
-    public static bool moveDown;
-    public static bool moveRight;
-    public static bool moveLeft;
 
     public LevelStateMachine LevelStateMachine => _levelStateMachine;
     protected LevelStateMachine _levelStateMachine;
@@ -45,7 +44,6 @@ public class GameWorld : Game
     {
         AttachAllGameComponents();
         //Add in the statics for the cameras to be used in the game.
-        Camera.Camera.InitializeCamera(GraphicsDevice, _graphicsGameComponent);
         _graphicsGameComponent.Initialize();
         _soundGameComponent.PlayBgm();
         _levelStateMachine = new LevelStateMachine(_tiledGameComponent);
@@ -65,20 +63,8 @@ public class GameWorld : Game
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        //Camera updates here currently while testing.
-        moveDown = moveLeft = moveRight = moveUp = false;
-        if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            moveRight = true;
-        if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            moveDown = true;
-        if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            moveUp = true;
-        if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            moveLeft = true;
-
         _levelStateMachine.Update(gameTime);
 
-        Camera.Camera.Update();
         base.Update(gameTime);
     }
 
@@ -86,7 +72,8 @@ public class GameWorld : Game
     {
         GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
-            _graphicsGameComponent.SpriteScale * Camera.Camera.GetCameraTransformMatrix());
+            // _graphicsGameComponent.SpriteScale * CameraGameComponent.MainCamera.GetCameraTransformMatrix());
+            _graphicsGameComponent.SpriteScale);
         _levelStateMachine.Draw(_spriteBatch);
         _spriteBatch.End();
 
@@ -109,9 +96,11 @@ public class GameWorld : Game
         PhysicsGameComponent = new PhysicsGameComponent(this, _tiledGameComponent);
         InputGameComponent = new InputGameComponent(this);
         _imGuiGameComponent = new ImGuiGameComponent(this, GraphicsDevice);
+        _cameraGameComponent = new CameraGameComponent(this, _graphicsGameComponent, GraphicsDevice, _tiledGameComponent);
+        
 
         AddGameComponent(_tiledGameComponent, _soundGameComponent, _graphicsGameComponent, PhysicsGameComponent,
-            InputGameComponent, _imGuiGameComponent);
+            InputGameComponent, _imGuiGameComponent, _cameraGameComponent);
 
         //Set the gameobject static somewhere TODO put this in a better place.
         GameObject._gameWorld = this;
