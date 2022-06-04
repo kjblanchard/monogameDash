@@ -18,19 +18,23 @@ public class RigidbodyComponent : Component
     //How much it is going to start moving (force)
     public Vector2 _acceleration;
 
-    public event BottomCollisionEventArgs BottomCollisionJustStartedEvent;
-    public event BottomCollisionEventArgs BottomCollisionEvent;
+    public event CollisionEventArgs RightCollisionJustStartedEvent;
+    public event CollisionEventArgs RightCollisionEvent;
+    public event CollisionEventArgs BottomCollisionJustStartedEvent;
+    public event CollisionEventArgs BottomCollisionEvent;
 
-    public delegate void BottomCollisionEventArgs();
+    public delegate void CollisionEventArgs();
 
     private static readonly int _directionsToCheck = Enum.GetNames(typeof(Directions)).Length;
     private bool[] _collisionsLastFrame = new bool[_directionsToCheck];
     private bool[] _collisionsThisFrame = new bool[_directionsToCheck];
+
     [ImGuiWrite(typeof(float), true, "Jump height", Min = 0, Max = 500)]
     private float _jumpHeight;
-    
 
-    public RigidbodyComponent(GameObject parent, BoxColliderComponent collider, bool gravityEnabled = true, float jumpHeight = 100) : base(
+
+    public RigidbodyComponent(GameObject parent, BoxColliderComponent collider, bool gravityEnabled = true,
+        float jumpHeight = 100) : base(
         parent, new Vector2())
     {
         GravityEnabled = gravityEnabled;
@@ -81,7 +85,11 @@ public class RigidbodyComponent : Component
         {
             case Directions.Top:
                 break;
-            case Directions.Right:
+            case Directions.Right when collisionJustStarted:
+                RightCollisionJustStartedEvent?.Invoke();
+                break;
+            case Directions.Right when !collisionJustStarted:
+                RightCollisionEvent?.Invoke();
                 break;
             case Directions.Down when collisionJustStarted:
                 BottomCollisionJustStartedEvent?.Invoke();
@@ -109,11 +117,11 @@ public class RigidbodyComponent : Component
     {
         if (yStep >= 1)
         {
+            bool collision = false;
             while (yStep >= 1)
             {
                 //Temporarily add 1 to Y and check for collisions
                 Parent._location.Y++;
-                bool collision = false;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
                 {
@@ -139,10 +147,32 @@ public class RigidbodyComponent : Component
         }
         else if (yStep <= -1)
         {
+            bool collision = false;
             while (yStep <= -1)
             {
-                yStep++;
+                //Temporarily add 1 to Y and check for collisions
                 Parent._location.Y--;
+                var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
+                tilesToCheck.ForEach(solidTile =>
+                {
+                    if (collision)
+                        return;
+                    var tileCollider =
+                        solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                    var sourceRect = _collider.Bounds;
+                    if (sourceRect.Intersects(tileCollider.Bounds))
+                    {
+                        yStep = 0;
+                        collision = true;
+                        Parent._location.Y++;
+                        _velocity.Y = 0;
+                        CollisionEvent(Directions.Down);
+                    }
+                });
+                if (collision)
+                    return;
+                yStep++;
+                // Parent._location.Y++;
             }
         }
     }
@@ -153,38 +183,58 @@ public class RigidbodyComponent : Component
         {
             while (xStep >= 1)
             {
-                // var tempLocation = Parent._location + offset;
-                // tempLocation.X += 1;
-                // bool collision = false;
-                // var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
-                // tilesToCheck.ForEach(solidTile =>
-                // {
-                //     if(collision)
-                //         return;
-                //     var tileCollider =
-                //         solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
-                //     var sourceRect = new Rectangle(tempLocation.ToPoint(), _collider._size);
-                //     if (sourceRect.Intersects(tileCollider.Bounds))
-                //     {
-                //         xStep = 0;
-                //         collision = true;
-                //         CollisionEvent(Directions.Right);
-                //     }
-                //
-                //
-                // });
-                // if(collision)
-                //     return;
-                xStep--;
                 Parent._location.X++;
+                bool collision = false;
+                var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
+                tilesToCheck.ForEach(solidTile =>
+                {
+                    if (collision)
+                        return;
+                    var tileCollider =
+                        solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                    var sourceRect = _collider.Bounds;
+                    if (sourceRect.Intersects(tileCollider.Bounds))
+                    {
+                        xStep = 0;
+                        Parent._location.X--;
+                        _velocity.X = 0;
+                        collision = true;
+                        CollisionEvent(Directions.Right);
+                    }
+                });
+                if (collision)
+                    return;
+                xStep--;
+                // Parent._location.X++;
             }
         }
         else if (xStep <= -1)
         {
             while (xStep <= -1)
             {
-                xStep++;
                 Parent._location.X--;
+                bool collision = false;
+                var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
+                tilesToCheck.ForEach(solidTile =>
+                {
+                    if (collision)
+                        return;
+                    var tileCollider =
+                        solidTile.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                    var sourceRect = _collider.Bounds;
+                    if (sourceRect.Intersects(tileCollider.Bounds))
+                    {
+                        xStep = 0;
+                        Parent._location.X++;
+                        _velocity.X = 0;
+                        collision = true;
+                        CollisionEvent(Directions.Right);
+                    }
+                });
+                if (collision)
+                    return;
+                xStep++;
+                // Parent._location.X++;
             }
         }
     }
@@ -192,12 +242,10 @@ public class RigidbodyComponent : Component
     public void Jump()
     {
         _velocity.Y = -_jumpHeight;
-
     }
 
     public void AddForce(Vector2 force)
     {
         _velocity += force;
     }
-
 }
