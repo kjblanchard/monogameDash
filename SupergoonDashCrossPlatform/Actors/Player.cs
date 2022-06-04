@@ -16,13 +16,21 @@ public class Player : Actor
     private const string JumpingAnimString = "Jump";
     private const string RunningAnimString = "Run";
 
-    [ImGuiWrite(typeof(float), true, "Run Speed", Min = 0, Max = 100)]
+    [ImGuiWrite(typeof(float), true, "slow run vel", Min = 0, Max = 200)]
+    private float slowRunTreshold = 100;
+
+    [ImGuiWrite(typeof(float), true, "Slow run anim speed", Min = 0, Max = 5)]
+    private float slowRunAnimSpeed = 0.7f;
+    [ImGuiWrite(typeof(float), true, "fast run vel", Min = 0, Max = 100)]
+    private float fastRunTreshold = 200;
+
+    [ImGuiWrite(typeof(float), true, "fast run anim speed", Min = 0, Max = 5)]
+    private float fastRunAnimSpeed = 1.30f;
+
     private float runSpeed = 10;
 
-    [ImGuiWrite(typeof(float), true, "Jump Addition", Min = 0, Max = 100)]
     private float jumpAddition = 10;
 
-    [ImGuiWrite(typeof(float), true, "Jump Length", Min = 0, Max = 5)]
     private float _jumpLengthMax = 0.245f;
 
     private float _jumpLength;
@@ -102,6 +110,16 @@ public class Player : Actor
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
+
+        if (_rigidbodyComponent._velocity.X > fastRunTreshold || _rigidbodyComponent._velocity.X < -fastRunTreshold)
+            _animationComponent._animationSpeed = fastRunAnimSpeed;
+        else if (_rigidbodyComponent._velocity.X < slowRunTreshold ||
+                 _rigidbodyComponent._velocity.X > -slowRunTreshold)
+            _animationComponent._animationSpeed = slowRunAnimSpeed;
+        else
+        {
+            _animationComponent._animationSpeed = 1.0f;
+        }
     }
 
     //Events
@@ -150,7 +168,10 @@ public class Player : Actor
 
         //Running
         var runningToIdleTransition =
-            new AnimationTransition(IdleAnimString, () => _rigidbodyComponent._velocity.X == 0);
+            // new AnimationTransition(IdleAnimString, () => _rigidbodyComponent._velocity.X == 0);
+            new AnimationTransition(IdleAnimString, () => (_rigidbodyComponent._velocity.X < 35 &&  _rigidbodyComponent._velocity.X>0) 
+                                                          || (_rigidbodyComponent._velocity.X > -35 && _rigidbodyComponent._velocity.X < 0) ||
+                                                          _rigidbodyComponent._velocity.X == 0);
         var runningToJumpingTransition = new AnimationTransition(FallingAnimString, () => isFalling);
         runningAnimation.Transitions.Add(runningToIdleTransition);
         runningAnimation.Transitions.Add(runningToJumpingTransition);
@@ -162,7 +183,10 @@ public class Player : Actor
 
     public bool RunningToIdle()
     {
-        if (_rigidbodyComponent._velocity.X != 0)
+        // if (_rigidbodyComponent._velocity.X != 0)
+        //Handle staying in animation too long.
+        if (_rigidbodyComponent._velocity.X > 35 && _rigidbodyComponent._velocity.X > 0 ||
+            _rigidbodyComponent._velocity.X < -35 && _rigidbodyComponent._velocity.X < 0) 
             return true;
         return false;
     }

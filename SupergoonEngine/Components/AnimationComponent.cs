@@ -12,6 +12,8 @@ public class AnimationComponent : Component
     private AsepriteDocument _asepriteDocument;
     private Animator _animator = new Animator();
     private string _currentAnimationTag;
+    
+    public float _animationSpeed = 1.0f;
 
     private Point _texturePointToDisplay = Point.Zero;
 
@@ -37,7 +39,8 @@ public class AnimationComponent : Component
     {
         base.Update(gameTime);
         _animator.Update(gameTime);
-        _secondsThisFrame += gameTime.ElapsedGameTime.TotalSeconds;
+        // _secondsThisFrame += gameTime.ElapsedGameTime.TotalSeconds;
+        _secondsThisFrame += gameTime.ElapsedGameTime.TotalSeconds * _animationSpeed;
         if (_animator.CurrentAnimation.Looping && _secondsThisFrame >= _asepriteDocument.Frames[currentFrame].Duration)
         {
             _secondsThisFrame -= _asepriteDocument.Frames[currentFrame].Duration;

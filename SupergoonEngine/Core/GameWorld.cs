@@ -47,6 +47,9 @@ public class GameWorld : Game
         _graphicsGameComponent.Initialize();
         _soundGameComponent.PlayBgm();
         _levelStateMachine = new LevelStateMachine(_tiledGameComponent);
+        
+        //Try 30fps
+        // TargetElapsedTime = TimeSpan.FromSeconds(1d / 30d);
 
         base.Initialize();
     }
