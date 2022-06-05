@@ -146,8 +146,9 @@ public class TiledTmxContent
         {
             var potentialActor = actors[i];
             var actorName = potentialActor.name;
-            var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
-            if (newActorFunc == null) continue;
+            var exists = TiledActorFactory.NameToSpawnFunction.ContainsKey(actorName);
+            if (!exists ) continue;
+             var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
             var actorLocation = new Vector2(potentialActor.x, potentialActor.y);
             var actorTags = potentialActor.properties;
             var newActor = newActorFunc.Invoke(actorLocation,actorTags);

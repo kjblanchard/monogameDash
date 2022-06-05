@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FMOD;
+using ImGuiNET.SampleProgram.XNA.TiledDrawObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.Actors;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 using Num = System.Numerics;
@@ -24,6 +26,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
     private GraphicsDevice _graphicsDevice;
     private List<Vector2ImguiDisplay> Vector2Watches = new();
     private List<FloatImguiWriteDisplay> FloatWrites = new();
+    private List<BoolImGuiDisplay> BoolWrites = new();
 
 
     //ImGui Layout stuff from demo
@@ -167,6 +170,8 @@ public class ImGuiGameComponent : GameComponent, IDraw
             if(ImGui.Button($"{item.Name} Update"))
                 item.Update();
         });
+        
+        BoolWrites.ForEach(x => x.Draw());
     }
 
     public void CheckObjectForDebugAttributes(Object obj)
@@ -228,6 +233,11 @@ public class ImGuiGameComponent : GameComponent, IDraw
             var floatImgui = new FloatImguiWriteDisplay(attributeData.DisplayName, Data, Owner, attributeData.Min,
                 attributeData.Max);
             FloatWrites.Add(floatImgui);
+        }
+        else if (attributeData.VariableType == typeof(Player))
+        {
+            var boolImgui = new BoolImGuiDisplay(attributeData.DisplayName, Data, Owner, true);
+            BoolWrites.Add(boolImgui);
         }
         
     }

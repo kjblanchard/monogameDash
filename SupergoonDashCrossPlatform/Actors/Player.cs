@@ -24,10 +24,10 @@ public class Player : Actor
     [ImGuiWrite(typeof(float), true, "fast run vel", Min = 0, Max = 100)]
     private float fastRunTreshold = 200;
 
-    [ImGuiWrite(typeof(float), true, "fast run anim speed", Min = 0, Max = 5)]
     private float fastRunAnimSpeed = 1.30f;
 
-    private float runSpeed = 10;
+    [ImGuiWrite(typeof(float), true, "Run speed", Min = 0, Max = 20)]
+    private float runSpeed = 6.5f;
 
     private float jumpAddition = 10;
 
@@ -169,8 +169,8 @@ public class Player : Actor
         //Running
         var runningToIdleTransition =
             // new AnimationTransition(IdleAnimString, () => _rigidbodyComponent._velocity.X == 0);
-            new AnimationTransition(IdleAnimString, () => (_rigidbodyComponent._velocity.X < 35 &&  _rigidbodyComponent._velocity.X>0) 
-                                                          || (_rigidbodyComponent._velocity.X > -35 && _rigidbodyComponent._velocity.X < 0) ||
+            new AnimationTransition(IdleAnimString, () => (_rigidbodyComponent._velocity.X < 55 &&  _rigidbodyComponent._velocity.X>0) 
+                                                          || (_rigidbodyComponent._velocity.X > -55 && _rigidbodyComponent._velocity.X < 0) ||
                                                           _rigidbodyComponent._velocity.X == 0);
         var runningToJumpingTransition = new AnimationTransition(FallingAnimString, () => isFalling);
         runningAnimation.Transitions.Add(runningToIdleTransition);
@@ -185,8 +185,8 @@ public class Player : Actor
     {
         // if (_rigidbodyComponent._velocity.X != 0)
         //Handle staying in animation too long.
-        if (_rigidbodyComponent._velocity.X > 35 && _rigidbodyComponent._velocity.X > 0 ||
-            _rigidbodyComponent._velocity.X < -35 && _rigidbodyComponent._velocity.X < 0) 
+        if (_rigidbodyComponent._velocity.X > 55 && _rigidbodyComponent._velocity.X > 0 ||
+            _rigidbodyComponent._velocity.X < -55 && _rigidbodyComponent._velocity.X < 0) 
             return true;
         return false;
     }

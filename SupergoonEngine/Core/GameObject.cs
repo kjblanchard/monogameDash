@@ -4,6 +4,7 @@ using System.Linq;
 using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.Actors;
 using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
@@ -89,6 +90,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
     {
     }
 
+    [ImGuiWrite(typeof(Player), true, "PlayerDebug")]
     public bool Debug { get; set; }
     public void SendAttributesToDebugger(object parent)
     {

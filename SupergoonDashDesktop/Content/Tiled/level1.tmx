@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="49" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="10">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="49" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="16">
  <tileset firstgid="1" source="terrain.tsx"/>
  <tileset firstgid="248" source="decorations.tsx"/>
+ <tileset firstgid="290" source="spike-coin-tileset.tsx"/>
  <group id="4" name="bg">
   <layer id="1" name="Tile Layer 1" width="49" height="9">
    <data encoding="csv">
@@ -44,11 +45,17 @@
   </layer>
  </group>
  <objectgroup id="7" name="actors">
-  <object id="3" name="player" x="72" y="77.333">
+  <object id="3" name="player" x="67" y="176.333">
    <properties>
     <property name="asepriteName" value="idle"/>
    </properties>
    <point/>
   </object>
+  <object id="10" name="coin" gid="297" x="352" y="128" width="32" height="32"/>
+  <object id="11" name="coin" gid="297" x="384" y="128" width="32" height="32"/>
+  <object id="12" name="coin" gid="297" x="416" y="128" width="32" height="32"/>
+  <object id="13" name="coin" gid="297" x="448" y="160" width="32" height="32"/>
+  <object id="14" name="coin" gid="297" x="480" y="192" width="32" height="32"/>
+  <object id="15" name="spikel" gid="290" x="448" y="224" width="32" height="32"/>
  </objectgroup>
 </map>
