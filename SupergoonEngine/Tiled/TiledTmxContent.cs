@@ -151,7 +151,10 @@ public class TiledTmxContent
              var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
             var actorLocation = new Vector2(potentialActor.x, potentialActor.y);
             var actorTags = potentialActor.properties;
-            var newActor = newActorFunc.Invoke(actorLocation,actorTags);
+            var actorParams = new ActorParams();
+            actorParams.Location = actorLocation;
+            actorParams.Tags = actorTags;
+            var newActor = newActorFunc.Invoke(actorParams);
             Actors.Add(newActor);
             // var go = new GameObject(new Vector2(potentialActor.x, potentialActor.y));
             // var box = new BoxColliderComponent(go, new Point(32, 32));

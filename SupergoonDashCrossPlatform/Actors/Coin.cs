@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using TiledCS;
 
@@ -6,16 +7,17 @@ namespace SupergoonDashCrossPlatform.Actors;
 
 public class Coin : Actor
 {
-    public new static Actor FactoryFunction(Vector2 loc, TiledProperty[] tags)
+    public new static GameObject FactoryFunction(ActorParams actorParams)
     {
-        var actor = new Coin("coin", loc, new Vector2(6, 10), new Point(20, 22));
-        actor.Initialize();
 
+        actorParams.AsepriteDocString = "coin";
+        var actor = new Coin(actorParams);
+        actor.Initialize();
         return actor;
     }
 
 
-    public Coin(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(), Point boxSize = new Point(), float jump = 150) : base(asepriteDocString, location, boxColliderOffset, boxSize, jump)
+    private Coin(ActorParams actorParams) : base(actorParams)
     {
     }
 }

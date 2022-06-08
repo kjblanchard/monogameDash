@@ -1,6 +1,7 @@
 ﻿using System;
 using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Animation;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -37,17 +38,21 @@ public class Player : Actor
 
     private CameraComponent _cameraComponent;
 
-    public Player(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(),
-        Point boxSize = new Point()) : base(asepriteDocString, location, boxColliderOffset, boxSize)
+    private Player(ActorParams actorParams) : base(actorParams) 
     {
     }
 
-    public new static Actor FactoryFunction(Vector2 loc, TiledProperty[] tags)
+    // public new static GameObject FactoryFunction(Vector2 location, TiledProperty[] tags = null, Rectangle textureRect = new Rectangle(), Texture2D texture = null)
+    public new static GameObject FactoryFunction(ActorParams actorParams)
     {
-        var player = new Player("player", loc, new Vector2(6, 10), new Point(20, 22));
+
+        actorParams.AsepriteDocString = "player";
+        actorParams.BoxColliderOffset = new Vector2(6, 10);
+        actorParams.BoxSize = new Point(20, 22);
+        var player = new Player(actorParams);
+        player.jumpHeight = 300;
         player.Debug = true;
         player.Initialize();
-
         return player;
     }
 

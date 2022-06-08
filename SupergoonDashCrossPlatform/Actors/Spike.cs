@@ -1,22 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using TiledCS;
 
 namespace SupergoonDashCrossPlatform.Actors;
 
-public class Spike : Actor
+public class Spike : StaticActor
 {
 
-    public Spike(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(), Point boxSize = new Point(), float jump = 150) : base(asepriteDocString, location, boxColliderOffset, boxSize, jump)
-    {
-    }
     
-    public new static Actor FactoryFunction(Vector2 loc, TiledProperty[] tags)
+    public new static GameObject FactoryFunction(ActorParams actorParams)
     {
-        var actor = new Spike("spikel", loc, new Vector2(6, 10), new Point(20, 22));
+        var actor = new Spike(actorParams);
         actor.Initialize();
-
         return actor;
     }
-    
+
+    public Spike(ActorParams actorParams) : base(actorParams)
+    {
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Documents;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using TiledCS;
@@ -16,23 +17,38 @@ public class Actor : GameObject
 
     protected bool isFalling = true;
     protected bool _isFacingRight;
+    
+    protected int jumpHeight = 100;
 
 
-    public Actor(string asepriteDocString, Vector2 location, Vector2 boxColliderOffset = new Vector2(),
-        Point boxSize = new Point(), float jump = 150)
+    /// <summary>
+    /// Base actor class, this is used for things that have a rigidbody and collisions/gravity, and animate with aseprite animations.  Also has a controller component so that it can be controlled.
+    /// </summary>
+    /// <param name="actorParams"></param>
+    public Actor(ActorParams actorParams)
     {
-        _location = location;
+        _location = actorParams.Location;
         _spriteComponent = new SpriteComponent(this);
-        _boxColliderComponent = new BoxColliderComponent(this, boxSize, boxColliderOffset);
-        _rigidbodyComponent = new RigidbodyComponent(this, _boxColliderComponent, jumpHeight: jump);
-        _asepriteDocument = _gameWorld.Content.Load<AsepriteDocument>($"Aseprite/{asepriteDocString}");
+        _boxColliderComponent = new BoxColliderComponent(this, actorParams.BoxSize ,actorParams.BoxColliderOffset);
+        _rigidbodyComponent = new RigidbodyComponent(this, _boxColliderComponent, jumpHeight: jumpHeight);
+        _asepriteDocument = _gameWorld.Content.Load<AsepriteDocument>($"Aseprite/{actorParams.AsepriteDocString}");
         _animationComponent = new AnimationComponent(this, _spriteComponent, _asepriteDocument);
+
         _playerControllerComponent = new PlayerControllerComponent(this, 0);
         AddComponent(_boxColliderComponent, _rigidbodyComponent, _animationComponent, _spriteComponent,
             _playerControllerComponent);
     }
 
-    public static Actor FactoryFunction(Vector2 location, TiledProperty[] tags)
+    /// <summary>
+    /// The factory function that is called on them, this is overrode/new on all derived actors.
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="tags"></param>
+    /// <param name="textureRect"></param>
+    /// <param name="texture"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public static GameObject FactoryFunction(ActorParams actorParams)
     {
         throw new System.NotImplementedException();
     }
