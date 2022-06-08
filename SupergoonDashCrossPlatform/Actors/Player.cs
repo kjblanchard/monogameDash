@@ -40,6 +40,7 @@ public class Player : Actor
 
     private Player(ActorParams actorParams) : base(actorParams) 
     {
+        AddTag(EngineTags.GameObjectTags.Player);
     }
 
     // public new static GameObject FactoryFunction(Vector2 location, TiledProperty[] tags = null, Rectangle textureRect = new Rectangle(), Texture2D texture = null)
@@ -50,9 +51,9 @@ public class Player : Actor
         actorParams.BoxColliderOffset = new Vector2(6, 10);
         actorParams.BoxSize = new Point(20, 22);
         var player = new Player(actorParams);
-        player.jumpHeight = 300;
         player.Debug = true;
         player.Initialize();
+        player.jumpHeight = 300;
         return player;
     }
 

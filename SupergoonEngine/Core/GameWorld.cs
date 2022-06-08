@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SupergoonDashCrossPlatform.Sound;
 using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
+using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Input;
 using SupergoonDashCrossPlatform.SupergoonEngine.Physics;
@@ -108,6 +109,7 @@ public class GameWorld : Game
         //Set the gameobject static somewhere TODO put this in a better place.
         GameObject._gameWorld = this;
         Component.ImGuiGameComponent = _imGuiGameComponent;
+        SoundComponent._soundGameComponent = _soundGameComponent;
     }
 
     protected void AddLevels(params Level[] levels)

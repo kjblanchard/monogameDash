@@ -30,6 +30,9 @@ SupergoonDashDesktop - Desktop build, can run in Windows, MacOS(intel) and Linux
 Assets (Tiles)
 [MIT](https://choosealicense.com/licenses/mit/)
 
+Coin Sound
+[Creative Commons License](https://freesound.org/people/bradwesson/sounds/135936/)
+
 
 ## Authors
 

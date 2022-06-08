@@ -19,6 +19,10 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
         return (T)matchedComponent;
     }
 
+    //Used to check if we are this object.
+    public uint Id;
+    public static uint lastId = 0;
+
     public void AddComponent(params Component[] components)
     {
         foreach (var component in components)
@@ -40,6 +44,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
     public GameObject(Vector2 location = new())
     {
         _location = location;
+        Id = ++lastId;
     }
 
     public static void SetGameWorld(GameWorld gameWorld) => _gameWorld = gameWorld;
@@ -52,7 +57,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
     bool ITags.RemoveTag(int tag) => Tags.Remove(tag);
     public bool HasTag(int tag) => Tags.Contains(tag);
     public virtual void RemoveTag(int tag) => Tags.Remove(tag);
-    public List<int> Tags { get; set; }
+    public List<int> Tags { get; set; } = new();
     public virtual void Update(GameTime gameTime) => _components.ForEach(component => component.Update(gameTime));
     public bool Enabled { get; set; }
     public int UpdateOrder { get; set; }

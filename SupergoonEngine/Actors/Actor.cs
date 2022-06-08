@@ -14,11 +14,12 @@ public class Actor : GameObject
     protected AnimationComponent _animationComponent;
     protected AsepriteDocument _asepriteDocument;
     protected PlayerControllerComponent _playerControllerComponent;
+    
 
     protected bool isFalling = true;
     protected bool _isFacingRight;
     
-    protected int jumpHeight = 100;
+    protected int jumpHeight = 160;
 
 
     /// <summary>

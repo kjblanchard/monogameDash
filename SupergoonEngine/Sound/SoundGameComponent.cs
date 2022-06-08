@@ -48,6 +48,14 @@ public class SoundGameComponent : GameComponent
         tempInstance.start();
     }
 
+    public void PlaySfx()
+    {
+        _fmodStudioSystem.getEvent("event:/coin", out var description);
+        description.loadSampleData();
+        description.createInstance(out var tempInstance);
+        tempInstance.start();
+    }
+
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);

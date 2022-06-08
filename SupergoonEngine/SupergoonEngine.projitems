@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\CameraComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\PlayerControllerComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\RigidbodyComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\SoundComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\SpriteComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EngineTags.cs" />

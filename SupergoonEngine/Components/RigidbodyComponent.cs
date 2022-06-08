@@ -139,6 +139,25 @@ public class RigidbodyComponent : Component
                         CollisionEvent(Directions.Down);
                     }
                 });
+                var actorsToCheck = _gravity._tiledGameComponent.LoadedTmxContent.Actors;
+                actorsToCheck.ForEach(actor =>
+                {
+                    if (collision || Parent.Id == actor.Id)
+                        return;
+                    var tileCollider =
+                        actor.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+                    var sourceRect = _collider.Bounds;
+                    if (sourceRect.Intersects(tileCollider.Bounds))
+                    {
+                        tileCollider.OnOverlapEvent(Parent);
+                        // yStep = 0;
+                        // collision = true;
+                        // Parent._location.Y--;
+                        // _velocity.Y = 0;
+                        // CollisionEvent(Directions.Down);
+                    }
+                    
+                });
                 if (collision)
                     return;
                 yStep--;
