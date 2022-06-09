@@ -32,7 +32,7 @@ public class Coin : Actor
         _spriteComponent.DrawOrder = 0.6f;
         _soundComponent = new SoundComponent(this);
         AddComponent(_soundComponent);
-        _boxColliderComponent.OverlapEvent += OnOverlap;
+        _boxColliderComponent.OverlapEvent += OnOverlapBegin;
         base.Initialize();
     }
 
@@ -41,12 +41,13 @@ public class Coin : Actor
     {
     }
 
-    public void OnOverlap(GameObject overlapee)
+    public void OnOverlapBegin(GameObject overlapee)
     {
         if (overlapee.HasTag(EngineTags.GameObjectTags.Player))
         {
             _soundComponent.PlaySfx();
-            
+            this.Enabled = false;
+
         }
     }
 }

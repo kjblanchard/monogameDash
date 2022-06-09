@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
@@ -111,6 +112,8 @@ public class RigidbodyComponent : Component
         var xStep = _velocity.X * gameTime.ElapsedGameTime.TotalSeconds;
         ApplyYVelocity(gameTime, yStep);
         ApplyXVelocity(gameTime, xStep);
+        var actorsToCheck = _gravity._tiledGameComponent.LoadedTmxContent.Actors;
+        CheckForActorCollision(actorsToCheck);
     }
 
     private void ApplyYVelocity(GameTime gameTime, double yStep)
@@ -139,27 +142,8 @@ public class RigidbodyComponent : Component
                         CollisionEvent(Directions.Down);
                     }
                 });
-                var actorsToCheck = _gravity._tiledGameComponent.LoadedTmxContent.Actors;
-                actorsToCheck.ForEach(actor =>
-                {
-                    if (collision || Parent.Id == actor.Id)
-                        return;
-                    var tileCollider =
-                        actor.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
-                    var sourceRect = _collider.Bounds;
-                    if (sourceRect.Intersects(tileCollider.Bounds))
-                    {
-                        tileCollider.OnOverlapEvent(Parent);
-                        // yStep = 0;
-                        // collision = true;
-                        // Parent._location.Y--;
-                        // _velocity.Y = 0;
-                        // CollisionEvent(Directions.Down);
-                    }
-                    
-                });
                 if (collision)
-                    return;
+                    break;
                 yStep--;
                 // Parent._location.Y++;
             }
@@ -192,6 +176,26 @@ public class RigidbodyComponent : Component
                     return;
                 yStep++;
                 // Parent._location.Y++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handles actor collision by calling overlap events on their box collider.
+    /// </summary>
+    /// <param name="actorsToCheck"></param>
+    private void CheckForActorCollision(List<GameObject> actorsToCheck)
+    {
+        foreach (var gameObject in actorsToCheck)
+        {
+            if (gameObject.Enabled == false || Parent.Id == gameObject.Id)
+                continue;
+            var tileCollider =
+                gameObject.GetComponent<BoxColliderComponent>(EngineTags.ComponentTags.BoxCollider);
+            var sourceRect = _collider.Bounds;
+            if (sourceRect.Intersects(tileCollider.Bounds))
+            {
+                tileCollider.OnOverlapEvent(Parent);
             }
         }
     }
