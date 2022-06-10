@@ -77,6 +77,8 @@ public class Player : Actor
 
     public override void Update(GameTime gameTime)
     {
+        if (!Enabled)
+            return;
         base.Update(gameTime);
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Right) ||
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
@@ -202,5 +204,12 @@ public class Player : Actor
             _rigidbodyComponent._velocity.X < -55 && _rigidbodyComponent._velocity.X < 0) 
             return true;
         return false;
+    }
+
+    public void PlayerDeath()
+    {
+        _soundComponent.PlaySfx("playerDeath");
+        Enabled = false;
+        Visible = false;
     }
 }

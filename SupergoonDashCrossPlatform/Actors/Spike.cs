@@ -21,5 +21,15 @@ public class Spike : StaticActor
     private Spike(ActorParams actorParams) : base(actorParams)
     {
         _spriteComponent.DrawOrder = 0.6f;
+        _boxColliderComponent.OverlapEvent += OnOverlapBegin;
+    }
+    public void OnOverlapBegin(GameObject overlapee)
+    {
+        if (!overlapee.HasTag(EngineTags.GameObjectTags.Player)) return;
+        var player = (Player)overlapee;
+        if (player != null)
+        {
+            player.PlayerDeath();
+        }
     }
 }

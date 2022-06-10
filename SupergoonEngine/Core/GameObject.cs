@@ -84,7 +84,7 @@ public class GameObject : ITags, IUpdate, IDraw, IInitialize, IBeginRun, ILoadCo
     }
 
     public float DrawOrder { get; set; }
-    public bool Visible { get; }
+    public bool Visible { get; protected set; }
     public event EventHandler<EventArgs> DrawOrderChanged;
     public event EventHandler<EventArgs> VisibleChanged;
     public bool IsInitialized { get; set; }

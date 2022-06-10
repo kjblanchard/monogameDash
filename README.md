@@ -36,6 +36,8 @@ Coin Sound
 Jump Sound
 [Creative Commons License](https://freesound.org/people/se2001/sounds/528568/)
 
+Death Sound
+[Creative Commons License](https://freesound.org/people/ProjectsU012/sounds/334266/)
 
 ## Authors
 
