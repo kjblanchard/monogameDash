@@ -10,7 +10,7 @@ public abstract class StateMachine<T> : IState where T : IState
 {
     protected T _currentState;
     protected T _previousState;
-    protected T GetState(int tag) => States.FirstOrDefault(state => state.HasTag(tag));
+    public T GetState(int tag) => States.FirstOrDefault(state => state.HasTag(tag));
     protected void AddState(T stateToAdd) => States.Add(stateToAdd);
 
     protected List<T> States = new();

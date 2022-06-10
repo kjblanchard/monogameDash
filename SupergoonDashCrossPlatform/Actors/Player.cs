@@ -6,6 +6,7 @@ using SupergoonDashCrossPlatform.SupergoonEngine.Animation;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Input;
+using SupergoonDashCrossPlatform.Tags;
 using TiledCS;
 
 namespace SupergoonDashCrossPlatform.Actors;
@@ -43,6 +44,8 @@ public class Player : Actor
 
     private CameraComponent _cameraComponent;
 
+    private bool _isDead;
+
     private Player(ActorParams actorParams) : base(actorParams) 
     {
         AddTag(EngineTags.GameObjectTags.Player);
@@ -77,8 +80,15 @@ public class Player : Actor
 
     public override void Update(GameTime gameTime)
     {
-        if (!Enabled)
+        if (_isDead)
+        {
+            if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
+            {
+                var currentLevel = _gameWorld.LevelStateMachine.GetState(LevelTags.Level1);
+                currentLevel.Reset();
+            }
             return;
+        }
         base.Update(gameTime);
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Right) ||
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
@@ -209,7 +219,7 @@ public class Player : Actor
     public void PlayerDeath()
     {
         _soundComponent.PlaySfx("playerDeath");
-        Enabled = false;
         Visible = false;
+        _isDead = true;
     }
 }

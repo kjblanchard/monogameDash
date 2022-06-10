@@ -49,4 +49,9 @@ public class Level : IState
         base.Initialize();
        LoadedContents = _tiledGameComponent.LoadTilesets(_tmxLevelToLoad);
     }
+
+    public void Reset()
+    {
+        LoadedContents.Reset();
+    }
 }

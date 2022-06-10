@@ -26,6 +26,8 @@ public class TiledTmxContent
 
     public List<GameObject> Actors = new();
 
+    public bool _shouldReset = false;
+
     /// <summary>
     /// This is used so that we can multiply the actual layer by this amount to use for the draw order in xna
     /// </summary>
@@ -36,6 +38,23 @@ public class TiledTmxContent
         TileMap = map;
         Tilesets = tilesets;
         TilesetTextures = textures;
+    }
+
+    public void Reset()
+    {
+        _shouldReset = true;
+    }
+
+    private void InternalReset()
+    {
+        if (!_shouldReset)
+            return;
+        BackgroundTiles.Clear();
+        SolidTiles.Clear();
+        Actors.Clear();
+        CreateTileGameObjectsFromContent();
+
+        _shouldReset = false;
     }
 
     public void CreateTileGameObjectsFromContent()
@@ -110,7 +129,7 @@ public class TiledTmxContent
             var offset = GetTileBoundingBoxOffset(tileObjectData, drawTileset);
 
             var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
-            var actorLocation = new Vector2(potentialActor.x, potentialActor.y -32);
+            var actorLocation = new Vector2(potentialActor.x, potentialActor.y - 32);
             var actorTags = potentialActor.properties;
             var actorParams = new ActorParams();
             actorParams.Location = actorLocation;
@@ -217,6 +236,7 @@ public class TiledTmxContent
 
     public void Update(GameTime gameTime)
     {
+        InternalReset();
         BackgroundTiles.ForEach(tile => tile.Update(gameTime));
         SolidTiles.ForEach(tile => tile.Update(gameTime));
         Actors.ForEach(actor => actor.Update(gameTime));
