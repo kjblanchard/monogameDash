@@ -48,11 +48,12 @@ public class SoundGameComponent : GameComponent
         tempInstance.start();
     }
 
-    public void PlaySfx()
+    public void PlaySfx(string sfxName, float volumeLevel = 1)
     {
-        _fmodStudioSystem.getEvent("event:/coin", out var description);
+        _fmodStudioSystem.getEvent($"event:/{sfxName}", out var description);
         description.loadSampleData();
         description.createInstance(out var tempInstance);
+        tempInstance.setVolume(volumeLevel);
         tempInstance.start();
     }
 

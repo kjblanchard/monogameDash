@@ -17,6 +17,11 @@ public class Player : Actor
     private const string JumpingAnimString = "Jump";
     private const string RunningAnimString = "Run";
 
+    private const string JumpSfxString = "playerJump";
+    private const float JumpSfxSoundLevel = 2;
+
+    private SoundComponent _soundComponent;
+
     [ImGuiWrite(typeof(float), true, "slow run vel", Min = 0, Max = 200)]
     private float slowRunTreshold = 100;
 
@@ -60,6 +65,7 @@ public class Player : Actor
     public override void Initialize()
     {
         _cameraComponent = new CameraComponent(this);
+        _soundComponent = new SoundComponent(this);
         // _cameraComponent.Initialize();
         AddComponent(_cameraComponent);
         _rigidbodyComponent.GravityEnabled = true;
@@ -139,6 +145,7 @@ public class Player : Actor
         base.Jump();
         _animationComponent.ChangeAnimation(JumpingAnimString);
         _jumpLength = 0;
+        _soundComponent.PlaySfx(JumpSfxString, JumpSfxSoundLevel);
     }
 
     //Animations

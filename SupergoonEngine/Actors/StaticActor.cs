@@ -17,15 +17,14 @@ public class StaticActor : GameObject
 
     public StaticActor(ActorParams actorParams) : base(actorParams.Location)
     {
-        _spriteComponent = new SpriteComponent(this);
+        _spriteComponent = new SpriteComponent(actorParams.SourceRect, actorParams.Texture, this);
         _boxColliderComponent = new BoxColliderComponent(this, actorParams.BoxSize, actorParams.BoxColliderOffset);
 
         AddComponent(_boxColliderComponent, _spriteComponent
         );
     }
 
-    public static GameObject FactoryFunction(Vector2 location, TiledProperty[] tags = null,
-        Rectangle textureRect = new Rectangle(), Texture2D texture = null)
+    public static GameObject FactoryFunction(ActorParams actorParams)
     {
         throw new System.NotImplementedException();
     }

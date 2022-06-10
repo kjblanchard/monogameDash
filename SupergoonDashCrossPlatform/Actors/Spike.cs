@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using TiledCS;
 
@@ -13,10 +14,12 @@ public class Spike : StaticActor
     {
         var actor = new Spike(actorParams);
         actor.Initialize();
+        
         return actor;
     }
 
-    public Spike(ActorParams actorParams) : base(actorParams)
+    private Spike(ActorParams actorParams) : base(actorParams)
     {
+        _spriteComponent.DrawOrder = 0.6f;
     }
 }

@@ -45,7 +45,7 @@ public class Coin : Actor
     {
         if (overlapee.HasTag(EngineTags.GameObjectTags.Player))
         {
-            _soundComponent.PlaySfx();
+            _soundComponent.PlaySfx("coin");
             this.Enabled = false;
 
         }

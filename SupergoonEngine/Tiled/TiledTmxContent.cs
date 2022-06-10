@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
@@ -25,6 +26,11 @@ public class TiledTmxContent
 
     public List<GameObject> Actors = new();
 
+    /// <summary>
+    /// This is used so that we can multiply the actual layer by this amount to use for the draw order in xna
+    /// </summary>
+    private const float _drawOrderMultiplier = 0.001f;
+
     public TiledTmxContent(TiledMap map, TiledTileset[] tilesets, Texture2D[] textures)
     {
         TileMap = map;
@@ -37,92 +43,39 @@ public class TiledTmxContent
         var groups = TileMap.Groups;
         var bgGroup = groups.FirstOrDefault(group => group.name == "bg");
         //For each layer in the tilemap
-        var drawLayers = new List<float>();
-        for (int i = 0; i < bgGroup.layers.Length; i++)
+        for (int layerIterator = 0; layerIterator < bgGroup.layers.Length; layerIterator++)
         {
-            // var layer = TileMap.Layers[i];
-            var layer = bgGroup.layers[i];
+            var layer = bgGroup.layers[layerIterator];
             //Draw the tile at the correct location
-            for (int j = 0; j < layer.data.Length; j++)
+            for (int tileIterator = 0; tileIterator < layer.data.Length; tileIterator++)
             {
-                int gid = layer.data[j];
+                int gid = layer.data[tileIterator];
                 //If gid is 0, this is an empty tiled tile, so skip
                 if (gid == 0)
                     continue;
+                var drawTilesetNum = GetTilesetNumberFromTileGid(gid);
+                var tileNumberInTileset = GetTileNumberFromTileGid(gid, drawTilesetNum);
+                int column = GetTileColumn(tileNumberInTileset, drawTilesetNum);
+                int row = GetTileRow(tileNumberInTileset, drawTilesetNum);
+                float x = (tileIterator % TileMap.Width) * TileMap.TileWidth;
+                float y = (float)Math.Floor(tileIterator / (double)TileMap.Width) * TileMap.TileHeight;
 
-                //Determine which tileset we should use for this tile (for when using multiple tilesets in the layer.
-                var drawTilesetNum = -1;
-                var it = 0;
-                while (drawTilesetNum == -1)
-                {
-                    //If There is not more tilesets, use the current one as it must be this one.
-                    if (it + 1 >= Tilesets.Length)
-                    {
-                        drawTilesetNum = it;
-                        break;
-                    }
+                Rectangle tilesetRec = GetTileRectangleInTexture(drawTilesetNum, column, row);
+                var drawOrder = (layerIterator + 1) * _drawOrderMultiplier;
 
-                    var firstTilesetGid = TileMap.Tilesets[it].firstgid;
-                    if (gid >= firstTilesetGid && gid < TileMap.Tilesets[it + 1].firstgid)
-                    {
-                        drawTilesetNum = it;
-                        break;
-                    }
 
-                    it++;
-                }
-
-                //We need to subtract The amount of tiles prior to this.
-                var tileFrame = gid - TileMap.Tilesets[drawTilesetNum].firstgid;
-                int column = tileFrame % Tilesets[drawTilesetNum].Columns;
-                int row = (int)Math.Floor((double)tileFrame / (double)Tilesets[drawTilesetNum].Columns);
-                float x = (j % TileMap.Width) * TileMap.TileWidth;
-                float y = (float)Math.Floor(j / (double)TileMap.Width) * TileMap.TileHeight;
-
-                Rectangle tilesetRec = new Rectangle(Tilesets[drawTilesetNum].TileWidth * column,
-                    Tilesets[drawTilesetNum].TileHeight * row, Tilesets[drawTilesetNum].TileWidth,
-                    Tilesets[drawTilesetNum].TileHeight);
-
-                //Create correct tile type
-
-                var drawOrderMultiplier = 0.001f;
-                var drawOrder = (i + 1) * drawOrderMultiplier;
                 if (layer.name.ToLower().StartsWith("solid"))
                 {
-                    var tileDefinitions = Tilesets[drawTilesetNum].Tiles;
-                    TiledObject tileDefFound = null;
-                    foreach (var tileDefinition in tileDefinitions)
-                    {
-                        if (tileDefinition.id == tileFrame)
-                            tileDefFound = tileDefinition.objects[0];
-                    }
+                    var tileObjectData = GetTileObjectData(drawTilesetNum, tileNumberInTileset);
+                    var boxSize = GetTileBoundingBoxSize(tileObjectData, drawTilesetNum);
+                    var offset = GetTileBoundingBoxOffset(tileObjectData, drawTilesetNum);
 
-                    var collisionAreaProperty = tileDefFound;
-                    var boxSize = new Point();
-                    var offset = new Vector2();
-                    
-                    //Check for a property for the tile, if there is one, use the bounding box created in tiled, if not, use the tilesize
-                    if (collisionAreaProperty != null)
-                    {
-                        boxSize = new Point((int)collisionAreaProperty.width, (int)collisionAreaProperty.height);
-                        offset.X = collisionAreaProperty.x;
-                        offset.Y = collisionAreaProperty.y;
-
-                    }
-                    else
-                    {
-                        boxSize.X = boxSize.Y = Tilesets[drawTilesetNum].TileHeight;
-                        
-                    }
-                        
-                    
                     var solidTile = new SolidTile(
                         new Vector2(x, y),
                         tilesetRec,
-                        TilesetTextures[drawTilesetNum],drawOrder,
-                        boxSize,offset
-                        );
-                    // drawLayers.Add(solidTile.DrawOrder);
+                        TilesetTextures[drawTilesetNum], drawOrder,
+                        boxSize, offset
+                    );
                     SolidTiles.Add(solidTile);
                 }
                 else
@@ -130,10 +83,8 @@ public class TiledTmxContent
                     var tile = new Tile(
                         new Vector2(x, y),
                         tilesetRec,
-                        TilesetTextures[drawTilesetNum],drawOrder
+                        TilesetTextures[drawTilesetNum], drawOrder
                     );
-                    // tile.DrawOrder = (i + 1) * drawOrderMultiplier;
-                    drawLayers.Add(tile.DrawOrder);
                     BackgroundTiles.Add(tile);
                 }
             }
@@ -147,27 +98,121 @@ public class TiledTmxContent
             var potentialActor = actors[i];
             var actorName = potentialActor.name;
             var exists = TiledActorFactory.NameToSpawnFunction.ContainsKey(actorName);
-            if (!exists ) continue;
-             var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
-            var actorLocation = new Vector2(potentialActor.x, potentialActor.y);
+            if (!exists) continue;
+            var gid = potentialActor.gid;
+            var drawTileset = GetTilesetNumberFromTileGid(gid);
+            var tileFrame = GetTileNumberFromTileGid(gid, drawTileset);
+            int column = GetTileColumn(tileFrame, drawTileset);
+            int row = GetTileRow(tileFrame, drawTileset);
+            Rectangle tilesetRec = GetTileRectangleInTexture(drawTileset, column, row);
+            var tileObjectData = GetTileObjectData(drawTileset, tileFrame);
+            var boxSize = GetTileBoundingBoxSize(tileObjectData, drawTileset);
+            var offset = GetTileBoundingBoxOffset(tileObjectData, drawTileset);
+
+            var newActorFunc = TiledActorFactory.NameToSpawnFunction[actorName];
+            var actorLocation = new Vector2(potentialActor.x, potentialActor.y -32);
             var actorTags = potentialActor.properties;
             var actorParams = new ActorParams();
             actorParams.Location = actorLocation;
             actorParams.Tags = actorTags;
+            actorParams.BoxSize = boxSize;
+            actorParams.BoxColliderOffset = offset;
+            actorParams.SourceRect = tilesetRec;
+            actorParams.Texture = TilesetTextures[drawTileset];
             var newActor = newActorFunc.Invoke(actorParams);
             Actors.Add(newActor);
-            // var go = new GameObject(new Vector2(potentialActor.x, potentialActor.y));
-            // var box = new BoxColliderComponent(go, new Point(32, 32));
-            // box.Debug = true;
-            // go.AddComponent(box);
-            // var rb = new RigidbodyComponent(go, box);
-            // var drawOrderMultiplier = 0.001f;
-            // go.DrawOrder = (actorLayer.id + 1) * drawOrderMultiplier;
-            // go.AddComponent(rb);
-            // Actors.Add(go);
+        }
+    }
+
+    private Point GetTileBoundingBoxSize(TiledObject tileObjectData, int drawTilesetNum)
+    {
+        if (tileObjectData == null)
+        {
+            var tileset = Tilesets[drawTilesetNum];
+            return new Point(tileset.TileWidth, tileset.TileHeight);
         }
 
-        drawLayers.Sort();
+        return new Point((int)tileObjectData.width, (int)tileObjectData.height);
+    }
+
+    private Vector2 GetTileBoundingBoxOffset(TiledObject tileObjectData, int drawTilesetNum)
+    {
+        if (tileObjectData == null)
+        {
+            return new Vector2(0, 0);
+        }
+
+        return new Vector2(tileObjectData.x, tileObjectData.y);
+    }
+
+    //Gets the rectangle so that we can draw from the texture in the right location (in the spritesheet).
+    private Rectangle GetTileRectangleInTexture(int drawTilesetNum, int column, int row)
+    {
+        return new Rectangle(Tilesets[drawTilesetNum].TileWidth * column,
+            Tilesets[drawTilesetNum].TileHeight * row, Tilesets[drawTilesetNum].TileWidth,
+            Tilesets[drawTilesetNum].TileHeight);
+    }
+
+    /// <summary>
+    /// This tileobject holds a lot of metadata from the tile, if we have defined it in tiled, otherwise returns null
+    /// </summary>
+    /// <param name="drawTilesetNum"></param>
+    /// <param name="tileNumberInTileset"></param>
+    /// <returns></returns>
+    private TiledObject GetTileObjectData(int drawTilesetNum, int tileNumberInTileset)
+    {
+        var tileDefinitions = Tilesets[drawTilesetNum].Tiles;
+        TiledObject tileDefFound = null;
+        foreach (var tileDefinition in tileDefinitions)
+        {
+            if (tileDefinition.id == tileNumberInTileset)
+                tileDefFound = tileDefinition.objects[0];
+        }
+
+        return tileDefFound;
+    }
+
+    //We need to subtract The amount of tiles prior to this, due to multiple tilesets in the map
+    private int GetTileNumberFromTileGid(int tileGid, int tilesetNum)
+    {
+        return tileGid - TileMap.Tilesets[tilesetNum].firstgid;
+    }
+
+    private int GetTileColumn(int tileNumberInTileset, int drawTilesetNum)
+    {
+        return tileNumberInTileset % Tilesets[drawTilesetNum].Columns;
+    }
+
+    private int GetTileRow(int tileNumberInTileset, int drawTilesetNum)
+    {
+        return (int)Math.Floor((double)tileNumberInTileset / (double)Tilesets[drawTilesetNum].Columns);
+    }
+
+    //Determine which tileset we should use for this tile (for when using multiple tilesets in the layer.
+    private int GetTilesetNumberFromTileGid(int tileGid)
+    {
+        var drawTilesetNum = -1;
+        var it = 0;
+        while (drawTilesetNum == -1)
+        {
+            //If There is not more tilesets, use the current one as it must be this one.
+            if (it + 1 >= Tilesets.Length)
+            {
+                drawTilesetNum = it;
+                break;
+            }
+
+            var firstTilesetGid = TileMap.Tilesets[it].firstgid;
+            if (tileGid >= firstTilesetGid && tileGid < TileMap.Tilesets[it + 1].firstgid)
+            {
+                drawTilesetNum = it;
+                break;
+            }
+
+            it++;
+        }
+
+        return drawTilesetNum;
     }
 
     public void Update(GameTime gameTime)
@@ -183,8 +228,7 @@ public class TiledTmxContent
         SolidTiles.ForEach(tile => tile.Draw(spriteBatch));
         Actors.ForEach(actor => actor.Draw(spriteBatch));
     }
-    
-    
+
 
     #region Methods
 

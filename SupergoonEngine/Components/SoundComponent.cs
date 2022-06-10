@@ -8,9 +8,9 @@ public class SoundComponent : Component
 {
     public static SoundGameComponent _soundGameComponent;
 
-    public void PlaySfx()
+    public void PlaySfx(string sfxName, float soundLevel = 1)
     {
-        _soundGameComponent.PlaySfx();
+        _soundGameComponent.PlaySfx(sfxName, soundLevel);
         
         
     }

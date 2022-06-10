@@ -33,6 +33,9 @@ Assets (Tiles)
 Coin Sound
 [Creative Commons License](https://freesound.org/people/bradwesson/sounds/135936/)
 
+Jump Sound
+[Creative Commons License](https://freesound.org/people/se2001/sounds/528568/)
+
 
 ## Authors
 

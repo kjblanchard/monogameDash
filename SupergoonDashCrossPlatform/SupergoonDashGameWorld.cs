@@ -12,7 +12,7 @@ namespace SupergoonDashCrossPlatform
             base.Initialize();
             TiledActorFactory.NameToSpawnFunction["player"] = Player.FactoryFunction;
             TiledActorFactory.NameToSpawnFunction["coin"] = Coin.FactoryFunction;
-            // TiledActorFactory.NameToSpawnFunction["spikel"] = Spike.FactoryFunction;
+            TiledActorFactory.NameToSpawnFunction["spikel"] = Spike.FactoryFunction;
         }
 
         protected override void BeginRun()
