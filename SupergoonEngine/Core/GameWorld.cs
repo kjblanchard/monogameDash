@@ -78,6 +78,13 @@ public class GameWorld : Game
             // _graphicsGameComponent.SpriteScale * CameraGameComponent.MainCamera.GetCameraTransformMatrix());
             _graphicsGameComponent.SpriteScale);
         _levelStateMachine.Draw(_spriteBatch);
+        
+        
+        
+        
+        
+        
+        
         _spriteBatch.End();
 
 
@@ -86,6 +93,7 @@ public class GameWorld : Game
             DepthStencilState.Default, RasterizerState.CullNone, null, null);
         _imGuiGameComponent.Draw(_spriteBatch);
         _spriteBatch.End();
+        
 
         base.Draw(gameTime);
     }

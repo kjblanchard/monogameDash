@@ -48,7 +48,7 @@ public class Coin : Actor
             if (player != null)
                 player.OnCoinOverlap();
             _soundComponent.PlaySfx("coin");
-            this.Enabled = false;
+            Enabled = false;
         }
     }
 }

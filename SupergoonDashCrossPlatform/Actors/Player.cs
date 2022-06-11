@@ -84,6 +84,9 @@ public class Player : Actor
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
         playerStartedMoving = false;
 
+        SupergoonDashGameWorld.Attempts++;
+        SupergoonDashGameWorld.MaxSpeed = 200;
+
         base.Initialize();
     }
 
@@ -149,6 +152,9 @@ public class Player : Actor
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
+
+        if (playerStartedMoving && !_isDead)
+            SupergoonDashGameWorld.TimeThisLevel += gameTime.ElapsedGameTime;
 
         if (playerStartedMoving)
             _rigidbodyComponent._velocity.X =
@@ -256,5 +262,7 @@ public class Player : Actor
         _coinsCollected++;
         _rigidbodyComponent.OverrideGravityMax(_coinsCollected * _coinSpeedAddition);
         _rigidbodyComponent._velocity.X += _coinSpeedAddition;
+        SupergoonDashGameWorld.CoinAmount = _coinsCollected;
+        SupergoonDashGameWorld.MaxSpeed = 200 + (_coinsCollected * _coinSpeedAddition);
     }
 }
