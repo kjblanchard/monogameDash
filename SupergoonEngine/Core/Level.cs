@@ -52,6 +52,7 @@ public class Level : IState
 
     public void Reset()
     {
+        
         LoadedContents.Reset();
     }
 }

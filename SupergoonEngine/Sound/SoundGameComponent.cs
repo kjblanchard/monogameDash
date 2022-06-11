@@ -10,6 +10,8 @@ public class SoundGameComponent : GameComponent
 
     private FMOD.Studio.System _fmodStudioSystem;
 
+    private EventInstance _currentBgm = new EventInstance();
+
     public SoundGameComponent(Game game) : base(game)
     {
         InitializeFmodStudio();
@@ -36,16 +38,20 @@ public class SoundGameComponent : GameComponent
         
     }
 
-    public void PlayBgm()
+    public void PlayBgm(string bgmName, float volumeLevel = 1)
     {
+        //If there is a current bgm, stop it from playing
+        if (_currentBgm.isValid())
+            _currentBgm.stop(STOP_MODE.IMMEDIATE);
         //get an event from the bank into a event description
-        _fmodStudioSystem.getEvent("event:/level1", out var description);
+        _fmodStudioSystem.getEvent($"event:/{bgmName}", out var description);
         //load the song into memory
         description.loadSampleData();
         //create a playable instance
         description.createInstance(out var tempInstance);
         //play the song
         tempInstance.start();
+        _currentBgm = tempInstance;
     }
 
     public void PlaySfx(string sfxName, float volumeLevel = 1)

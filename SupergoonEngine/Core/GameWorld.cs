@@ -46,7 +46,6 @@ public class GameWorld : Game
         AttachAllGameComponents();
         //Add in the statics for the cameras to be used in the game.
         _graphicsGameComponent.Initialize();
-        _soundGameComponent.PlayBgm();
         _levelStateMachine = new LevelStateMachine(_tiledGameComponent);
         
         //Try 30fps
@@ -138,5 +137,10 @@ public class GameWorld : Game
         {
             Components.Add(gameComponent);
         }
+    }
+
+    public virtual void Reset()
+    {
+        
     }
 }

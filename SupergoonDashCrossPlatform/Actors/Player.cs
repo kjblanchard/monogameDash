@@ -85,6 +85,7 @@ public class Player : Actor
             if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
             {
                 var currentLevel = _gameWorld.LevelStateMachine.GetState(LevelTags.Level1);
+                _gameWorld.Reset();
                 currentLevel.Reset();
             }
             return;
@@ -220,6 +221,12 @@ public class Player : Actor
     {
         _soundComponent.PlaySfx("playerDeath");
         Visible = false;
+        _isDead = true;
+    }
+
+    public void PlayerWin()
+    {
+        _soundComponent.PlayBgm("levelWin");
         _isDead = true;
     }
 }

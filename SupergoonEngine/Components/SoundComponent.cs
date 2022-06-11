@@ -12,7 +12,11 @@ public class SoundComponent : Component
     {
         _soundGameComponent.PlaySfx(sfxName, soundLevel);
         
-        
+    }
+
+    public void PlayBgm(string bgmName, float soundLevel = 1)
+    {
+        _soundGameComponent.PlayBgm(bgmName, soundLevel);
     }
 
     public SoundComponent(GameObject parent, Vector2 offset = new Vector2()) : base(parent, offset)

@@ -25,7 +25,7 @@ public class BoxColliderComponent : Component
         _size = size;
         this.UpdateOrder = 10;
         AddTag(EngineTags.ComponentTags.BoxCollider);
-        Debug = true;
+        // Debug = true;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
