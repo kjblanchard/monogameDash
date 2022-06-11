@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
@@ -59,5 +60,6 @@ public class Level : IState
     {
         
         LoadedContents.Reset();
+        ImGuiGameComponent.Instance.Reset();
     }
 }

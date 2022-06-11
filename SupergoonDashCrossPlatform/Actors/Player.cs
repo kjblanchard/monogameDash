@@ -23,24 +23,24 @@ public class Player : Actor
 
     private SoundComponent _soundComponent;
 
-    [ImGuiWrite(typeof(float), true, "slow run vel", Min = 0, Max = 200)]
     private float slowRunTreshold = 100;
 
-    [ImGuiWrite(typeof(float), true, "Slow run anim speed", Min = 0, Max = 5)]
     private float slowRunAnimSpeed = 0.7f;
 
-    [ImGuiWrite(typeof(float), true, "fast run vel", Min = 0, Max = 100)]
     private float fastRunTreshold = 180;
 
     private float fastRunAnimSpeed = 1.30f;
 
-    [ImGuiWrite(typeof(float), true, "Run speed", Min = 0, Max = 20)]
-    private float runSpeed = 6.5f;
+    [ImGuiWrite(typeof(float), true, "Run speed", Min = 220, Max = 400)]
+    private float runSpeed = 320;
 
-    private float jumpAddition = 10;
+    [ImGuiWrite(typeof(float), true, "Jump addition", Min = 520, Max = 800)]
+    private float jumpAddition = 620;
 
+    [ImGuiWrite(typeof(float), true, "Jump length max", Min = 0, Max = 5)]
     private float _jumpLengthMax = 0.245f;
 
+    [ImGuiWrite(typeof(float), true, "jump length", Min = 0, Max = 200)]
     private float _jumpLength;
 
     private CameraComponent _cameraComponent;
@@ -63,9 +63,8 @@ public class Player : Actor
     {
         actorParams.AsepriteDocString = "player";
         actorParams.BoxColliderOffset = new Vector2(6, 10);
-        actorParams.BoxSize = new Point(20, 22);
+        actorParams.BoxSize = new Point(19, 20);
         var player = new Player(actorParams);
-        player.Debug = true;
         player.Initialize();
         player.jumpHeight = 300;
         return player;
@@ -107,7 +106,7 @@ public class Player : Actor
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
         {
             playerStartedMoving = true;
-            var movementForce = new Vector2(runSpeed, 0);
+            var movementForce = new Vector2(runSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             //If you arent moving, get a boost in speed
             if (_rigidbodyComponent._velocity.X == 0)
@@ -123,7 +122,7 @@ public class Player : Actor
             (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
              _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left)))
         {
-            var movementForce = new Vector2(-runSpeed, 0);
+            var movementForce = new Vector2(-runSpeed* (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             //If you arent moving, get a boost in speed
             if (_rigidbodyComponent._velocity.X == 0)
@@ -146,7 +145,7 @@ public class Player : Actor
         {
             if (_jumpLength <= _jumpLengthMax)
             {
-                _rigidbodyComponent.AddForce(new Vector2(0, -jumpAddition));
+                _rigidbodyComponent.AddForce(new Vector2(0, -jumpAddition* (float)gameTime.ElapsedGameTime.TotalSeconds));
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }

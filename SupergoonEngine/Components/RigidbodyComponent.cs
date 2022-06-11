@@ -15,7 +15,8 @@ public class RigidbodyComponent : Component
     private BoxColliderComponent _collider;
 
     //How fast it is actually moving now.
-    [ImGuiReadProperty("PlayerVelocity")] public Vector2 _velocity;
+    [ImGuiReadProperty("PlayerVelocity")] 
+    public Vector2 _velocity;
 
     //How much it is going to start moving (force)
     public Vector2 _acceleration;
@@ -38,7 +39,6 @@ public class RigidbodyComponent : Component
     public bool _gravityXOverride = false;
     public float _gravityXSpeedOverride = 0;
 
-    [ImGuiWrite(typeof(float), true, "Jump height", Min = 0, Max = 500)]
     private float _jumpHeight;
 
 

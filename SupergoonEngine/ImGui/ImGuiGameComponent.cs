@@ -19,7 +19,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
 
     public static ImGuiGameComponent Instance;
     //ImGUI
-    private bool _isEnabled = false;
+    private bool _isEnabled = true;
     private RenderTarget2D _imguiRenderTarget;
     private Texture2D _xnaTexture;
     private IntPtr _imGuiTexture;
@@ -28,6 +28,13 @@ public class ImGuiGameComponent : GameComponent, IDraw
     private List<Vector2ImguiDisplay> Vector2Watches = new();
     private List<FloatImguiWriteDisplay> FloatWrites = new();
     private List<BoolImGuiDisplay> BoolWrites = new();
+
+    public void Reset()
+    {
+        Vector2Watches.Clear();
+        FloatWrites.Clear();
+        BoolWrites.Clear();
+    }
 
 
     //ImGui Layout stuff from demo
