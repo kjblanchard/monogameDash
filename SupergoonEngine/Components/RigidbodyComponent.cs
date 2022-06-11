@@ -10,6 +10,7 @@ namespace SupergoonDashCrossPlatform.SupergoonEngine.Components;
 public class RigidbodyComponent : Component
 {
     public bool GravityEnabled;
+    public bool FrictionEnabled;
     private static Gravity _gravity;
     private BoxColliderComponent _collider;
 
@@ -23,12 +24,19 @@ public class RigidbodyComponent : Component
     public event CollisionEventArgs RightCollisionEvent;
     public event CollisionEventArgs BottomCollisionJustStartedEvent;
     public event CollisionEventArgs BottomCollisionEvent;
+    public event CollisionEventArgs LeftCollisionJustStartedEvent;
+    public event CollisionEventArgs LeftCollisionEvent;
+    public event CollisionEventArgs TopCollisionJustStartedEvent;
+    public event CollisionEventArgs TopCollisionEvent;
 
     public delegate void CollisionEventArgs();
 
     private static readonly int _directionsToCheck = Enum.GetNames(typeof(Directions)).Length;
     private bool[] _collisionsLastFrame = new bool[_directionsToCheck];
     private bool[] _collisionsThisFrame = new bool[_directionsToCheck];
+
+    public bool _gravityXOverride = false;
+    public float _gravityXSpeedOverride = 0;
 
     [ImGuiWrite(typeof(float), true, "Jump height", Min = 0, Max = 500)]
     private float _jumpHeight;
@@ -52,6 +60,13 @@ public class RigidbodyComponent : Component
         UpdateCollisionsThisFrame();
         _gravity.ApplyGravity(this, gameTime);
         ApplyVelocity(gameTime);
+    }
+
+    //TODO this should be switched around in the future, this allows for more speed with coins.
+    public void OverrideGravityMax(float gravitySpeedAddition)
+    {
+        _gravityXOverride = true;
+        _gravityXSpeedOverride = gravitySpeedAddition;
     }
 
     private void UpdateCollisionsThisFrame()
@@ -84,7 +99,11 @@ public class RigidbodyComponent : Component
     {
         switch (direction)
         {
-            case Directions.Top:
+            case Directions.Top when collisionJustStarted:
+                TopCollisionJustStartedEvent?.Invoke();
+                break;
+            case Directions.Top when !collisionJustStarted:
+                TopCollisionEvent?.Invoke();
                 break;
             case Directions.Right when collisionJustStarted:
                 RightCollisionJustStartedEvent?.Invoke();
@@ -98,7 +117,11 @@ public class RigidbodyComponent : Component
             case Directions.Down when !collisionJustStarted:
                 BottomCollisionEvent?.Invoke();
                 break;
-            case Directions.Left:
+            case Directions.Left when collisionJustStarted:
+                LeftCollisionJustStartedEvent?.Invoke();
+                break;
+            case Directions.Left when !collisionJustStarted:
+                LeftCollisionEvent?.Invoke();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
@@ -169,7 +192,7 @@ public class RigidbodyComponent : Component
                         collision = true;
                         Parent._location.Y++;
                         _velocity.Y = 0;
-                        CollisionEvent(Directions.Down);
+                        CollisionEvent(Directions.Top);
                     }
                 });
                 if (collision)

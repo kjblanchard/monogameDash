@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
@@ -15,6 +16,8 @@ public class Level : IState
     public string _tmxLevelToLoad;
     public TiledTmxContent LoadedContents;
 
+    public List<Component> LevelComponents = new();
+
     public Level(string tmxLevelToLoad = null)
     {
         _tmxLevelToLoad = tmxLevelToLoad;
@@ -23,6 +26,7 @@ public class Level : IState
 
     public override void Update(GameTime gameTime)
     {
+        LevelComponents.ForEach(comp => comp.Update(gameTime));
         _tiledGameComponent.LoadedTmxContent.Update(gameTime);
     }
 
@@ -35,6 +39,7 @@ public class Level : IState
     public override void Draw(SpriteBatch spriteBatch)
     
     {
+        LevelComponents.ForEach(comp => comp.Draw(spriteBatch));
         _tiledGameComponent.LoadedTmxContent.Draw(spriteBatch);
     }
 

@@ -46,6 +46,12 @@ public class Player : Actor
 
     private bool _isDead;
 
+    private float _minXVel = 70;
+    private bool playerStartedMoving;
+
+    private byte _coinsCollected;
+    private const int _coinSpeedAddition = 20;
+
     private Player(ActorParams actorParams) : base(actorParams) 
     {
         AddTag(EngineTags.GameObjectTags.Player);
@@ -72,9 +78,13 @@ public class Player : Actor
         // _cameraComponent.Initialize();
         AddComponent(_cameraComponent);
         _rigidbodyComponent.GravityEnabled = true;
+        _rigidbodyComponent.RightCollisionJustStartedEvent += PlayerDeath;
+        _rigidbodyComponent.TopCollisionJustStartedEvent += PlayerDeath;
         _spriteComponent.DrawOrder = 0.7f;
         AddAnimationTransitions();
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
+        playerStartedMoving = false;
+        
         base.Initialize();
     }
 
@@ -94,6 +104,7 @@ public class Player : Actor
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Right) ||
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
         {
+            playerStartedMoving = true;
             var movementForce = new Vector2(runSpeed, 0);
 
             //If you arent moving, get a boost in speed
@@ -101,6 +112,7 @@ public class Player : Actor
             {
                 movementForce.X *= 5;
             }
+
 
             _rigidbodyComponent.AddForce(movementForce);
         }
@@ -135,6 +147,10 @@ public class Player : Actor
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
+
+        if (playerStartedMoving)
+            _rigidbodyComponent._velocity.X =
+                MathHelper.Clamp(_rigidbodyComponent._velocity.X, _minXVel, float.MaxValue);
 
         if (_rigidbodyComponent._velocity.X > fastRunTreshold || _rigidbodyComponent._velocity.X < -fastRunTreshold)
             _animationComponent._animationSpeed = fastRunAnimSpeed;
@@ -228,5 +244,13 @@ public class Player : Actor
     {
         _soundComponent.PlayBgm("levelWin");
         _isDead = true;
+    }
+
+    public void OnCoinOverlap()
+    {
+        _coinsCollected++;
+        _rigidbodyComponent.OverrideGravityMax(_coinsCollected*_coinSpeedAddition);
+        _rigidbodyComponent._velocity.X += _coinSpeedAddition;
+
     }
 }

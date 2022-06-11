@@ -8,11 +8,10 @@ namespace SupergoonDashCrossPlatform.Actors;
 public class Coin : Actor
 {
     private SoundComponent _soundComponent;
-    
-    
+
+
     public new static GameObject FactoryFunction(ActorParams actorParams)
     {
-
         actorParams.AsepriteDocString = "coin";
         actorParams.BoxSize = new Point(32, 32);
 
@@ -45,9 +44,11 @@ public class Coin : Actor
     {
         if (overlapee.HasTag(EngineTags.GameObjectTags.Player))
         {
+            var player = (Player)overlapee;
+            if (player != null)
+                player.OnCoinOverlap();
             _soundComponent.PlaySfx("coin");
             this.Enabled = false;
-
         }
     }
 }
