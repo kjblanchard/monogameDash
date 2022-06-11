@@ -19,6 +19,7 @@ public class ImGuiGameComponent : GameComponent, IDraw
 
     public static ImGuiGameComponent Instance;
     //ImGUI
+    private bool _isEnabled = false;
     private RenderTarget2D _imguiRenderTarget;
     private Texture2D _xnaTexture;
     private IntPtr _imGuiTexture;
@@ -65,6 +66,8 @@ public class ImGuiGameComponent : GameComponent, IDraw
     public override void Update(GameTime gameTime)
     {
         //ImGui
+        if (!_isEnabled)
+            return;
         _graphicsDevice.SetRenderTarget(_imguiRenderTarget);
         _graphicsDevice.Clear(Color.Transparent);
         
@@ -144,6 +147,8 @@ public class ImGuiGameComponent : GameComponent, IDraw
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        if (!_isEnabled)
+            return;
         spriteBatch.Draw(_imguiRenderTarget, Vector2.Zero, new Rectangle(0, 0, 1920, 1080), Color.White);
     }
 

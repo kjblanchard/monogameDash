@@ -10,6 +10,9 @@
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Desktop|AnyCPU' ">
       <OutputPath>bin\Desktop\</OutputPath>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Rel|AnyCPU' ">
+      <OutputPath>bin\Rel\</OutputPath>
+    </PropertyGroup>
     <Import Project="SupergoonEngine.projitems" Label="Shared" />
     <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
 </Project>

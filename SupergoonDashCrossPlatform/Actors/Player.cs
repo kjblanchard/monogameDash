@@ -28,8 +28,9 @@ public class Player : Actor
 
     [ImGuiWrite(typeof(float), true, "Slow run anim speed", Min = 0, Max = 5)]
     private float slowRunAnimSpeed = 0.7f;
+
     [ImGuiWrite(typeof(float), true, "fast run vel", Min = 0, Max = 100)]
-    private float fastRunTreshold = 200;
+    private float fastRunTreshold = 180;
 
     private float fastRunAnimSpeed = 1.30f;
 
@@ -52,7 +53,7 @@ public class Player : Actor
     private byte _coinsCollected;
     private const int _coinSpeedAddition = 20;
 
-    private Player(ActorParams actorParams) : base(actorParams) 
+    private Player(ActorParams actorParams) : base(actorParams)
     {
         AddTag(EngineTags.GameObjectTags.Player);
     }
@@ -60,7 +61,6 @@ public class Player : Actor
     // public new static GameObject FactoryFunction(Vector2 location, TiledProperty[] tags = null, Rectangle textureRect = new Rectangle(), Texture2D texture = null)
     public new static GameObject FactoryFunction(ActorParams actorParams)
     {
-
         actorParams.AsepriteDocString = "player";
         actorParams.BoxColliderOffset = new Vector2(6, 10);
         actorParams.BoxSize = new Point(20, 22);
@@ -84,7 +84,7 @@ public class Player : Actor
         AddAnimationTransitions();
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
         playerStartedMoving = false;
-        
+
         base.Initialize();
     }
 
@@ -98,8 +98,10 @@ public class Player : Actor
                 _gameWorld.Reset();
                 currentLevel.Reset();
             }
+
             return;
         }
+
         base.Update(gameTime);
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Right) ||
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
@@ -117,8 +119,9 @@ public class Player : Actor
             _rigidbodyComponent.AddForce(movementForce);
         }
 
-        if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
-            _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left))
+        if (playerStartedMoving &&
+            (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
+             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left)))
         {
             var movementForce = new Vector2(-runSpeed, 0);
 
@@ -198,10 +201,12 @@ public class Player : Actor
             new AnimationTransition(RunningAnimString, RunningToIdle);
         idleAnimation.Transitions.Add(idleToFallingTransition);
         idleAnimation.Transitions.Add(idleToRunTransition);
-        
+
         //Jumping
         var jumpingToFallingTransition =
-            new AnimationTransition(FallingAnimString, () => _playerControllerComponent.PlayerController.IsButtonReleased(ControllerButtons.A) || _jumpLength >= _jumpLengthMax);
+            new AnimationTransition(FallingAnimString,
+                () => _playerControllerComponent.PlayerController.IsButtonReleased(ControllerButtons.A) ||
+                      _jumpLength >= _jumpLengthMax);
         jumpingAnimation.Transitions.Add(jumpingToFallingTransition);
 
         //Falling
@@ -211,9 +216,10 @@ public class Player : Actor
         //Running
         var runningToIdleTransition =
             // new AnimationTransition(IdleAnimString, () => _rigidbodyComponent._velocity.X == 0);
-            new AnimationTransition(IdleAnimString, () => (_rigidbodyComponent._velocity.X < 55 &&  _rigidbodyComponent._velocity.X>0) 
-                                                          || (_rigidbodyComponent._velocity.X > -55 && _rigidbodyComponent._velocity.X < 0) ||
-                                                          _rigidbodyComponent._velocity.X == 0);
+            new AnimationTransition(IdleAnimString, () =>
+                (_rigidbodyComponent._velocity.X < 55 && _rigidbodyComponent._velocity.X > 0)
+                || (_rigidbodyComponent._velocity.X > -55 && _rigidbodyComponent._velocity.X < 0) ||
+                _rigidbodyComponent._velocity.X == 0);
         var runningToJumpingTransition = new AnimationTransition(FallingAnimString, () => isFalling);
         runningAnimation.Transitions.Add(runningToIdleTransition);
         runningAnimation.Transitions.Add(runningToJumpingTransition);
@@ -228,7 +234,7 @@ public class Player : Actor
         // if (_rigidbodyComponent._velocity.X != 0)
         //Handle staying in animation too long.
         if (_rigidbodyComponent._velocity.X > 55 && _rigidbodyComponent._velocity.X > 0 ||
-            _rigidbodyComponent._velocity.X < -55 && _rigidbodyComponent._velocity.X < 0) 
+            _rigidbodyComponent._velocity.X < -55 && _rigidbodyComponent._velocity.X < 0)
             return true;
         return false;
     }
@@ -249,8 +255,7 @@ public class Player : Actor
     public void OnCoinOverlap()
     {
         _coinsCollected++;
-        _rigidbodyComponent.OverrideGravityMax(_coinsCollected*_coinSpeedAddition);
+        _rigidbodyComponent.OverrideGravityMax(_coinsCollected * _coinSpeedAddition);
         _rigidbodyComponent._velocity.X += _coinSpeedAddition;
-
     }
 }
