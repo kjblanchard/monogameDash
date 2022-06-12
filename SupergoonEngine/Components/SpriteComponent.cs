@@ -65,18 +65,10 @@ public class SpriteComponent : Component
         _drawDestinationSize = new Point(32, 32);
     }
 
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent.Location + _offset).ToPoint();
-        // _drawDestinationLocation = Parent._location.ToPoint() + _offset.ToPoint();
-        
-    }
-
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
+        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent.Location + _offset).ToPoint();
         spriteBatch.Draw(_texture,
             new Rectangle(_drawDestinationLocation, _drawDestinationSize),
             new Rectangle(_textureSourceLocation, _textureSourceSize),
