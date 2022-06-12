@@ -14,7 +14,7 @@ public class SolidTile : GameObject
 
     public SolidTile(Vector2 location, Rectangle sourceTextureRect, Texture2D texture, float drawOrder, Point boxSize, Vector2 offset = new Vector2() )
     {
-        _location = location;
+        Location = location;
         _spriteComponent = new SpriteComponent(sourceTextureRect, texture, this);
         _spriteComponent.DrawOrder = drawOrder;
         //Use half height for now. TODO this needs to be altered.

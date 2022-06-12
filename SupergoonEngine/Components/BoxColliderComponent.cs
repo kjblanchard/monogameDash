@@ -18,7 +18,7 @@ public class BoxColliderComponent : Component
     public event OverlapEventArgs OverlapEvent;
     public delegate void OverlapEventArgs(GameObject overlapee);
     public Point _size;
-    public Rectangle Bounds => new Rectangle(Parent._location.ToPoint() + _offset.ToPoint(), _size);
+    public Rectangle Bounds => new Rectangle(Parent.Location.ToPoint() + _offset.ToPoint(), _size);
 
     public BoxColliderComponent(GameObject parent, Point size, Vector2 offset = new()) : base(parent, offset)
     {

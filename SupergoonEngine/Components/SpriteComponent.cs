@@ -69,7 +69,7 @@ public class SpriteComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent._location + _offset).ToPoint();
+        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent.Location + _offset).ToPoint();
         // _drawDestinationLocation = Parent._location.ToPoint() + _offset.ToPoint();
         
     }

@@ -16,7 +16,7 @@ public class CameraBoom
 
     public void KeepCameraAtHalfScreen()
     {
-        var diff = _target._location.X - _camera.Location.X;
+        var diff = _target.Location.X - _camera.Location.X;
         var middle_screen_x = _camera.GetWorldSize().X / 2;
         //Try moving Right if needed if the camera has room
         var noRoom = _camera.LevelWidth - _camera.GetWorldSize().X;

@@ -114,7 +114,8 @@ public class GameWorld : Game
             InputGameComponent, _imGuiGameComponent, _cameraGameComponent);
 
         //Set the gameobject static somewhere TODO put this in a better place.
-        GameObject._gameWorld = this;
+        GameObject.GameWorld = this;
+        Component.GameWorld = this;
         Component.ImGuiGameComponent = _imGuiGameComponent;
         SoundComponent._soundGameComponent = _soundGameComponent;
     }

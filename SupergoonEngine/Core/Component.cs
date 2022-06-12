@@ -7,8 +7,20 @@ using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent
+public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadContent, IBeginRun
 {
+    /// <summary>
+    /// Used to set the gameworld of the gameobject.
+    /// </summary>
+    public static GameWorld GameWorld
+    {
+        set => _gameWorld = value;
+    }
+    /// <summary>
+    /// The gameworld of the game.
+    /// </summary>
+   protected static GameWorld _gameWorld;
+    
     //TODO is this needed here?
     public static ImGuiGameComponent ImGuiGameComponent;
     
@@ -80,6 +92,10 @@ public abstract class Component : ITags, IInitialize, IUpdate, IDraw, ILoadConte
     }
 
     public virtual void LoadContent()
+    {
+    }
+
+    public virtual void BeginRun()
     {
     }
 }

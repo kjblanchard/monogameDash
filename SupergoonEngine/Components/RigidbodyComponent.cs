@@ -48,7 +48,7 @@ public class RigidbodyComponent : Component
     {
         GravityEnabled = gravityEnabled;
         UpdateOrder = EngineTags.ComponentTags.RigidBody;
-        _gravity ??= GameObject._gameWorld.PhysicsGameComponent.Gravity;
+        _gravity ??= _gameWorld.PhysicsGameComponent.Gravity;
         _collider = collider;
         Debug = false;
         _jumpHeight = jumpHeight;
@@ -147,7 +147,7 @@ public class RigidbodyComponent : Component
             while (yStep >= 1)
             {
                 //Temporarily add 1 to Y and check for collisions
-                Parent._location.Y++;
+                Parent.Location.Y++;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
                 {
@@ -160,7 +160,7 @@ public class RigidbodyComponent : Component
                     {
                         yStep = 0;
                         collision = true;
-                        Parent._location.Y--;
+                        Parent.Location.Y--;
                         _velocity.Y = 0;
                         CollisionEvent(Directions.Down);
                     }
@@ -177,7 +177,7 @@ public class RigidbodyComponent : Component
             while (yStep <= -1)
             {
                 //Temporarily add 1 to Y and check for collisions
-                Parent._location.Y--;
+                Parent.Location.Y--;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
                 {
@@ -190,7 +190,7 @@ public class RigidbodyComponent : Component
                     {
                         yStep = 0;
                         collision = true;
-                        Parent._location.Y++;
+                        Parent.Location.Y++;
                         _velocity.Y = 0;
                         CollisionEvent(Directions.Top);
                     }
@@ -229,7 +229,7 @@ public class RigidbodyComponent : Component
         {
             while (xStep >= 1)
             {
-                Parent._location.X++;
+                Parent.Location.X++;
                 bool collision = false;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
@@ -242,7 +242,7 @@ public class RigidbodyComponent : Component
                     if (sourceRect.Intersects(tileCollider.Bounds))
                     {
                         xStep = 0;
-                        Parent._location.X--;
+                        Parent.Location.X--;
                         _velocity.X = 0;
                         collision = true;
                         CollisionEvent(Directions.Right);
@@ -258,7 +258,7 @@ public class RigidbodyComponent : Component
         {
             while (xStep <= -1)
             {
-                Parent._location.X--;
+                Parent.Location.X--;
                 bool collision = false;
                 var tilesToCheck = _gravity._tiledGameComponent.LoadedTmxContent.SolidTiles;
                 tilesToCheck.ForEach(solidTile =>
@@ -271,7 +271,7 @@ public class RigidbodyComponent : Component
                     if (sourceRect.Intersects(tileCollider.Bounds))
                     {
                         xStep = 0;
-                        Parent._location.X++;
+                        Parent.Location.X++;
                         _velocity.X = 0;
                         collision = true;
                         CollisionEvent(Directions.Right);

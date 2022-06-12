@@ -16,7 +16,7 @@ public class Tile : GameObject
     public Tile(Vector2 location, Rectangle sourceTextureRect, Texture2D texture, float drawOrder)
     {
         _spriteComponent = new SpriteComponent(sourceTextureRect, texture, this);
-        _location = location;
+        Location = location;
         _spriteComponent.DrawOrder = drawOrder;
         AddComponent(_spriteComponent);
     }

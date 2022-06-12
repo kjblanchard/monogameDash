@@ -28,7 +28,7 @@ public class Actor : GameObject
     /// <param name="actorParams"></param>
     public Actor(ActorParams actorParams)
     {
-        _location = actorParams.Location;
+        Location = actorParams.Location;
         _spriteComponent = new SpriteComponent(this);
         _boxColliderComponent = new BoxColliderComponent(this, actorParams.BoxSize ,actorParams.BoxColliderOffset);
         _rigidbodyComponent = new RigidbodyComponent(this, _boxColliderComponent, jumpHeight: jumpHeight);
