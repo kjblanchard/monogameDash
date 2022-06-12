@@ -1,7 +1,14 @@
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
+/// <summary>
+/// These tags are used by the engine's Gameobjects or components to determine update order, and to determine what type of gameobject they are for quick(er) lookups at runtime rather than casting.
+/// </summary>
 public struct EngineTags
 {
+    
+    /// <summary>
+    /// Tags that are attached to gameobjects
+    /// </summary>
     public struct GameObjectTags
     {
         public const int Default = 0;
@@ -10,6 +17,9 @@ public struct EngineTags
 
     }
 
+    /// <summary>
+    /// Tags that are attached to components, used for draworder mostly.
+    /// </summary>
     public struct ComponentTags
     {
         public const int Default = 0;
@@ -19,11 +29,5 @@ public struct EngineTags
         public const int Sprite = 5;
         public const int Camera = 6;
         public const int Debug = 99;
-    }
-
-    public struct GameTags
-    {
-        public const int Default = 0;
-        public const int MainCamera = 1;
     }
 }
