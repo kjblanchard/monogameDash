@@ -60,7 +60,7 @@ Death Sound
 
 ## Releases
  - [v0.1.0](tba) June 11 - 2022 - 45 hours of code time.
-   ![Picture didn't load idiot](https://github.com/kjblanchard/monogameDash/blob/master/img/v0.1.0time.png?raw=true)
+   ![Picture didn't load idiot](https://github.com/kjblanchard/monogameDash/releases/tag/v0.1.0)
 
 ## Authors
 
