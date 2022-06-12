@@ -3,6 +3,10 @@
 
 Wanted to start back on some 2d monogame projects as they seem to be the most fun for me, so to update my engine code, going to make a geometry dash clone with monogame
 
+WASD to move
+Space to jump
+Once you start moving, you won't be able to stop.  Coins will increase your max speed.
+
 ![Picture didn't load idiot](https://github.com/kjblanchard/monogameDash/blob/master/img/gif.gif?raw=true)
 
 Most of the actual code is in the SupergoonEngine project.  Then the actual game specific logic (very slim currently) is in the supergoondashcrossplatform project.  The Desktop project has no actual code really, but it will hold some of the build specific dependencies.
