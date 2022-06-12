@@ -66,6 +66,8 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
 
     public virtual void StartState()
     {
+        //TODO get this working differently.
+        Initialize();
     }
 
     public virtual void EndState()

@@ -24,6 +24,7 @@ namespace SupergoonDashCrossPlatform
         public static int MaxSpeed = 0;
         public static int Attempts = 0;
         public static TimeSpan TimeThisLevel = TimeSpan.Zero;
+        public static int CurrentLevel = 1;
 
         protected override void Initialize()
         {
@@ -36,7 +37,7 @@ namespace SupergoonDashCrossPlatform
             //Load ui stuff
             rect = new Texture2D(GraphicsDevice, 160, 50);
             data = new Color[160 * 50];
-            for (int i = 0; i < data.Length; ++i) data[i] = new Color(20, 20, 20, 175);
+            for (int i = 0; i < data.Length; ++i) data[i] = new Color(20, 20, 20, 135);
             rect.SetData(data);
             font = Content.Load<SpriteFont>("Fonts/ui");
         }
@@ -46,13 +47,16 @@ namespace SupergoonDashCrossPlatform
             base.BeginRun();
             _graphicsGameComponent.ApplyResolutionSettings(false);
 
-            var level1 = new Level("level1");
+            var level1 = new Level("level1", "level1");
+            var level2 = new Level("level2", "level2");
             level1.AddTag(LevelTags.Level1);
-            AddLevels(level1);
-            InitializeLevels();
+            level2.AddTag(LevelTags.Level2);
+            AddLevels(level1, level2);
+            // AddLevels(level1);
+            // InitializeLevels();
             //TODO remove this, just there to start the music on restart and start currently.
-            Reset();
             ChangeLevel(LevelTags.Level1);
+            Reset();
         }
 
         public override void Reset()
@@ -60,7 +64,7 @@ namespace SupergoonDashCrossPlatform
             base.Reset();
             GC.Collect();
             CameraGameComponent.MainCamera.Location = Vector3.Zero;
-            _soundGameComponent.PlayBgm("level1");
+            _soundGameComponent.PlayBgm(LevelStateMachine.GetCurrentLevelMusic());
         }
 
         protected override void Draw(GameTime gameTime)
@@ -81,7 +85,7 @@ namespace SupergoonDashCrossPlatform
             var seconds = TimeThisLevel.TotalSeconds - (minutes * 60);
             seconds = Math.Truncate(10000 * seconds) / 10000;
             var timeText = $"Total Level Time: {minutes}:{seconds} ";
-            _spriteBatch.DrawString(font, stingText,coinTextLoc, Color.DarkBlue );
+            _spriteBatch.DrawString(font, stingText,coinTextLoc, Color.Coral );
             _spriteBatch.DrawString(font, deathText,deathTextLoc, Color.Azure );
             _spriteBatch.DrawString(font, timeText,timeTextLoc, Color.Chartreuse );
 

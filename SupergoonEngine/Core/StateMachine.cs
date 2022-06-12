@@ -15,6 +15,10 @@ public abstract class StateMachine<T> : IState where T : IState
 
     protected List<T> States = new();
 
+    //TODO do this differently.
+    private bool stateChanging = false;
+    private int nextLevelTag = 0;
+
     public void InitializeStates()
     {
         States.ForEach(state => state.Initialize());
@@ -22,6 +26,8 @@ public abstract class StateMachine<T> : IState where T : IState
 
     public override void Update(GameTime gameTime)
     {
+        if(stateChanging)
+            InternalChangeState();
         base.Update(gameTime);
         _currentState?.Update(gameTime);
     }
@@ -34,7 +40,17 @@ public abstract class StateMachine<T> : IState where T : IState
 
     public virtual void ChangeState(int tag)
     {
-        var newState = GetState(tag);
+        stateChanging = true;
+        nextLevelTag = tag;
+        if(_currentState == null)
+            InternalChangeState();
+
+    }
+
+    private void InternalChangeState()
+    {
+        stateChanging = false;
+        var newState = GetState(nextLevelTag);
         if (_currentState != null)
         {
             _currentState?.EndState();
@@ -43,5 +59,6 @@ public abstract class StateMachine<T> : IState where T : IState
 
         _currentState = newState;
         _currentState.StartState();
+        
     }
 }

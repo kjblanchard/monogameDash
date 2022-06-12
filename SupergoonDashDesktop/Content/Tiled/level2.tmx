@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="45" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="56">
+ <tileset firstgid="1" source="grass-tilemap-1-export.tsx"/>
+ <tileset firstgid="92" source="spike-coin-tileset.tsx"/>
+ <group id="4" name="bg">
+  <layer id="1" name="Tile Layer 1" width="45" height="9">
+   <data encoding="csv">
+53,54,54,54,54,54,54,54,54,54,54,54,54,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,54,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,28,28,28,28,28,28,28,28,28,28,0,0,28,28,28,28,28,28,28,28,28,28,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,28,54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,
+14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0,0,0,0,15,15,15,0,0,15,15,0,15,15,0,15,15,0,0,0,0,0,0,0,0,15,15
+</data>
+  </layer>
+  <layer id="2" name="solid" width="45" height="9">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,53,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,54,54,54,55,28,28,0,0,0,0,0,0,0,0,0,0,53,54,54,55,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,28,28,0,53,54,54,54,54,54,54,54,54,55,0,0,53,54,54,54,54,54,54,54,55,0,
+0,0,0,0,0,0,1,2,2,3,0,0,0,0,1,2,3,0,0,0,53,54,54,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,0,0,
+0,0,0,0,0,4,0,0,0,0,0,0,0,0,1,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,
+1,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,1,3,0,0,1,2,2,3,0,0,1,3,0,1,3,0,0,1,3,0,0,0,0,0,0,1,2,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,3,0,0
+</data>
+  </layer>
+ </group>
+ <objectgroup id="3" name="actors">
+  <object id="1" name="spikel" gid="92" x="192" y="224" width="32" height="32"/>
+  <object id="2" name="coin" gid="99" x="96" y="224" width="32" height="32"/>
+  <object id="3" name="coin" gid="99" x="32" y="224" width="32" height="32"/>
+  <object id="4" name="coin" gid="99" x="64" y="224" width="32" height="32"/>
+  <object id="5" name="player" x="18.5" y="199">
+   <properties>
+    <property name="asepriteName" value="idle"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="6" name="spikel" gid="92" x="224" y="224" width="32" height="32"/>
+  <object id="7" name="spikel" gid="92" x="256" y="224" width="32" height="32"/>
+  <object id="8" name="spikel" gid="92" x="288" y="224" width="32" height="32"/>
+  <object id="9" name="spikel" gid="92" x="320" y="224" width="32" height="32"/>
+  <object id="21" name="spikel" gid="92" x="416" y="320" width="32" height="32"/>
+  <object id="22" name="spikel" gid="92" x="448" y="320" width="32" height="32"/>
+  <object id="23" name="spikel" gid="92" x="480" y="320" width="32" height="32"/>
+  <object id="24" name="spikel" gid="92" x="512" y="320" width="32" height="32"/>
+  <object id="25" name="spikel" gid="92" x="544" y="320" width="32" height="32"/>
+  <object id="26" name="spikel" gid="92" x="576" y="320" width="32" height="32"/>
+  <object id="27" name="coin" gid="99" x="352" y="224" width="32" height="32"/>
+  <object id="28" name="coin" gid="99" x="384" y="224" width="32" height="32"/>
+  <object id="29" name="coin" gid="99" x="416" y="256" width="32" height="32"/>
+  <object id="30" name="coin" gid="99" x="448" y="288" width="32" height="32"/>
+  <object id="31" name="coin" gid="99" x="480" y="288" width="32" height="32"/>
+  <object id="32" name="spikel" gid="92" x="800" y="320" width="32" height="32"/>
+  <object id="33" name="spikel" gid="92" x="832" y="320" width="32" height="32"/>
+  <object id="34" name="spikel" gid="92" x="864" y="320" width="32" height="32"/>
+  <object id="35" name="spikel" gid="92" x="896" y="320" width="32" height="32"/>
+  <object id="36" name="spikel" gid="92" x="928" y="320" width="32" height="32"/>
+  <object id="37" name="spikel" gid="92" x="960" y="320" width="32" height="32"/>
+  <object id="38" name="spikel" gid="92" x="992" y="320" width="32" height="32"/>
+  <object id="39" name="spikel" gid="92" x="1024" y="320" width="32" height="32"/>
+  <object id="40" name="spikel" gid="92" x="1056" y="320" width="32" height="32"/>
+  <object id="41" name="spikel" gid="92" x="1088" y="320" width="32" height="32"/>
+  <object id="44" name="spikel" gid="92" x="1248.5" y="234.5" width="32" height="32"/>
+  <object id="45" name="spikel" gid="92" x="1248" y="257" width="32" height="32"/>
+  <object id="46" name="spikel" gid="92" x="1152" y="256" width="32" height="32"/>
+  <object id="47" name="spikel" gid="92" x="896" y="224" width="32" height="32"/>
+  <object id="48" name="spikel" gid="92" x="655" y="259.5" width="32" height="32"/>
+  <object id="49" name="spikel" gid="92" x="959.5" y="238" width="32" height="32"/>
+  <object id="50" name="spikel" gid="92" x="1120" y="224" width="32" height="32"/>
+  <object id="51" name="end" type="end" x="1440" y="224">
+   <point/>
+  </object>
+  <object id="52" name="end" type="end" x="1440" y="192">
+   <point/>
+  </object>
+  <object id="53" name="end" type="end" x="1440" y="160">
+   <point/>
+  </object>
+  <object id="54" name="end" type="end" x="1440" y="128">
+   <point/>
+  </object>
+  <object id="55" name="spikel" gid="92" x="1328.5" y="260" width="32" height="32"/>
+ </objectgroup>
+</map>

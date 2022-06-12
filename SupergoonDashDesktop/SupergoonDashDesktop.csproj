@@ -90,5 +90,13 @@
       <Content Include="Content\Tiled\spike-coin-tileset.tsx">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Content\Tiled\grass-tilemap-1-export.tsx" />
+      <Content Include="Content\Tiled\grass-tilemap-1-export.tsx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Content\Tiled\level2.tmx" />
+      <Content Include="Content\Tiled\level2.tmx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

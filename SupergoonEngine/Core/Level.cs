@@ -15,13 +15,15 @@ public class Level : IState
 
     public static TiledGameComponent _tiledGameComponent;
     public string _tmxLevelToLoad;
+    public string _bgmToPlay;
     public TiledTmxContent LoadedContents;
 
     public List<Component> LevelComponents = new();
 
-    public Level(string tmxLevelToLoad = null)
+    public Level(string tmxLevelToLoad = null, string soundToPlay = null)
     {
         _tmxLevelToLoad = tmxLevelToLoad;
+        _bgmToPlay = soundToPlay;
     }
 
 

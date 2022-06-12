@@ -32,20 +32,23 @@ public class Player : Actor
     private float fastRunAnimSpeed = 1.30f;
 
     [ImGuiWrite(typeof(float), true, "Run speed", Min = 220, Max = 400)]
-    private float runSpeed = 320;
+    private readonly float _runSpeed = 320;
 
     [ImGuiWrite(typeof(float), true, "Jump addition", Min = 520, Max = 800)]
-    private float jumpAddition = 620;
+    private readonly float _jumpAddition = 620;
 
     [ImGuiWrite(typeof(float), true, "Jump length max", Min = 0, Max = 5)]
-    private float _jumpLengthMax = 0.245f;
+    private readonly float _jumpLengthMax = 0.245f;
 
-    [ImGuiWrite(typeof(float), true, "jump length", Min = 0, Max = 200)]
+    [ImGuiWrite(typeof(float), true, "Jump length", Min = 0, Max = 200)]
     private float _jumpLength;
 
     private CameraComponent _cameraComponent;
 
     private bool _isDead;
+    private bool _win;
+    private int _currentLevel = 1;
+    private const int _maxLevel = 2;
 
     private float _minXVel = 70;
     private bool playerStartedMoving;
@@ -74,7 +77,8 @@ public class Player : Actor
     {
         _cameraComponent = new CameraComponent(this);
         _soundComponent = new SoundComponent(this);
-        // _cameraComponent.Initialize();
+        //TODO remove both of these and do this differently.
+        _currentLevel = SupergoonDashGameWorld.CurrentLevel;
         AddComponent(_cameraComponent);
         _rigidbodyComponent.GravityEnabled = true;
         _rigidbodyComponent.RightCollisionJustStartedEvent += PlayerDeath;
@@ -83,6 +87,7 @@ public class Player : Actor
         AddAnimationTransitions();
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
         playerStartedMoving = false;
+        Debug = true;
 
         SupergoonDashGameWorld.Attempts++;
         SupergoonDashGameWorld.MaxSpeed = 200;
@@ -96,9 +101,48 @@ public class Player : Actor
         {
             if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
             {
-                var currentLevel = _gameWorld.LevelStateMachine.GetState(LevelTags.Level1);
+                Level level = null;
+                if (_win)
+                {
+                    var tag = 0;
+                    var nextLevel = _currentLevel + 1;
+                    if (nextLevel > _maxLevel)
+                        nextLevel = 1;
+                    tag = nextLevel switch
+                    {
+                        1 => LevelTags.Level1,
+                        2 => LevelTags.Level2,
+                        _ => tag
+                    };
+
+                    _currentLevel = nextLevel;
+                    //TODO remove this and do this differently.
+                    SupergoonDashGameWorld.CurrentLevel = _currentLevel;
+                    SupergoonDashGameWorld.Attempts = 0;
+                    SupergoonDashGameWorld.CoinAmount = 0;
+                    SupergoonDashGameWorld.TimeThisLevel = TimeSpan.Zero;
+                    _gameWorld.LevelStateMachine.ChangeState(tag);
+                    _gameWorld.Reset();
+                    _coinsCollected = 0;
+                    _win = false;
+                    _isDead = false;
+                }
+                else
+                {
+                    switch (_currentLevel)
+                    {
+                        case 1:
+                            level = _gameWorld.LevelStateMachine.GetState(LevelTags.Level1);
+                            break;
+                        case 2:
+                            level = _gameWorld.LevelStateMachine.GetState(LevelTags.Level2);
+                            break;
+                    }
                 _gameWorld.Reset();
-                currentLevel.Reset();
+                level.Reset();
+                SupergoonDashGameWorld.CoinAmount = 0;
+
+                }
             }
 
             return;
@@ -109,7 +153,7 @@ public class Player : Actor
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
         {
             playerStartedMoving = true;
-            var movementForce = new Vector2(runSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
+            var movementForce = new Vector2(_runSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             //If you arent moving, get a boost in speed
             if (_rigidbodyComponent._velocity.X == 0)
@@ -125,7 +169,7 @@ public class Player : Actor
             (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
              _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left)))
         {
-            var movementForce = new Vector2(-runSpeed* (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
+            var movementForce = new Vector2(-_runSpeed* (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             //If you arent moving, get a boost in speed
             if (_rigidbodyComponent._velocity.X == 0)
@@ -148,7 +192,7 @@ public class Player : Actor
         {
             if (_jumpLength <= _jumpLengthMax)
             {
-                _rigidbodyComponent.AddForce(new Vector2(0, -jumpAddition* (float)gameTime.ElapsedGameTime.TotalSeconds));
+                _rigidbodyComponent.AddForce(new Vector2(0, -_jumpAddition* (float)gameTime.ElapsedGameTime.TotalSeconds));
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
@@ -255,6 +299,7 @@ public class Player : Actor
     {
         _soundComponent.PlayBgm("levelWin");
         _isDead = true;
+        _win = true;
     }
 
     public void OnCoinOverlap()

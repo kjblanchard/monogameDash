@@ -50,7 +50,7 @@ public class RigidbodyComponent : Component
         UpdateOrder = EngineTags.ComponentTags.RigidBody;
         _gravity ??= GameObject._gameWorld.PhysicsGameComponent.Gravity;
         _collider = collider;
-        Debug = true;
+        Debug = false;
         _jumpHeight = jumpHeight;
     }
 

@@ -12,14 +12,14 @@ Global
 		Rel|Any CPU = Rel|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Desktop|Any CPU.ActiveCfg = Desktop|Any CPU
-		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Desktop|Any CPU.Build.0 = Desktop|Any CPU
 		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Rel|Any CPU.ActiveCfg = Release|Any CPU
 		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Rel|Any CPU.Build.0 = Release|Any CPU
-		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Desktop|Any CPU.ActiveCfg = Desktop|Any CPU
-		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Desktop|Any CPU.Build.0 = Desktop|Any CPU
+		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Desktop|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA11C2A3-36D2-45B9-BE96-F1F596EEF1D4}.Desktop|Any CPU.Build.0 = Debug|Any CPU
 		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Rel|Any CPU.ActiveCfg = Release|Any CPU
 		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Rel|Any CPU.Build.0 = Release|Any CPU
+		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Desktop|Any CPU.ActiveCfg = Debug|Any CPU
+		{794B27D0-6397-49CA-85EA-23E9D0E9D563}.Desktop|Any CPU.Build.0 = Debug|Any CPU
 		{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}.Desktop|Any CPU.ActiveCfg = Desktop|Any CPU
 		{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}.Desktop|Any CPU.Build.0 = Desktop|Any CPU
 		{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}.Rel|Any CPU.ActiveCfg = Rel|Any CPU
