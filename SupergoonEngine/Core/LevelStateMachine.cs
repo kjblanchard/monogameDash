@@ -11,15 +11,14 @@ public class LevelStateMachine : StateMachine<Level>
         Level.SetTiledGameComponent(tiledGameComponent);
     }
 
-    public string GetCurrentLevelMusic()
-    {
-        return _currentState?._bgmToPlay;
-    }
-
     public void AddLevel(Level level)
     {
         AddState(level);
-        
+    }
+
+    public void RestartLevel()
+    {
+        _currentState.Reset();
     }
     
     

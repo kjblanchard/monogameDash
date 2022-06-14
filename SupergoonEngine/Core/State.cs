@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
-namespace SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
+namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-public class IState : IInitialize, IUpdate, IDraw, ITags
+public class State : IInitialize, IUpdate, IDraw, ITags, IBeginRun, ILoadContent
 {
     #region Configuration
 
@@ -20,6 +21,7 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
 
     public virtual void Initialize()
     {
+        IsInitialized = true;
     }
 
     public virtual void Update(GameTime gameTime)
@@ -66,11 +68,17 @@ public class IState : IInitialize, IUpdate, IDraw, ITags
 
     public virtual void StartState()
     {
-        //TODO get this working differently.
-        Initialize();
     }
 
     public virtual void EndState()
+    {
+    }
+
+    public virtual void BeginRun()
+    {
+    }
+
+    public virtual void LoadContent()
     {
     }
 }

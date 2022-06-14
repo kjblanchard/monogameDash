@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Graphics;
@@ -27,7 +28,8 @@ public class GraphicsGameComponent : GameComponent
     {
         base.Initialize();
         // _windowSize = new Point(1280,960);
-        _windowSize = new Point(1920,1080);
+        // _windowSize = new Point(1920,1080);
+        _windowSize = new Point(2048,1152);
         // _worldSize = new Point(640,380);
         _worldSize = new Point(512,288);
         
@@ -48,9 +50,13 @@ public class GraphicsGameComponent : GameComponent
             : _windowSize;
         _graphics.PreferredBackBufferWidth = screenSize.X;
         _graphics.PreferredBackBufferHeight = screenSize.Y;
+         _graphics.PreferMultiSampling = true;
         _graphics.ApplyChanges();
-        _graphics.PreferMultiSampling = true;
         _graphicsDevice.Viewport = CalculateViewport(screenSize);
+
+        // var sgGame = (SupergoonDashGameWorld)Game;
+        // //Testing this.
+        // sgGame._renderTarget2D = new RenderTarget2D(_graphicsDevice, _worldSize.X, _worldSize.Y);
         _spriteScale = Matrix.CreateScale(
             (float)_graphicsDevice.Viewport.Width / _worldSize.X,
             (float)_graphicsDevice.Viewport.Height / _worldSize.Y, 1);

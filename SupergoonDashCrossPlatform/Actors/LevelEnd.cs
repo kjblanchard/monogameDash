@@ -11,7 +11,6 @@ public class LevelEnd : StaticActor
     public new static GameObject FactoryFunction(ActorParams actorParams)
     {
         var actor = new LevelEnd(actorParams);
-        actor.Initialize();
 
         return actor;
 

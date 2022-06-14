@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Documents;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
-using TiledCS;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
@@ -17,6 +15,7 @@ public class Actor : GameObject
     
 
     protected bool isFalling = true;
+    protected bool isJumping = false;
     protected bool _isFacingRight;
     
     protected int jumpHeight = 160;
@@ -57,6 +56,7 @@ public class Actor : GameObject
     public virtual void Jump()
     {
         _rigidbodyComponent.Jump();
+        isJumping = true;
     }
 
     public override void Update(GameTime gameTime)

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.Design.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +33,7 @@ public class SpriteComponent : Component
     private SpriteEffects DrawSpriteEffect = SpriteEffects.None;
 
     private Texture2D _texture;
+    public Point DrawDestinationLocation => new Point((int)Math.Floor(Parent.Location.X + _offset.X), (int)Math.Floor(Parent.Location.Y + _offset.Y));
     private Point _drawDestinationLocation;
     private Point _drawDestinationSize;
     private Point _textureSourceLocation;
@@ -68,9 +70,12 @@ public class SpriteComponent : Component
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
-        _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent.Location + _offset).ToPoint();
+        
+        // _drawDestinationLocation = CameraGameComponent.MainCamera.CalculateCameraOffset(Parent.Location + _offset).ToPoint();
+        _drawDestinationLocation = Parent.Location.ToPoint();
         spriteBatch.Draw(_texture,
-            new Rectangle(_drawDestinationLocation, _drawDestinationSize),
+            // new Rectangle(_drawDestinationLocation, _drawDestinationSize),
+            new Rectangle(DrawDestinationLocation, _drawDestinationSize),
             new Rectangle(_textureSourceLocation, _textureSourceSize),
             Color.White,
            0.0f,new Vector2(),DrawSpriteEffect,DrawOrder);

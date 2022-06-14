@@ -24,5 +24,8 @@ public class SolidTile : GameObject
         
     }
 
-
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+    }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using ImGuiNET.SampleProgram.XNA;
+﻿using ImGuiNET.SampleProgram.XNA;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.SupergoonEngine.Animation;
 using SupergoonDashCrossPlatform.SupergoonEngine.Components;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.SupergoonEngine.Input;
-using SupergoonDashCrossPlatform.Tags;
-using TiledCS;
 
 namespace SupergoonDashCrossPlatform.Actors;
 
@@ -46,12 +42,11 @@ public class Player : Actor
     private CameraComponent _cameraComponent;
 
     private bool _isDead;
+
     private bool _win;
-    private int _currentLevel = 1;
-    private const int _maxLevel = 2;
 
     private float _minXVel = 70;
-    private bool playerStartedMoving;
+    private bool _playerStartedMoving;
 
     private byte _coinsCollected;
     private const int _coinSpeedAddition = 20;
@@ -61,14 +56,12 @@ public class Player : Actor
         AddTag(EngineTags.GameObjectTags.Player);
     }
 
-    // public new static GameObject FactoryFunction(Vector2 location, TiledProperty[] tags = null, Rectangle textureRect = new Rectangle(), Texture2D texture = null)
     public new static GameObject FactoryFunction(ActorParams actorParams)
     {
         actorParams.AsepriteDocString = "player";
         actorParams.BoxColliderOffset = new Vector2(6, 10);
         actorParams.BoxSize = new Point(19, 20);
         var player = new Player(actorParams);
-        player.Initialize();
         player.jumpHeight = 300;
         return player;
     }
@@ -77,8 +70,6 @@ public class Player : Actor
     {
         _cameraComponent = new CameraComponent(this);
         _soundComponent = new SoundComponent(this);
-        //TODO remove both of these and do this differently.
-        _currentLevel = SupergoonDashGameWorld.CurrentLevel;
         AddComponent(_cameraComponent);
         _rigidbodyComponent.GravityEnabled = true;
         _rigidbodyComponent.RightCollisionJustStartedEvent += PlayerDeath;
@@ -86,7 +77,7 @@ public class Player : Actor
         _spriteComponent.DrawOrder = 0.7f;
         AddAnimationTransitions();
         _rigidbodyComponent.BottomCollisionJustStartedEvent += OnJustHitGround;
-        playerStartedMoving = false;
+        _playerStartedMoving = false;
         Debug = true;
 
         SupergoonDashGameWorld.Attempts++;
@@ -97,110 +88,64 @@ public class Player : Actor
 
     public override void Update(GameTime gameTime)
     {
-        if (_isDead)
-        {
-            if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
-            {
-                Level level = null;
-                if (_win)
-                {
-                    var tag = 0;
-                    var nextLevel = _currentLevel + 1;
-                    if (nextLevel > _maxLevel)
-                        nextLevel = 1;
-                    tag = nextLevel switch
-                    {
-                        1 => LevelTags.Level1,
-                        2 => LevelTags.Level2,
-                        _ => tag
-                    };
-
-                    _currentLevel = nextLevel;
-                    //TODO remove this and do this differently.
-                    SupergoonDashGameWorld.CurrentLevel = _currentLevel;
-                    SupergoonDashGameWorld.Attempts = 0;
-                    SupergoonDashGameWorld.CoinAmount = 0;
-                    SupergoonDashGameWorld.TimeThisLevel = TimeSpan.Zero;
-                    _gameWorld.LevelStateMachine.ChangeState(tag);
-                    _gameWorld.Reset();
-                    _coinsCollected = 0;
-                    _win = false;
-                    _isDead = false;
-                }
-                else
-                {
-                    switch (_currentLevel)
-                    {
-                        case 1:
-                            level = _gameWorld.LevelStateMachine.GetState(LevelTags.Level1);
-                            break;
-                        case 2:
-                            level = _gameWorld.LevelStateMachine.GetState(LevelTags.Level2);
-                            break;
-                    }
-                _gameWorld.Reset();
-                level.Reset();
-                SupergoonDashGameWorld.CoinAmount = 0;
-
-                }
-            }
-
-            return;
-        }
+        if (CharacterDeadOrWon()) return;
 
         base.Update(gameTime);
+
+        //TODO remove this, debugging currently.
+        if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Up))
+            PlayerWin();
+
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Right) ||
             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Right))
         {
-            playerStartedMoving = true;
+            _playerStartedMoving = true;
             var movementForce = new Vector2(_runSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
-
-            //If you arent moving, get a boost in speed
-            if (_rigidbodyComponent._velocity.X == 0)
-            {
-                movementForce.X *= 5;
-            }
-
-
             _rigidbodyComponent.AddForce(movementForce);
         }
-
-        if (playerStartedMoving &&
-            (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
-             _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left)))
+        else if (_playerStartedMoving &&
+                 (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.Left) ||
+                  _playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.Left)))
         {
-            var movementForce = new Vector2(-_runSpeed* (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
-
-            //If you arent moving, get a boost in speed
-            if (_rigidbodyComponent._velocity.X == 0)
-            {
-                movementForce.X *= 5;
-            }
-
+            var movementForce = new Vector2(-_runSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
             _rigidbodyComponent.AddForce(movementForce);
         }
 
         if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
         {
-            if (!isFalling)
+            if (!isFalling && !isJumping)
             {
                 Jump();
-                isFalling = true;
             }
         }
         else if (_playerControllerComponent.PlayerController.IsButtonHeld(ControllerButtons.A))
         {
-            if (_jumpLength <= _jumpLengthMax)
+            if (isJumping)
             {
-                _rigidbodyComponent.AddForce(new Vector2(0, -_jumpAddition* (float)gameTime.ElapsedGameTime.TotalSeconds));
+                _rigidbodyComponent.AddForce(new Vector2(0,
+                    -_jumpAddition * (float)gameTime.ElapsedGameTime.TotalSeconds));
                 _jumpLength += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (_jumpLength >= _jumpLengthMax)
+                {
+                    isFalling = true;
+                    isJumping = false;
+                }
             }
         }
+        else if (_playerControllerComponent.PlayerController.IsButtonReleased(ControllerButtons.A))
+        {
+            if (isJumping)
+            {
+                isJumping = false;
+                isFalling = true;
+            }
+            
+        }
 
-        if (playerStartedMoving && !_isDead)
+        if (_playerStartedMoving && !_isDead)
             SupergoonDashGameWorld.TimeThisLevel += gameTime.ElapsedGameTime;
 
-        if (playerStartedMoving)
+        if (_playerStartedMoving)
             _rigidbodyComponent._velocity.X =
                 MathHelper.Clamp(_rigidbodyComponent._velocity.X, _minXVel, float.MaxValue);
 
@@ -215,15 +160,49 @@ public class Player : Actor
         }
     }
 
+    /// <summary>
+    /// Handle if the character is dead or won the level, and allows you to handle button presses for it.
+    /// </summary>
+    /// <returns>If the player should be able to run the rest of his update function.</returns>
+    private bool CharacterDeadOrWon()
+    {
+        var deadOrWon = false;
+        {
+            if (_isDead)
+            {
+                deadOrWon = true;
+                if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
+                {
+                    var sgWorld = _gameWorld as SupergoonDashGameWorld;
+                    sgWorld?.RestartLevel();
+                }
+            }
+
+            if (_win)
+            {
+                deadOrWon = true;
+                if (_playerControllerComponent.PlayerController.IsButtonPressed(ControllerButtons.A))
+                {
+                    var sgWorld = _gameWorld as SupergoonDashGameWorld;
+                    sgWorld?.NextLevel();
+                }
+            }
+        }
+
+        return deadOrWon;
+    }
+
     //Events
     public void OnJustHitGround()
     {
         isFalling = false;
+        isJumping = false;
     }
 
     public override void Jump()
     {
         base.Jump();
+
         _animationComponent.ChangeAnimation(JumpingAnimString);
         _jumpLength = 0;
         _soundComponent.PlaySfx(JumpSfxString, JumpSfxSoundLevel);
@@ -246,7 +225,6 @@ public class Player : Actor
         //Idle
         var idleToFallingTransition = new AnimationTransition(FallingAnimString, () => isFalling);
         var idleToRunTransition =
-            // new AnimationTransition(RunningAnimString, () => _rigidbodyComponent._velocity.X != 0);
             new AnimationTransition(RunningAnimString, RunningToIdle);
         idleAnimation.Transitions.Add(idleToFallingTransition);
         idleAnimation.Transitions.Add(idleToRunTransition);
@@ -254,8 +232,7 @@ public class Player : Actor
         //Jumping
         var jumpingToFallingTransition =
             new AnimationTransition(FallingAnimString,
-                () => _playerControllerComponent.PlayerController.IsButtonReleased(ControllerButtons.A) ||
-                      _jumpLength >= _jumpLengthMax);
+                () => !isJumping);
         jumpingAnimation.Transitions.Add(jumpingToFallingTransition);
 
         //Falling
@@ -264,7 +241,6 @@ public class Player : Actor
 
         //Running
         var runningToIdleTransition =
-            // new AnimationTransition(IdleAnimString, () => _rigidbodyComponent._velocity.X == 0);
             new AnimationTransition(IdleAnimString, () =>
                 (_rigidbodyComponent._velocity.X < 55 && _rigidbodyComponent._velocity.X > 0)
                 || (_rigidbodyComponent._velocity.X > -55 && _rigidbodyComponent._velocity.X < 0) ||
@@ -280,8 +256,6 @@ public class Player : Actor
 
     public bool RunningToIdle()
     {
-        // if (_rigidbodyComponent._velocity.X != 0)
-        //Handle staying in animation too long.
         if (_rigidbodyComponent._velocity.X > 55 && _rigidbodyComponent._velocity.X > 0 ||
             _rigidbodyComponent._velocity.X < -55 && _rigidbodyComponent._velocity.X < 0)
             return true;
@@ -298,7 +272,6 @@ public class Player : Actor
     public void PlayerWin()
     {
         _soundComponent.PlayBgm("levelWin");
-        _isDead = true;
         _win = true;
     }
 

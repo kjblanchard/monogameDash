@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SupergoonDashCrossPlatform.Actors;
-using SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 using SupergoonDashCrossPlatform.Tags;
 using SupergoonEngine.Tiled;
@@ -25,19 +24,20 @@ namespace SupergoonDashCrossPlatform
         public static int Attempts = 0;
         public static TimeSpan TimeThisLevel = TimeSpan.Zero;
         public static int CurrentLevel = 1;
+        public static int MaxLevel = 2;
 
         protected override void Initialize()
         {
             base.Initialize();
             TiledActorFactory.NameToSpawnFunction["player"] = Player.FactoryFunction;
             TiledActorFactory.NameToSpawnFunction["coin"] = Coin.FactoryFunction;
-            TiledActorFactory.NameToSpawnFunction["spikel"] = Spike.FactoryFunction;
+            TiledActorFactory.NameToSpawnFunction["spike"] = Spike.FactoryFunction;
             TiledActorFactory.NameToSpawnFunction["end"] = LevelEnd.FactoryFunction;
 
             //Load ui stuff
             rect = new Texture2D(GraphicsDevice, 160, 50);
             data = new Color[160 * 50];
-            for (int i = 0; i < data.Length; ++i) data[i] = new Color(20, 20, 20, 135);
+            for (int i = 0; i < data.Length; ++i) data[i] = new Color(20, 20, 20, 200);
             rect.SetData(data);
             font = Content.Load<SpriteFont>("Fonts/ui");
         }
@@ -52,20 +52,9 @@ namespace SupergoonDashCrossPlatform
             level1.AddTag(LevelTags.Level1);
             level2.AddTag(LevelTags.Level2);
             AddLevels(level1, level2);
-            // AddLevels(level1);
-            // InitializeLevels();
-            //TODO remove this, just there to start the music on restart and start currently.
             ChangeLevel(LevelTags.Level1);
-            Reset();
         }
 
-        public override void Reset()
-        {
-            base.Reset();
-            GC.Collect();
-            CameraGameComponent.MainCamera.Location = Vector3.Zero;
-            _soundGameComponent.PlayBgm(LevelStateMachine.GetCurrentLevelMusic());
-        }
 
         protected override void Draw(GameTime gameTime)
         {
@@ -75,22 +64,49 @@ namespace SupergoonDashCrossPlatform
                 null,
                 _graphicsGameComponent.SpriteScale);
 
-            //DrawUI components
-            //Transparent box
+            DrawUi();
+
+
+            _spriteBatch.End();
+        }
+
+        private void DrawUi()
+        {
+            //Draw UI components.
             _spriteBatch.Draw(rect, coor, null, Color.White, 0.0f, new Vector2(), new Vector2(1, 1), SpriteEffects.None,
-                0.9f);
+                0.89f);
             var stingText = $"Total Coins: {CoinAmount.ToString()} Max Speed: {MaxSpeed.ToString()} ";
             var deathText = $"Total Attempts: {Attempts.ToString()}";
             var minutes = TimeThisLevel.Minutes;
             var seconds = TimeThisLevel.TotalSeconds - (minutes * 60);
             seconds = Math.Truncate(10000 * seconds) / 10000;
             var timeText = $"Total Level Time: {minutes}:{seconds} ";
-            _spriteBatch.DrawString(font, stingText,coinTextLoc, Color.Coral );
-            _spriteBatch.DrawString(font, deathText,deathTextLoc, Color.Azure );
-            _spriteBatch.DrawString(font, timeText,timeTextLoc, Color.Chartreuse );
+            _spriteBatch.DrawString(font, stingText, coinTextLoc, Color.Orange, 0.0f, new Vector2(), 1.0f,
+                SpriteEffects.None, 0.9f);
+            _spriteBatch.DrawString(font, deathText, deathTextLoc, Color.Azure, 0.0f, new Vector2(), 1.0f,
+                SpriteEffects.None, 0.9f);
+            _spriteBatch.DrawString(font, timeText, timeTextLoc, Color.Chartreuse, 0.0f, new Vector2(), 1.0f,
+                SpriteEffects.None, 0.9f);
+        }
 
+        public void RestartLevel()
+        {
+            CoinAmount = 0;
+            LevelStateMachine.RestartLevel();
+        }
 
-            _spriteBatch.End();
+        public void NextLevel()
+        {
+            //Gather the proper tag to use for the level.
+            var nextLevel = CurrentLevel + 1;
+            if (nextLevel > MaxLevel)
+                nextLevel = 1;
+
+            CurrentLevel = nextLevel;
+            Attempts = 0;
+            CoinAmount = 0;
+            TimeThisLevel = TimeSpan.Zero;
+            LevelStateMachine.ChangeState(CurrentLevel);
         }
     }
 }

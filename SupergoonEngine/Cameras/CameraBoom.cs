@@ -1,4 +1,5 @@
-﻿using SupergoonDashCrossPlatform.SupergoonEngine.Core;
+﻿using System;
+using SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 
@@ -20,7 +21,7 @@ public class CameraBoom
         var middle_screen_x = _camera.GetWorldSize().X / 2;
         //Try moving Right if needed if the camera has room
         var noRoom = _camera.LevelWidth - _camera.GetWorldSize().X;
-        if (_camera.Location.X < noRoom )
+        if (_camera.Location.X < noRoom)
         {
             if (diff >= middle_screen_x)
             {
@@ -38,5 +39,19 @@ public class CameraBoom
                 _camera.Location.X -= offset;
             }
         }
+        
+        ReduceJitter();
+
+
+    }
+
+    /// <summary>
+    /// Without this, occasionally there will be a large jitter when camera is moving.
+    /// </summary>
+    private void ReduceJitter()
+    {
+        _camera.Location.X = (float)Math.Floor(_camera.Location.X);
+        _camera.Location.Y = (float)Math.Floor(_camera.Location.Y);
+        
     }
 }

@@ -2,11 +2,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SupergoonDashCrossPlatform.SupergoonEngine.Interfaces;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Core;
 
-public abstract class StateMachine<T> : IState where T : IState
+public abstract class StateMachine<T> : State where T : State
 {
     protected T _currentState;
     protected T _previousState;

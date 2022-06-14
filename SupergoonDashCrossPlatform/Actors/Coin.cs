@@ -22,7 +22,6 @@ public class Coin : Actor
         actor._rigidbodyComponent.GravityEnabled = false;
         actor._animationComponent.SetAnimationEntryTransmission(entryTransition);
         actor._animationComponent.AddAnimationTransition(spinAnimation);
-        actor.Initialize();
         return actor;
     }
 

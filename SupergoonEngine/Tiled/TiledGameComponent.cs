@@ -15,6 +15,7 @@ public class TiledGameComponent : GameComponent
 
     public TiledTmxContent LoadTilesets(string mapToLoadFor)
     {
+        //TODO change this to ./ for linux builds.
         var map = new TiledMap($"{Game.Content.RootDirectory}\\tiled\\{mapToLoadFor}.tmx");
         var content = Game.Content;
         var tilesetLength = map.Tilesets.Length;
@@ -35,6 +36,7 @@ public class TiledGameComponent : GameComponent
         }
         LoadedTmxContent = new TiledTmxContent(map, tilesets, textures);
         LoadedTmxContent.CreateTileGameObjectsFromContent();
+        LoadedTmxContent.SpawnActorsFromTilemap();
         return LoadedTmxContent;
     }
 }

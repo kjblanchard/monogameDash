@@ -20,6 +20,7 @@ public class CameraComponent : Component
         _cameraBoom = new CameraBoom(Parent);
         
     }
+    
 
     public override void Update(GameTime gameTime)
     {

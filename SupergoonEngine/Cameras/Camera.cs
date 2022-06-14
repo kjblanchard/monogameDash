@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace SupergoonDashCrossPlatform.SupergoonEngine.Cameras;
 
@@ -68,9 +69,15 @@ public class Camera
         // var matrix = Matrix.CreateScale(
             // (float) _graphicsDevice.Viewport.Width / _graphicsGameComponent.WorldSize.X,
             // (float) _graphicsDevice.Viewport.Height / _graphicsGameComponent.WorldSize.Y, 1);
-        Matrix.CreateTranslation(ref Location, out var matrix);
+            var location = Location;
+            location.X = (float)Math.Round(location.X);
+            location.Y = (float)Math.Round(location.Y);
+            location.X = -location.X;
+        // Matrix.CreateTranslation(ref Location, out var matrix);
+        Matrix.CreateTranslation(ref location, out var matrix);
         return matrix;
     }
+
 
     public int LevelWidth => _cameraGameComponent.GetCurrentLevelWidth();
 }

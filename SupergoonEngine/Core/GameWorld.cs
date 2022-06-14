@@ -26,8 +26,6 @@ public class GameWorld : Game
     public PhysicsGameComponent PhysicsGameComponent;
     public static InputGameComponent InputGameComponent;
     public ImGuiGameComponent _imGuiGameComponent;
-    
-
 
 
     public LevelStateMachine LevelStateMachine => _levelStateMachine;
@@ -44,13 +42,11 @@ public class GameWorld : Game
     protected override void Initialize()
     {
         AttachAllGameComponents();
-        //Add in the statics for the cameras to be used in the game.
+        InitializeStatics();
         _graphicsGameComponent.Initialize();
         _levelStateMachine = new LevelStateMachine(_tiledGameComponent);
-        
         //Try 30fps
         // TargetElapsedTime = TimeSpan.FromSeconds(1d / 30d);
-
         base.Initialize();
     }
 
@@ -75,16 +71,8 @@ public class GameWorld : Game
     {
         GraphicsDevice.Clear(Color.SkyBlue);
         _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
-            // _graphicsGameComponent.SpriteScale * CameraGameComponent.MainCamera.GetCameraTransformMatrix());
-            _graphicsGameComponent.SpriteScale);
+            CameraGameComponent.MainCamera.GetCameraTransformMatrix() * _graphicsGameComponent.SpriteScale);
         _levelStateMachine.Draw(_spriteBatch);
-        
-        
-        
-        
-        
-        
-        
         _spriteBatch.End();
 
 
@@ -93,7 +81,7 @@ public class GameWorld : Game
             DepthStencilState.Default, RasterizerState.CullNone, null, null);
         _imGuiGameComponent.Draw(_spriteBatch);
         _spriteBatch.End();
-        
+
 
         base.Draw(gameTime);
     }
@@ -107,16 +95,23 @@ public class GameWorld : Game
         PhysicsGameComponent = new PhysicsGameComponent(this, _tiledGameComponent);
         InputGameComponent = new InputGameComponent(this);
         _imGuiGameComponent = new ImGuiGameComponent(this, GraphicsDevice);
-        _cameraGameComponent = new CameraGameComponent(this, _graphicsGameComponent, GraphicsDevice, _tiledGameComponent);
-        
+        _cameraGameComponent =
+            new CameraGameComponent(this, _graphicsGameComponent, GraphicsDevice, _tiledGameComponent);
+
 
         AddGameComponent(_tiledGameComponent, _soundGameComponent, _graphicsGameComponent, PhysicsGameComponent,
             InputGameComponent, _imGuiGameComponent, _cameraGameComponent);
 
-        //Set the gameobject static somewhere TODO put this in a better place.
+    }
+
+    private void InitializeStatics()
+    {
+        //Set the statics somewhere TODO put this in a better place.
         GameObject.GameWorld = this;
         Component.GameWorld = this;
         Component.ImGuiGameComponent = _imGuiGameComponent;
+
+        Level._soundGameComponent = _soundGameComponent;
         SoundComponent._soundGameComponent = _soundGameComponent;
     }
 
@@ -128,11 +123,6 @@ public class GameWorld : Game
         }
 
         _levelStateMachine.Initialize();
-    }
-
-    protected void InitializeLevels()
-    {
-        _levelStateMachine.InitializeStates();
     }
 
     protected void ChangeLevel(int levelTag)
@@ -148,8 +138,4 @@ public class GameWorld : Game
         }
     }
 
-    public virtual void Reset()
-    {
-        
-    }
 }
